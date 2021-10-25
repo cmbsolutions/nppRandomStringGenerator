@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("nppGeneratePasswords")]
-[assembly: AssemblyDescription("Notepad++ plugin for generating passwords")]
+[assembly: AssemblyTitle("nppRandomStringGenerator")]
+[assembly: AssemblyDescription("Notepad++ plugin for generating random strings")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CMBSolutions")]
-[assembly: AssemblyProduct("nppGeneratePasswords")]
+[assembly: AssemblyProduct("nppRandomStringGenerator")]
 [assembly: AssemblyCopyright("Copyright © CMBSolutions 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
