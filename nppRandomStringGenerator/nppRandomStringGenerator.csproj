@@ -9,8 +9,8 @@
     <ProjectGuid>{C884FBBA-80A9-4D00-9978-74C6DA6A02B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nppGeneratePasswords</RootNamespace>
-    <AssemblyName>nppGeneratePasswords</AssemblyName>
+    <RootNamespace>nppRandomStringGenerator</RootNamespace>
+    <AssemblyName>nppRandomStringGenerator</AssemblyName>
     <OutputPath>bin\Debug\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
