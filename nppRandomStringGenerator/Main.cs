@@ -5,7 +5,7 @@ namespace Kbg.NppPluginNET
 {
     class Main
     {
-        internal const string PluginName = "nppGeneratePasswords";
+        internal const string PluginName = "nppRandomStringGenerator";
         static ConfigAndGenerate ConfigAndGenerate = null;
 
         public static void OnNotification(ScNotification notification)
@@ -41,12 +41,8 @@ namespace Kbg.NppPluginNET
         {
             ConfigAndGenerate = new ConfigAndGenerate();
 
-            if (ConfigAndGenerate.ShowDialog() == DialogResult.OK)
-            {
-                MessageBox.Show("Passwords are generated!");
-            }
+            ConfigAndGenerate.ShowDialog();
 
-            ConfigAndGenerate.Close();
             ConfigAndGenerate = null;
         }
     }
