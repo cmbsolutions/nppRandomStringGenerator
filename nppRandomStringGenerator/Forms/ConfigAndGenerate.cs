@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
+using Microsoft;
 
 namespace Kbg.NppPluginNET
 {
     public partial class ConfigAndGenerate : Form
     {
         private string AvailableChars;
+        private string StartChars;
         private IScintillaGateway Editor;
         private INotepadPPGateway Notepad;
 
@@ -22,49 +23,82 @@ namespace Kbg.NppPluginNET
             this.Notepad = new NotepadPPGateway();
         }
 
-        private void bGenerate_Click(object sender, EventArgs e)
+        private void bGenerate_Click(Object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
+
             this.AvailableChars = "";
+            this.StartChars = "";
 
             if (chkNumbers.Checked) this.AvailableChars += "0123456789";
-            if (chkLowercase.Checked) this.AvailableChars += "abcdefghijklmnopqrstuvwxyz";
-            if (chkUppercase.Checked) this.AvailableChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (chkLowercase.Checked)
+            {
+                this.AvailableChars += "abcdefghijklmnopqrstuvwxyz";
+                if (chkBeginLetter.Checked) this.StartChars += "abcdefghijklmnopqrstuvwxyz";
+            }
+            if (chkUppercase.Checked)
+            {
+                this.AvailableChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                if (chkBeginLetter.Checked) this.StartChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            }
             if (chkSymbols.Checked && txtSymbols.TextLength > 0) this.AvailableChars += txtSymbols.Text;
             if (chkSimilar.Checked)
             {
                 Regex regexObj = new Regex("[iI1lLoO0|!jJ]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 this.AvailableChars = regexObj.Replace(this.AvailableChars, "");
+                if (chkBeginLetter.Checked) this.StartChars = regexObj.Replace(this.StartChars, "");
             }
 
-            if (rbNew.Checked)
+            if (this.AvailableChars.Length > 0)
             {
-                this.Notepad.FileNew();
-            }
+                if (rbNew.Checked) this.Notepad.FileNew();
+                if (rbCurrent.Checked) this.Editor.DocumentEnd();
 
-            // TODO: add as background task and manage cancelation
-            Random rnd = new Random();
+                int idx = 0;
+                int previousChar = 0;
+                int currentChar = 0;
 
-            for (int i = 0; i<nudQuantity.Value; i++)
-            {
-                string code = "";
+                Random rnd = new Random();
 
-                for (int y = 0;y<nudLength.Value; y++)
+                for (int i = 0; i < nudQuantity.Value; i++)
                 {
-                    int idx = rnd.Next(0, this.AvailableChars.Length - 1);
-                    while (y==0 && chkBeginLetter.Checked && !Regex.IsMatch(this.AvailableChars.Substring(idx, 1), @"\A[a-z]\z", RegexOptions.IgnoreCase | RegexOptions.Multiline))
+                    string code = "";
+
+                    for (int y = 0; y < nudLength.Value; y++)
                     {
-                        idx = rnd.Next(0, this.AvailableChars.Length);
+                        if (y == 0 && chkBeginLetter.Checked)
+                        {
+                            idx = rnd.Next(0, this.StartChars.Length - 1);
+                            code += this.StartChars[idx];
+                            previousChar = (int)this.StartChars[idx];
+                        }
+                        else
+                        {
+                            idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                            currentChar = (int)this.AvailableChars[idx];
+
+                            if (chkSequential.Checked)
+                            {
+                                while (previousChar - 1 == currentChar || previousChar + 1 == currentChar || previousChar == currentChar)
+                                {
+                                    idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                                    currentChar = (int)this.AvailableChars[idx];
+                                }
+                            }
+                            previousChar = (int)this.AvailableChars[idx];
+                            code += this.AvailableChars[idx];
+                        }
                     }
 
-                    code += this.AvailableChars.Substring(idx,1);
+                    this.Editor.AddText(code.Length, code);
+                    this.Editor.NewLine();
                 }
-
-                this.Editor.AddText(code.Length, code);
-                this.Editor.NewLine();
             }
 
             this.Cursor = Cursors.Default;
+
+            MessageBox.Show("Strings are generated.");
+            this.Close();
         }
 
         private void nudQuantity_ValueChanged(object sender, EventArgs e)
@@ -80,5 +114,16 @@ namespace Kbg.NppPluginNET
                 nudQuantity.ForeColor = Color.Black;
             }
         }
+
+        private void chkLowercase_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
+        }
+
+        private void chkUppercase_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
+        }
+
     }
 }

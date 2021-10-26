@@ -57,6 +57,8 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.rbCurrent = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.nudLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
             this.SuspendLayout();
@@ -94,9 +96,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 15);
+            this.label1.Size = new System.Drawing.Size(78, 15);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Password length:";
+            this.label1.Text = "String length:";
             // 
             // label2
             // 
@@ -168,6 +170,7 @@
             this.chkLowercase.TabIndex = 6;
             this.chkLowercase.Text = "( e.g. abcdefgh )";
             this.chkLowercase.UseVisualStyleBackColor = true;
+            this.chkLowercase.CheckedChanged += new System.EventHandler(this.chkLowercase_CheckedChanged);
             // 
             // label4
             // 
@@ -198,6 +201,7 @@
             this.chkUppercase.TabIndex = 8;
             this.chkUppercase.Text = "( e.g. ABCDEFGH )";
             this.chkUppercase.UseVisualStyleBackColor = true;
+            this.chkUppercase.CheckedChanged += new System.EventHandler(this.chkUppercase_CheckedChanged);
             // 
             // label6
             // 
@@ -302,7 +306,8 @@
             // chkSequential
             // 
             this.chkSequential.AutoSize = true;
-            this.chkSequential.Enabled = false;
+            this.chkSequential.Checked = true;
+            this.chkSequential.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSequential.Location = new System.Drawing.Point(198, 240);
             this.chkSequential.Name = "chkSequential";
             this.chkSequential.Size = new System.Drawing.Size(274, 19);
@@ -315,11 +320,10 @@
             // 
             this.bGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.bGenerate.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.bGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bGenerate.Location = new System.Drawing.Point(177, 297);
+            this.bGenerate.Location = new System.Drawing.Point(172, 291);
             this.bGenerate.Name = "bGenerate";
-            this.bGenerate.Size = new System.Drawing.Size(149, 38);
+            this.bGenerate.Size = new System.Drawing.Size(163, 38);
             this.bGenerate.TabIndex = 23;
             this.bGenerate.Text = "Generate";
             this.bGenerate.UseVisualStyleBackColor = true;
@@ -342,7 +346,6 @@
             this.rbNew.Name = "rbNew";
             this.rbNew.Size = new System.Drawing.Size(69, 19);
             this.rbNew.TabIndex = 25;
-            this.rbNew.TabStop = true;
             this.rbNew.Text = "New tab";
             this.rbNew.UseVisualStyleBackColor = true;
             // 
@@ -350,7 +353,7 @@
             // 
             this.rbInline.AutoSize = true;
             this.rbInline.Enabled = false;
-            this.rbInline.Location = new System.Drawing.Point(281, 264);
+            this.rbInline.Location = new System.Drawing.Point(364, 264);
             this.rbInline.Name = "rbInline";
             this.rbInline.Size = new System.Drawing.Size(54, 19);
             this.rbInline.TabIndex = 26;
@@ -381,12 +384,22 @@
             this.label13.TabIndex = 28;
             this.label13.Text = "(min:1, max:10240)";
             // 
+            // rbCurrent
+            // 
+            this.rbCurrent.AutoSize = true;
+            this.rbCurrent.Location = new System.Drawing.Point(273, 264);
+            this.rbCurrent.Name = "rbCurrent";
+            this.rbCurrent.Size = new System.Drawing.Size(85, 19);
+            this.rbCurrent.TabIndex = 29;
+            this.rbCurrent.Text = "Current tab";
+            this.rbCurrent.UseVisualStyleBackColor = true;
+            // 
             // ConfigAndGenerate
             // 
-            this.AcceptButton = this.bGenerate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(502, 347);
+            this.ClientSize = new System.Drawing.Size(516, 341);
+            this.Controls.Add(this.rbCurrent);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.rbNew);
@@ -417,12 +430,12 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(518, 413);
             this.MinimizeBox = false;
             this.Name = "ConfigAndGenerate";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Generate Passwords";
             ((System.ComponentModel.ISupportInitialize)(this.nudLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).EndInit();
@@ -461,5 +474,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.RadioButton rbCurrent;
     }
 }

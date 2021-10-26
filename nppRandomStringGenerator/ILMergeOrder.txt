@@ -1,4 +1,10 @@
 ﻿# this file contains the partial list of the merged assemblies in the merge order
 # you can fill it from the obj\CONFIG\PROJECT.ilmerge generated on every build
 # and finetune merge order to your satisfaction
-
+nppRandomStringGenerator.dll
+System.IO.dll
+System.Runtime.dll
+System.Threading.Tasks.dll
+Microsoft.Threading.Tasks.dll
+Microsoft.Threading.Tasks.Extensions.Desktop.dll
+Microsoft.Threading.Tasks.Extensions.dll
