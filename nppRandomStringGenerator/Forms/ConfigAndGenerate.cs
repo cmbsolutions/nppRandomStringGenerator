@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
-using nppRandomStringGenerator;
+using Microsoft;
 
 namespace Kbg.NppPluginNET
 {
@@ -17,8 +16,6 @@ namespace Kbg.NppPluginNET
         private IScintillaGateway Editor;
         private INotepadPPGateway Notepad;
 
-        private generator Gen;
-
         public ConfigAndGenerate()
         {
             InitializeComponent();
@@ -26,8 +23,10 @@ namespace Kbg.NppPluginNET
             this.Notepad = new NotepadPPGateway();
         }
 
-        private void bGenerate_Click(object sender, EventArgs e)
+        private void bGenerate_Click(Object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             this.AvailableChars = "";
             this.StartChars = "";
 
@@ -52,22 +51,54 @@ namespace Kbg.NppPluginNET
 
             if (this.AvailableChars.Length > 0)
             {
-                if (rbNew.Checked)
+                if (rbNew.Checked) this.Notepad.FileNew();
+                if (rbCurrent.Checked) this.Editor.DocumentEnd();
+
+                int idx = 0;
+                int previousChar = 0;
+                int currentChar = 0;
+
+                Random rnd = new Random();
+
+                for (int i = 0; i < nudQuantity.Value; i++)
                 {
-                    this.Notepad.FileNew();
+                    string code = "";
+
+                    for (int y = 0; y < nudLength.Value; y++)
+                    {
+                        if (y == 0 && chkBeginLetter.Checked)
+                        {
+                            idx = rnd.Next(0, this.StartChars.Length - 1);
+                            code += this.StartChars[idx];
+                            previousChar = (int)this.StartChars[idx];
+                        }
+                        else
+                        {
+                            idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                            currentChar = (int)this.AvailableChars[idx];
+
+                            if (chkSequential.Checked)
+                            {
+                                while (previousChar - 1 == currentChar || previousChar + 1 == currentChar || previousChar == currentChar)
+                                {
+                                    idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                                    currentChar = (int)this.AvailableChars[idx];
+                                }
+                            }
+                            previousChar = (int)this.AvailableChars[idx];
+                            code += this.AvailableChars[idx];
+                        }
+                    }
+
+                    this.Editor.AddText(code.Length, code);
+                    this.Editor.NewLine();
                 }
-
-                bGenerate.Enabled = false;
-                toolStripSplitButton1.Enabled = true;
-                this.Gen = new generator();
-                this.Gen.AvailableChars = this.AvailableChars;
-                this.Gen.StartChars = this.StartChars;
-                this.Gen.quantity = (int)nudQuantity.Value;
-                this.Gen.stringLength = (int)nudLength.Value;
-
-                this.Gen.Generate(ref this.Editor, ref this.Notepad);
-                //backgroundWorker1.RunWorkerAsync();
             }
+
+            this.Cursor = Cursors.Default;
+
+            MessageBox.Show("Strings are generated.");
+            this.Close();
         }
 
         private void nudQuantity_ValueChanged(object sender, EventArgs e)
@@ -84,80 +115,6 @@ namespace Kbg.NppPluginNET
             }
         }
 
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage > toolStripProgressBar1.Maximum) toolStripProgressBar1.Value = toolStripProgressBar1.Maximum;
-            else toolStripProgressBar1.Value = e.ProgressPercentage;
-        }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if ( e.Cancelled)
-            {
-                MessageBox.Show("Generation was cancelled by user");
-                this.Close();
-            } else
-            {
-                toolStripSplitButton1.Enabled = false;
-                MessageBox.Show("Random strings are generated");
-                this.Close();
-            }
-        }
-
-        private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
-        {
-            if (this.Gen != null) this.Gen.CancelGenerator();        }
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
-            {
-                Decimal perc = 0;
-                int old_perc = 0;
-                int idx = 0;
-                Random rnd = new Random();
-
-                for (int i = 0; i < nudQuantity.Value; i++)
-                {
-                    string code = "";
-                    perc += nudQuantity.Value / 100;
-                    if ( (int)perc != old_perc)
-                    {
-                        backgroundWorker1.ReportProgress((int)perc);
-                        old_perc = (int)perc;
-                    }                    
-
-                    if ( backgroundWorker1.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    for (int y = 0; y < nudLength.Value; y++)
-                    {
-                        if ( y == 0 && chkBeginLetter.Checked)
-                        {
-                            idx = rnd.Next(0, this.StartChars.Length - 1);
-                            code += this.StartChars.Substring(idx, 1);
-                        }
-                        else
-                        {
-                            idx = rnd.Next(0, this.AvailableChars.Length - 1);
-                            code += this.AvailableChars.Substring(idx, 1);
-                        }
-                    }
-
-                    this.Editor.AddText(code.Length, code);
-                    this.Editor.NewLine();
-                }
-                e.Result = "Completed";
-            }
-            catch (Exception ex)
-            {
-                e.Result = ex.Message;
-            }
-        }
-
         private void chkLowercase_CheckedChanged(object sender, EventArgs e)
         {
             if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
@@ -167,5 +124,6 @@ namespace Kbg.NppPluginNET
         {
             if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
         }
+
     }
 }
