@@ -59,8 +59,12 @@
             this.label13 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.rbCurrent = new System.Windows.Forms.RadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtSep = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // nudLength
@@ -321,7 +325,7 @@
             this.bGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bGenerate.Location = new System.Drawing.Point(172, 291);
+            this.bGenerate.Location = new System.Drawing.Point(172, 391);
             this.bGenerate.Name = "bGenerate";
             this.bGenerate.Size = new System.Drawing.Size(163, 38);
             this.bGenerate.TabIndex = 23;
@@ -342,23 +346,24 @@
             // 
             this.rbNew.AutoSize = true;
             this.rbNew.Checked = true;
-            this.rbNew.Location = new System.Drawing.Point(198, 264);
+            this.rbNew.Location = new System.Drawing.Point(13, 22);
             this.rbNew.Name = "rbNew";
-            this.rbNew.Size = new System.Drawing.Size(69, 19);
+            this.rbNew.Size = new System.Drawing.Size(49, 19);
             this.rbNew.TabIndex = 25;
-            this.rbNew.Text = "New tab";
+            this.rbNew.TabStop = true;
+            this.rbNew.Text = "New";
             this.rbNew.UseVisualStyleBackColor = true;
             // 
             // rbInline
             // 
             this.rbInline.AutoSize = true;
-            this.rbInline.Enabled = false;
-            this.rbInline.Location = new System.Drawing.Point(364, 264);
+            this.rbInline.Location = new System.Drawing.Point(13, 72);
             this.rbInline.Name = "rbInline";
-            this.rbInline.Size = new System.Drawing.Size(54, 19);
+            this.rbInline.Size = new System.Drawing.Size(253, 19);
             this.rbInline.TabIndex = 26;
-            this.rbInline.Text = "Inline";
+            this.rbInline.Text = "Current, append to each line with seperator";
             this.rbInline.UseVisualStyleBackColor = true;
+            this.rbInline.CheckedChanged += new System.EventHandler(this.rbInline_CheckedChanged);
             // 
             // toolTip1
             // 
@@ -387,23 +392,55 @@
             // rbCurrent
             // 
             this.rbCurrent.AutoSize = true;
-            this.rbCurrent.Location = new System.Drawing.Point(273, 264);
+            this.rbCurrent.Location = new System.Drawing.Point(13, 47);
             this.rbCurrent.Name = "rbCurrent";
-            this.rbCurrent.Size = new System.Drawing.Size(85, 19);
+            this.rbCurrent.Size = new System.Drawing.Size(148, 19);
             this.rbCurrent.TabIndex = 29;
-            this.rbCurrent.Text = "Current tab";
+            this.rbCurrent.Text = "Current, add to bottom";
             this.rbCurrent.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.txtSep);
+            this.groupBox1.Controls.Add(this.rbNew);
+            this.groupBox1.Controls.Add(this.rbCurrent);
+            this.groupBox1.Controls.Add(this.rbInline);
+            this.groupBox1.Location = new System.Drawing.Point(198, 265);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(271, 121);
+            this.groupBox1.TabIndex = 30;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Document";
+            // 
+            // txtSep
+            // 
+            this.txtSep.Enabled = false;
+            this.txtSep.Location = new System.Drawing.Point(96, 91);
+            this.txtSep.MaxLength = 1;
+            this.txtSep.Name = "txtSep";
+            this.txtSep.Size = new System.Drawing.Size(23, 23);
+            this.txtSep.TabIndex = 30;
+            this.txtSep.Text = ";";
+            this.txtSep.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(30, 94);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(60, 15);
+            this.label14.TabIndex = 31;
+            this.label14.Text = "Seperator:";
             // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(516, 341);
-            this.Controls.Add(this.rbCurrent);
+            this.ClientSize = new System.Drawing.Size(516, 441);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.rbNew);
-            this.Controls.Add(this.rbInline);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.bGenerate);
             this.Controls.Add(this.label10);
@@ -439,6 +476,8 @@
             this.Text = "Generate Passwords";
             ((System.ComponentModel.ISupportInitialize)(this.nudLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -476,5 +515,8 @@
         private System.Windows.Forms.Label label13;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.RadioButton rbCurrent;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtSep;
     }
 }

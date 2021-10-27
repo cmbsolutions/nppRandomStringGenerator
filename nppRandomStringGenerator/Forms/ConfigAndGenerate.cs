@@ -49,10 +49,17 @@ namespace Kbg.NppPluginNET
                 if (chkBeginLetter.Checked) this.StartChars = regexObj.Replace(this.StartChars, "");
             }
 
+            if (rbInline.Checked && txtSep.TextLength > 0)
+            {
+                this.AvailableChars = this.AvailableChars.Replace(txtSep.Text, "");
+                if (chkBeginLetter.Checked) this.StartChars = this.StartChars.Replace(txtSep.Text, "");
+            }
+
             if (this.AvailableChars.Length > 0)
             {
                 if (rbNew.Checked) this.Notepad.FileNew();
                 if (rbCurrent.Checked) this.Editor.DocumentEnd();
+                if (rbInline.Checked) this.Editor.DocumentStart();
 
                 int idx = 0;
                 int previousChar = 0;
@@ -90,8 +97,17 @@ namespace Kbg.NppPluginNET
                         }
                     }
 
-                    this.Editor.AddText(code.Length, code);
-                    this.Editor.NewLine();
+                    if (rbInline.Checked)
+                    {
+                        code = txtSep.Text + code;
+                        this.Editor.LineEnd();
+                        this.Editor.AddText(code.Length, code);
+                        this.Editor.LineDown();
+                    } else
+                    {
+                        this.Editor.AddText(code.Length, code);
+                        this.Editor.NewLine();
+                    }
                 }
             }
 
@@ -125,5 +141,23 @@ namespace Kbg.NppPluginNET
             if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
         }
 
+        private void rbInline_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbInline.Checked)
+            {
+                nudQuantity.Enabled = false;
+                nudQuantity.Maximum = this.Editor.GetLineCount();
+                nudQuantity.Value = this.Editor.GetLineCount();
+                txtSep.Enabled = true;
+            }
+            else
+            {
+                nudQuantity.Maximum = 10240;
+                nudQuantity.Value = 8;
+                nudQuantity.Enabled = true;
+                txtSep.Enabled = false;
+            }
+
+        }
     }
 }
