@@ -23,43 +23,43 @@ namespace Kbg.NppPluginNET
             this.Notepad = new NotepadPPGateway();
         }
 
-        private void bGenerate_Click(Object sender, EventArgs e)
+        private void ButtonGenerate_Click(Object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
 
             this.AvailableChars = "";
             this.StartChars = "";
 
-            if (chkNumbers.Checked) this.AvailableChars += "0123456789";
-            if (chkLowercase.Checked)
+            if (CheckboxNumbers.Checked) this.AvailableChars += "0123456789";
+            if (CheckboxLowercase.Checked)
             {
                 this.AvailableChars += "abcdefghijklmnopqrstuvwxyz";
-                if (chkBeginLetter.Checked) this.StartChars += "abcdefghijklmnopqrstuvwxyz";
+                if (CheckboxBeginLetter.Checked) this.StartChars += "abcdefghijklmnopqrstuvwxyz";
             }
-            if (chkUppercase.Checked)
+            if (CheckboxUppercase.Checked)
             {
                 this.AvailableChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                if (chkBeginLetter.Checked) this.StartChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                if (CheckboxBeginLetter.Checked) this.StartChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             }
-            if (chkSymbols.Checked && txtSymbols.TextLength > 0) this.AvailableChars += txtSymbols.Text;
-            if (chkSimilar.Checked)
+            if (CheckboxSymbols.Checked && TextboxSymbols.TextLength > 0) this.AvailableChars += TextboxSymbols.Text;
+            if (CheckboxSimilar.Checked)
             {
                 Regex regexObj = new Regex("[iI1lLoO0|!jJ]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 this.AvailableChars = regexObj.Replace(this.AvailableChars, "");
-                if (chkBeginLetter.Checked) this.StartChars = regexObj.Replace(this.StartChars, "");
+                if (CheckboxBeginLetter.Checked) this.StartChars = regexObj.Replace(this.StartChars, "");
             }
 
-            if (rbInline.Checked && txtSep.TextLength > 0)
+            if (RadioButtonInline.Checked && TextboxSeperator.TextLength > 0)
             {
-                this.AvailableChars = this.AvailableChars.Replace(txtSep.Text, "");
-                if (chkBeginLetter.Checked) this.StartChars = this.StartChars.Replace(txtSep.Text, "");
+                this.AvailableChars = this.AvailableChars.Replace(TextboxSeperator.Text, "");
+                if (CheckboxBeginLetter.Checked) this.StartChars = this.StartChars.Replace(TextboxSeperator.Text, "");
             }
 
             if (this.AvailableChars.Length > 0)
             {
-                if (rbNew.Checked) this.Notepad.FileNew();
-                if (rbCurrent.Checked) this.Editor.DocumentEnd();
-                if (rbInline.Checked) this.Editor.DocumentStart();
+                if (RadioButtonNew.Checked) this.Notepad.FileNew();
+                if (RadioButtonCurrent.Checked) this.Editor.DocumentEnd();
+                if (RadioButtonInline.Checked) this.Editor.DocumentStart();
 
                 int idx = 0;
                 int previousChar = 0;
@@ -67,13 +67,13 @@ namespace Kbg.NppPluginNET
 
                 Random rnd = new Random();
 
-                for (int i = 0; i < nudQuantity.Value; i++)
+                for (int i = 0; i < NumericUpDownQuantity.Value; i++)
                 {
                     string code = "";
 
-                    for (int y = 0; y < nudLength.Value; y++)
+                    for (int y = 0; y < NumericUpDownLength.Value; y++)
                     {
-                        if (y == 0 && chkBeginLetter.Checked)
+                        if (y == 0 && CheckboxBeginLetter.Checked)
                         {
                             idx = rnd.Next(0, this.StartChars.Length - 1);
                             code += this.StartChars[idx];
@@ -84,9 +84,17 @@ namespace Kbg.NppPluginNET
                             idx = rnd.Next(0, this.AvailableChars.Length - 1);
                             currentChar = (int)this.AvailableChars[idx];
 
-                            if (chkSequential.Checked)
+                            if (CheckboxSequential.Checked)
                             {
-                                while (previousChar - 1 == currentChar || previousChar + 1 == currentChar || previousChar == currentChar)
+                                while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
+                                {
+                                    idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                                    currentChar = (int)this.AvailableChars[idx];
+                                }
+                            }
+                            if (CheckboxDuplicate.Checked)
+                            {
+                                while (previousChar == currentChar)
                                 {
                                     idx = rnd.Next(0, this.AvailableChars.Length - 1);
                                     currentChar = (int)this.AvailableChars[idx];
@@ -97,9 +105,9 @@ namespace Kbg.NppPluginNET
                         }
                     }
 
-                    if (rbInline.Checked)
+                    if (RadioButtonInline.Checked)
                     {
-                        code = txtSep.Text + code;
+                        code = TextboxSeperator.Text + code;
                         this.Editor.LineEnd();
                         this.Editor.AddText(code.Length, code);
                         this.Editor.LineDown();
@@ -117,45 +125,45 @@ namespace Kbg.NppPluginNET
             this.Close();
         }
 
-        private void nudQuantity_ValueChanged(object sender, EventArgs e)
+        private void NumericUpDownQuantity_ValueChanged(object sender, EventArgs e)
         {
-            if ( nudQuantity.Value > 4096)
+            if ( NumericUpDownQuantity.Value > 4096)
             {
                 toolTip1.Active = true;
-                toolTip1.SetToolTip(nudQuantity, "This could take a while depending on the hardware!");
-                nudQuantity.ForeColor = Color.Red;
+                toolTip1.SetToolTip(NumericUpDownQuantity, "This could take a while depending on the hardware!");
+                NumericUpDownQuantity.ForeColor = Color.Red;
             } else
             {
                 toolTip1.Active = false;
-                nudQuantity.ForeColor = Color.Black;
+                NumericUpDownQuantity.ForeColor = Color.Black;
             }
         }
 
-        private void chkLowercase_CheckedChanged(object sender, EventArgs e)
+        private void CheckboxLowercase_CheckedChanged(object sender, EventArgs e)
         {
-            if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
+            if (!CheckboxLowercase.Checked && !CheckboxUppercase.Checked) CheckboxBeginLetter.Checked = false;
         }
 
-        private void chkUppercase_CheckedChanged(object sender, EventArgs e)
+        private void CheckboxUppercase_CheckedChanged(object sender, EventArgs e)
         {
-            if (!chkLowercase.Checked && !chkUppercase.Checked) chkBeginLetter.Checked = false;
+            if (!CheckboxLowercase.Checked && !CheckboxUppercase.Checked) CheckboxBeginLetter.Checked = false;
         }
 
-        private void rbInline_CheckedChanged(object sender, EventArgs e)
+        private void RadioButtonInline_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbInline.Checked)
+            if (RadioButtonInline.Checked)
             {
-                nudQuantity.Enabled = false;
-                nudQuantity.Maximum = this.Editor.GetLineCount();
-                nudQuantity.Value = this.Editor.GetLineCount();
-                txtSep.Enabled = true;
+                NumericUpDownQuantity.Enabled = false;
+                NumericUpDownQuantity.Maximum = this.Editor.GetLineCount();
+                NumericUpDownQuantity.Value = this.Editor.GetLineCount();
+                TextboxSeperator.Enabled = true;
             }
             else
             {
-                nudQuantity.Maximum = 10240;
-                nudQuantity.Value = 8;
-                nudQuantity.Enabled = true;
-                txtSep.Enabled = false;
+                NumericUpDownQuantity.Maximum = 10240;
+                NumericUpDownQuantity.Value = 8;
+                NumericUpDownQuantity.Enabled = true;
+                TextboxSeperator.Enabled = false;
             }
 
         }
