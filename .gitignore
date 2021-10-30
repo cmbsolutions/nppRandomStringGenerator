@@ -386,8 +386,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
-npp.8.1.9.Installer.x86.exe
-npp.debug.x32.zip
-npp.debug.x64.zip
-wingup.release.x32.zip
-wingup.release.x64.zip
+Tools/
+Release/
