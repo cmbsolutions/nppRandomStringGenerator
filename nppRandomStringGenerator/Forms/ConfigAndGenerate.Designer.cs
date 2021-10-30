@@ -226,6 +226,7 @@
             this.CheckboxBeginLetter.TabIndex = 10;
             this.CheckboxBeginLetter.Text = "( don\'t begin with a number or symbol )";
             this.CheckboxBeginLetter.UseVisualStyleBackColor = true;
+            this.CheckboxBeginLetter.CheckedChanged += new System.EventHandler(this.CheckboxBeginLetter_CheckedChanged);
             // 
             // label7
             // 

@@ -117,12 +117,15 @@ namespace Kbg.NppPluginNET
                         this.Editor.NewLine();
                     }
                 }
+                MessageBox.Show("Strings are generated.");
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Nothing to generate.");
             }
 
             this.Cursor = Cursors.Default;
-
-            MessageBox.Show("Strings are generated.");
-            this.Close();
         }
 
         private void NumericUpDownQuantity_ValueChanged(object sender, EventArgs e)
@@ -130,7 +133,7 @@ namespace Kbg.NppPluginNET
             if ( NumericUpDownQuantity.Value > 4096)
             {
                 toolTip1.Active = true;
-                toolTip1.SetToolTip(NumericUpDownQuantity, "This could take a while depending on the hardware!");
+                toolTip1.SetToolTip(NumericUpDownQuantity, "This could take a while depending on your hardware.");
                 NumericUpDownQuantity.ForeColor = Color.Red;
             } else
             {
@@ -166,6 +169,11 @@ namespace Kbg.NppPluginNET
                 TextboxSeperator.Enabled = false;
             }
 
+        }
+
+        private void CheckboxBeginLetter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!CheckboxLowercase.Checked && !CheckboxUppercase.Checked) CheckboxBeginLetter.Checked = false;
         }
     }
 }
