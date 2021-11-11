@@ -475,7 +475,7 @@
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Generate Passwords";
+            this.Text = "Generate Random Strings";
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).EndInit();
             this.groupBox1.ResumeLayout(false);
