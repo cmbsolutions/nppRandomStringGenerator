@@ -105,6 +105,11 @@ namespace Kbg.NppPluginNET
                         }
                     }
 
+                    if (tPrefix.TextLength > 0)
+                    {
+                        code = tPrefix.Text + code;
+                    }
+
                     if (RadioButtonInline.Checked)
                     {
                         code = TextboxSeperator.Text + code;
@@ -175,5 +180,7 @@ namespace Kbg.NppPluginNET
         {
             if (!CheckboxLowercase.Checked && !CheckboxUppercase.Checked) CheckboxBeginLetter.Checked = false;
         }
+
+
     }
 }

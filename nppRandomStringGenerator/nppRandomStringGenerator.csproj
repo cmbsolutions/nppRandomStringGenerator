@@ -125,7 +125,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ILMerge.props" />
-    <None Include="incrementVersion.ps1" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
