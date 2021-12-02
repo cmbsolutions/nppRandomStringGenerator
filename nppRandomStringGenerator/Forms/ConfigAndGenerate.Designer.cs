@@ -51,7 +51,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.CheckboxSequential = new System.Windows.Forms.CheckBox();
             this.ButtonGenerate = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
             this.RadioButtonNew = new System.Windows.Forms.RadioButton();
             this.RadioButtonInline = new System.Windows.Forms.RadioButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -61,6 +60,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.TextboxSeperator = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tPrefix = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -326,7 +327,7 @@
             this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonGenerate.Location = new System.Drawing.Point(147, 347);
+            this.ButtonGenerate.Location = new System.Drawing.Point(291, 319);
             this.ButtonGenerate.Name = "ButtonGenerate";
             this.ButtonGenerate.Size = new System.Drawing.Size(144, 25);
             this.ButtonGenerate.TabIndex = 23;
@@ -334,35 +335,26 @@
             this.ButtonGenerate.UseVisualStyleBackColor = true;
             this.ButtonGenerate.Click += new System.EventHandler(this.ButtonGenerate_Click);
             // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(10, 231);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(57, 13);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "Generate:";
-            // 
             // RadioButtonNew
             // 
             this.RadioButtonNew.AutoSize = true;
             this.RadioButtonNew.Checked = true;
             this.RadioButtonNew.Location = new System.Drawing.Point(11, 19);
             this.RadioButtonNew.Name = "RadioButtonNew";
-            this.RadioButtonNew.Size = new System.Drawing.Size(48, 17);
+            this.RadioButtonNew.Size = new System.Drawing.Size(103, 17);
             this.RadioButtonNew.TabIndex = 25;
             this.RadioButtonNew.TabStop = true;
-            this.RadioButtonNew.Text = "New";
+            this.RadioButtonNew.Text = "New document";
             this.RadioButtonNew.UseVisualStyleBackColor = true;
             // 
             // RadioButtonInline
             // 
             this.RadioButtonInline.AutoSize = true;
-            this.RadioButtonInline.Location = new System.Drawing.Point(11, 65);
+            this.RadioButtonInline.Location = new System.Drawing.Point(11, 57);
             this.RadioButtonInline.Name = "RadioButtonInline";
-            this.RadioButtonInline.Size = new System.Drawing.Size(251, 17);
+            this.RadioButtonInline.Size = new System.Drawing.Size(122, 17);
             this.RadioButtonInline.TabIndex = 26;
-            this.RadioButtonInline.Text = "Current, append to each line with seperator";
+            this.RadioButtonInline.Text = "Current document,";
             this.RadioButtonInline.UseVisualStyleBackColor = true;
             this.RadioButtonInline.CheckedChanged += new System.EventHandler(this.RadioButtonInline_CheckedChanged);
             // 
@@ -393,11 +385,11 @@
             // RadioButtonCurrent
             // 
             this.RadioButtonCurrent.AutoSize = true;
-            this.RadioButtonCurrent.Location = new System.Drawing.Point(11, 42);
+            this.RadioButtonCurrent.Location = new System.Drawing.Point(11, 38);
             this.RadioButtonCurrent.Name = "RadioButtonCurrent";
-            this.RadioButtonCurrent.Size = new System.Drawing.Size(145, 17);
+            this.RadioButtonCurrent.Size = new System.Drawing.Size(200, 17);
             this.RadioButtonCurrent.TabIndex = 29;
-            this.RadioButtonCurrent.Text = "Current, add to bottom";
+            this.RadioButtonCurrent.Text = "Current document, add to bottom";
             this.RadioButtonCurrent.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -407,43 +399,60 @@
             this.groupBox1.Controls.Add(this.RadioButtonNew);
             this.groupBox1.Controls.Add(this.RadioButtonCurrent);
             this.groupBox1.Controls.Add(this.RadioButtonInline);
-            this.groupBox1.Location = new System.Drawing.Point(170, 230);
+            this.groupBox1.Location = new System.Drawing.Point(15, 249);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(265, 114);
+            this.groupBox1.Size = new System.Drawing.Size(265, 98);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Document";
+            this.groupBox1.Text = "Generate to:";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(36, 86);
+            this.label14.Location = new System.Drawing.Point(27, 73);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(60, 13);
+            this.label14.Size = new System.Drawing.Size(191, 13);
             this.label14.TabIndex = 31;
-            this.label14.Text = "Seperator:";
+            this.label14.Text = "append to each line with seperator:";
             // 
             // TextboxSeperator
             // 
             this.TextboxSeperator.Enabled = false;
-            this.TextboxSeperator.Location = new System.Drawing.Point(101, 83);
+            this.TextboxSeperator.Location = new System.Drawing.Point(218, 70);
             this.TextboxSeperator.Margin = new System.Windows.Forms.Padding(1);
             this.TextboxSeperator.MaxLength = 1;
             this.TextboxSeperator.Name = "TextboxSeperator";
-            this.TextboxSeperator.Size = new System.Drawing.Size(20, 22);
+            this.TextboxSeperator.Size = new System.Drawing.Size(23, 22);
             this.TextboxSeperator.TabIndex = 30;
             this.TextboxSeperator.Text = ";";
             this.TextboxSeperator.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(10, 230);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(38, 13);
+            this.label12.TabIndex = 32;
+            this.label12.Text = "Prefix:";
+            // 
+            // tPrefix
+            // 
+            this.tPrefix.Location = new System.Drawing.Point(174, 227);
+            this.tPrefix.Name = "tPrefix";
+            this.tPrefix.Size = new System.Drawing.Size(265, 22);
+            this.tPrefix.TabIndex = 31;
             // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(447, 384);
+            this.ClientSize = new System.Drawing.Size(447, 351);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.tPrefix);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.label12);
             this.Controls.Add(this.ButtonGenerate);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.CheckboxSequential);
@@ -509,7 +518,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox CheckboxSequential;
         private System.Windows.Forms.Button ButtonGenerate;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.RadioButton RadioButtonNew;
         private System.Windows.Forms.RadioButton RadioButtonInline;
         private System.Windows.Forms.ToolTip toolTip1;
@@ -519,5 +527,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox TextboxSeperator;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tPrefix;
     }
 }
