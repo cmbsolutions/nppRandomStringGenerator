@@ -181,6 +181,13 @@ namespace Kbg.NppPluginNET
             if (!CheckboxLowercase.Checked && !CheckboxUppercase.Checked) CheckboxBeginLetter.Checked = false;
         }
 
-
+        private void bLimitRemove_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Removing the maximum limit could hang your system. Are you sure?", "Above and beyond", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            {
+                NumericUpDownQuantity.Maximum = Int32.MaxValue;
+                label13.Text = "(min:1, max:--)";
+            }
+        }
     }
 }

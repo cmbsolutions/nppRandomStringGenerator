@@ -62,6 +62,7 @@
             this.TextboxSeperator = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tPrefix = new System.Windows.Forms.TextBox();
+            this.bLimitRemove = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -443,11 +444,25 @@
             this.tPrefix.Size = new System.Drawing.Size(265, 22);
             this.tPrefix.TabIndex = 31;
             // 
+            // bLimitRemove
+            // 
+            this.bLimitRemove.BackColor = System.Drawing.SystemColors.Control;
+            this.bLimitRemove.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.bLimitRemove.Location = new System.Drawing.Point(356, 30);
+            this.bLimitRemove.Margin = new System.Windows.Forms.Padding(0);
+            this.bLimitRemove.Name = "bLimitRemove";
+            this.bLimitRemove.Size = new System.Drawing.Size(73, 21);
+            this.bLimitRemove.TabIndex = 33;
+            this.bLimitRemove.Text = "Remove limit";
+            this.bLimitRemove.UseVisualStyleBackColor = false;
+            this.bLimitRemove.Click += new System.EventHandler(this.bLimitRemove_Click);
+            // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(447, 351);
+            this.Controls.Add(this.bLimitRemove);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.tPrefix);
             this.Controls.Add(this.groupBox1);
@@ -529,5 +544,6 @@
         private System.Windows.Forms.TextBox TextboxSeperator;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tPrefix;
+        private System.Windows.Forms.Button bLimitRemove;
     }
 }
