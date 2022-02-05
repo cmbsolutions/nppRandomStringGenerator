@@ -41,7 +41,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(277, 39);
             this.label1.TabIndex = 0;
-            this.label1.Text = "nppRandomStringGenerator v1.1.2\r\n\r\nGenerates random strings with configurable out" +
+            this.label1.Text = "nppRandomStringGenerator v1.4.0\r\n\r\nGenerates random strings with configurable out" +
     "put.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 

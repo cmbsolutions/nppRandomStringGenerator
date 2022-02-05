@@ -122,7 +122,9 @@ namespace Kbg.NppPluginNET
                         this.Editor.NewLine();
                     }
                 }
-                MessageBox.Show("Strings are generated.");
+
+                if (!this.cCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
+                
                 this.Close();
             }
             else

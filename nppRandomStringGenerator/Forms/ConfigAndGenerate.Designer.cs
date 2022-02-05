@@ -63,6 +63,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.tPrefix = new System.Windows.Forms.TextBox();
             this.bLimitRemove = new System.Windows.Forms.Button();
+            this.cCloseNoMessage = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -400,7 +401,7 @@
             this.groupBox1.Controls.Add(this.RadioButtonNew);
             this.groupBox1.Controls.Add(this.RadioButtonCurrent);
             this.groupBox1.Controls.Add(this.RadioButtonInline);
-            this.groupBox1.Location = new System.Drawing.Point(15, 249);
+            this.groupBox1.Location = new System.Drawing.Point(12, 255);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(265, 98);
             this.groupBox1.TabIndex = 30;
@@ -457,11 +458,25 @@
             this.bLimitRemove.UseVisualStyleBackColor = false;
             this.bLimitRemove.Click += new System.EventHandler(this.bLimitRemove_Click);
             // 
+            // cCloseNoMessage
+            // 
+            this.cCloseNoMessage.AutoSize = true;
+            this.cCloseNoMessage.Checked = true;
+            this.cCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cCloseNoMessage.Location = new System.Drawing.Point(291, 297);
+            this.cCloseNoMessage.Name = "cCloseNoMessage";
+            this.cCloseNoMessage.Size = new System.Drawing.Size(135, 16);
+            this.cCloseNoMessage.TabIndex = 34;
+            this.cCloseNoMessage.Text = "Close form when completed";
+            this.cCloseNoMessage.UseVisualStyleBackColor = true;
+            // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(447, 351);
+            this.Controls.Add(this.cCloseNoMessage);
             this.Controls.Add(this.bLimitRemove);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.tPrefix);
@@ -545,5 +560,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tPrefix;
         private System.Windows.Forms.Button bLimitRemove;
+        private System.Windows.Forms.CheckBox cCloseNoMessage;
     }
 }
