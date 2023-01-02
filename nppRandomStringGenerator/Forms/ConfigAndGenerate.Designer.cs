@@ -280,7 +280,7 @@
             this.TextboxSymbols.Name = "TextboxSymbols";
             this.TextboxSymbols.Size = new System.Drawing.Size(186, 22);
             this.TextboxSymbols.TabIndex = 16;
-            this.TextboxSymbols.Text = "!\";#$%&\'()*+,-./:;<=>?@[]^_`{|}~";
+            this.TextboxSymbols.Text = "!\"#$%&\'()*+,-./:;<=>?@[]^_`{|}~";
             // 
             // CheckboxSymbols
             // 
