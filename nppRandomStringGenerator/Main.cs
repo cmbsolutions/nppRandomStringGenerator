@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
+using nppRandomStringGenerator.Storage;
 
 namespace Kbg.NppPluginNET
 {
@@ -9,6 +10,7 @@ namespace Kbg.NppPluginNET
         internal const string PluginName = "nppRandomStringGenerator";
         static ConfigAndGenerate ConfigAndGenerate = null;
         static About About = null;
+        static Settings MySettings = null;
 
         public static void OnNotification(ScNotification notification)
         {  
@@ -42,7 +44,11 @@ namespace Kbg.NppPluginNET
 
         internal static void myDockableDialog()
         {
+            MySettings = new Settings();
+            MySettings.Load();
+
             ConfigAndGenerate = new ConfigAndGenerate();
+            ConfigAndGenerate.settings = MySettings;
 
             ConfigAndGenerate.ShowDialog();
 

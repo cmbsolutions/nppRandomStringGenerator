@@ -74,6 +74,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -113,6 +114,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="PluginInfrastructure\UnmanagedExports.cs" />
+    <Compile Include="Storage\Settings.cs" />
+    <Compile Include="Storage\SettingsModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\About.resx">
@@ -131,6 +134,9 @@
     <None Include="app.config" />
     <None Include="ILMerge.props" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Storage\nppRandomStringGeneratorSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ILMergeOrder.txt" />

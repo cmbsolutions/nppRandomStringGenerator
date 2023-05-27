@@ -69,5 +69,15 @@ namespace nppRandomStringGenerator.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] nppRandomStringGeneratorSettings {
+            get {
+                object obj = ResourceManager.GetObject("nppRandomStringGeneratorSettings", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

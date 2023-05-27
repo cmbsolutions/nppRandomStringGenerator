@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
-using Microsoft;
+using nppRandomStringGenerator.Storage;
 
 namespace Kbg.NppPluginNET
 {
@@ -16,11 +16,78 @@ namespace Kbg.NppPluginNET
         private IScintillaGateway Editor;
         private INotepadPPGateway Notepad;
 
+        public Settings settings { get; set; }
+
+
+
         public ConfigAndGenerate()
         {
             InitializeComponent();
             this.Editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
             this.Notepad = new NotepadPPGateway();
+
+            LoadSettings();
+
+        }
+
+        private void LoadSettings()
+        {
+            foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.Configs.Custom)
+            {
+                Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
+
+                if (ctrl.Name.StartsWith("NumericUpDown"))
+                {
+                    NumericUpDown nupdown = ctrl as NumericUpDown;
+                    nupdown.Value = Convert.ToDecimal(configitem.Value);
+                }
+                if (ctrl.Name.StartsWith("Checkbox"))
+                {
+                    System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
+                    check.Checked = Convert.ToBoolean(configitem.Value);
+                }
+                if (ctrl.Name.StartsWith("Textbox"))
+                {
+                    TextBox txt = ctrl as TextBox;
+                    txt.Text = Encoding.UTF8.GetString(Convert.FromBase64String(configitem.Value));
+                }
+                if (ctrl.Name.StartsWith("Radio"))
+                {
+                    System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
+                    radio.Checked = Convert.ToBoolean(configitem.Value);
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.Configs.Custom)
+            {
+                Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
+
+                if (ctrl.Name.StartsWith("NumericUpDown"))
+                {
+                    NumericUpDown nupdown = ctrl as NumericUpDown;
+                    configitem.Value = nupdown.Value.ToString();
+                }
+                if (ctrl.Name.StartsWith("Checkbox"))
+                {
+                    System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
+                    configitem.Value = (check.Checked ? "true" : "false");
+                }
+                if (ctrl.Name.StartsWith("Textbox"))
+                {
+                    TextBox txt = ctrl as TextBox;
+                    configitem.Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(txt.Text));
+                }
+                if (ctrl.Name.StartsWith("Radio"))
+                {
+                    System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
+                    configitem.Value = (radio.Checked ? "true" : "false");
+                }
+            }
+
+            settings.Save();
         }
 
         private void ButtonGenerate_Click(Object sender, EventArgs e)
@@ -105,9 +172,9 @@ namespace Kbg.NppPluginNET
                         }
                     }
 
-                    if (tPrefix.TextLength > 0)
+                    if (TextboxPrefix.TextLength > 0)
                     {
-                        code = tPrefix.Text + code;
+                        code = TextboxPrefix.Text + code;
                     }
 
                     if (RadioButtonInline.Checked)
@@ -123,8 +190,9 @@ namespace Kbg.NppPluginNET
                     }
                 }
 
-                if (!this.cCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
+                if (!this.CheckboxCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
                 
+                if (this.CheckboxSaveOnClose.Checked) { SaveSettings(); }
                 this.Close();
             }
             else
