@@ -61,9 +61,11 @@
             this.label14 = new System.Windows.Forms.Label();
             this.TextboxSeperator = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.tPrefix = new System.Windows.Forms.TextBox();
+            this.TextboxPrefix = new System.Windows.Forms.TextBox();
             this.bLimitRemove = new System.Windows.Forms.Button();
-            this.cCloseNoMessage = new System.Windows.Forms.CheckBox();
+            this.CheckboxCloseNoMessage = new System.Windows.Forms.CheckBox();
+            this.CheckboxSaveOnClose = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -438,12 +440,12 @@
             this.label12.TabIndex = 32;
             this.label12.Text = "Prefix:";
             // 
-            // tPrefix
+            // TextboxPrefix
             // 
-            this.tPrefix.Location = new System.Drawing.Point(174, 227);
-            this.tPrefix.Name = "tPrefix";
-            this.tPrefix.Size = new System.Drawing.Size(265, 22);
-            this.tPrefix.TabIndex = 31;
+            this.TextboxPrefix.Location = new System.Drawing.Point(174, 227);
+            this.TextboxPrefix.Name = "TextboxPrefix";
+            this.TextboxPrefix.Size = new System.Drawing.Size(265, 22);
+            this.TextboxPrefix.TabIndex = 31;
             // 
             // bLimitRemove
             // 
@@ -458,28 +460,56 @@
             this.bLimitRemove.UseVisualStyleBackColor = false;
             this.bLimitRemove.Click += new System.EventHandler(this.bLimitRemove_Click);
             // 
-            // cCloseNoMessage
+            // CheckboxCloseNoMessage
             // 
-            this.cCloseNoMessage.AutoSize = true;
-            this.cCloseNoMessage.Checked = true;
-            this.cCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cCloseNoMessage.Location = new System.Drawing.Point(291, 297);
-            this.cCloseNoMessage.Name = "cCloseNoMessage";
-            this.cCloseNoMessage.Size = new System.Drawing.Size(135, 16);
-            this.cCloseNoMessage.TabIndex = 34;
-            this.cCloseNoMessage.Text = "Close form when completed";
-            this.cCloseNoMessage.UseVisualStyleBackColor = true;
+            this.CheckboxCloseNoMessage.AutoSize = true;
+            this.CheckboxCloseNoMessage.Checked = true;
+            this.CheckboxCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckboxCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(291, 297);
+            this.CheckboxCloseNoMessage.Name = "CheckboxCloseNoMessage";
+            this.CheckboxCloseNoMessage.Size = new System.Drawing.Size(135, 16);
+            this.CheckboxCloseNoMessage.TabIndex = 34;
+            this.CheckboxCloseNoMessage.Text = "Close form when completed";
+            this.CheckboxCloseNoMessage.UseVisualStyleBackColor = true;
+            // 
+            // CheckboxSaveOnClose
+            // 
+            this.CheckboxSaveOnClose.AutoSize = true;
+            this.CheckboxSaveOnClose.Checked = true;
+            this.CheckboxSaveOnClose.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckboxSaveOnClose.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(291, 281);
+            this.CheckboxSaveOnClose.Name = "CheckboxSaveOnClose";
+            this.CheckboxSaveOnClose.Size = new System.Drawing.Size(15, 14);
+            this.CheckboxSaveOnClose.TabIndex = 35;
+            this.CheckboxSaveOnClose.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.linkLabel1.Location = new System.Drawing.Point(309, 281);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(58, 12);
+            this.linkLabel1.TabIndex = 36;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Save on close";
+            this.toolTip1.SetToolTip(this.linkLabel1, "Click here to reset to default settings");
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(447, 351);
-            this.Controls.Add(this.cCloseNoMessage);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.CheckboxSaveOnClose);
+            this.Controls.Add(this.CheckboxCloseNoMessage);
             this.Controls.Add(this.bLimitRemove);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.tPrefix);
+            this.Controls.Add(this.TextboxPrefix);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label11);
@@ -558,8 +588,10 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox TextboxSeperator;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox tPrefix;
+        private System.Windows.Forms.TextBox TextboxPrefix;
         private System.Windows.Forms.Button bLimitRemove;
-        private System.Windows.Forms.CheckBox cCloseNoMessage;
+        private System.Windows.Forms.CheckBox CheckboxCloseNoMessage;
+        private System.Windows.Forms.CheckBox CheckboxSaveOnClose;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
