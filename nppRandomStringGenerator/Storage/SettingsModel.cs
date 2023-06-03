@@ -1,16 +1,12 @@
-﻿namespace nppRandomStringGenerator.Storage.Models
+﻿using System;
+
+namespace nppRandomStringGenerator.Storage.Models
 {
     public class SettingsModel
     {
         public string Appname { get; set; }
         public string Appversion { get; set; }
-        public Config Configs { get; set; }
-    }
-
-    public class Config
-    {
-        public ConfigItem[] Default { get; set; }
-        public ConfigItem[] Custom { get; set; }
+        public ConfigItem[] ConfigItems { get; set; }
     }
 
     public class ConfigItem

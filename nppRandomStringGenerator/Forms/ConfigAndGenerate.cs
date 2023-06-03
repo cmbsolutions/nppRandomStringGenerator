@@ -25,14 +25,11 @@ namespace Kbg.NppPluginNET
             InitializeComponent();
             this.Editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
             this.Notepad = new NotepadPPGateway();
-
-            LoadSettings();
-
         }
 
-        private void LoadSettings()
+        public void LoadSettings()
         {
-            foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.Configs.Custom)
+            foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
             {
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
@@ -49,7 +46,7 @@ namespace Kbg.NppPluginNET
                 if (ctrl.Name.StartsWith("Textbox"))
                 {
                     TextBox txt = ctrl as TextBox;
-                    txt.Text = Encoding.UTF8.GetString(Convert.FromBase64String(configitem.Value));
+                    txt.Text = configitem.Value;
                 }
                 if (ctrl.Name.StartsWith("Radio"))
                 {
@@ -61,7 +58,7 @@ namespace Kbg.NppPluginNET
 
         private void SaveSettings()
         {
-            foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.Configs.Custom)
+            foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
             {
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
@@ -78,7 +75,7 @@ namespace Kbg.NppPluginNET
                 if (ctrl.Name.StartsWith("Textbox"))
                 {
                     TextBox txt = ctrl as TextBox;
-                    configitem.Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(txt.Text));
+                    configitem.Value = txt.Text;
                 }
                 if (ctrl.Name.StartsWith("Radio"))
                 {
@@ -258,6 +255,12 @@ namespace Kbg.NppPluginNET
                 NumericUpDownQuantity.Maximum = Int32.MaxValue;
                 label13.Text = "(min:1, max:--)";
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            settings.Load(true);
+            LoadSettings();
         }
     }
 }

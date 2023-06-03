@@ -65,6 +65,7 @@
             this.bLimitRemove = new System.Windows.Forms.Button();
             this.CheckboxCloseNoMessage = new System.Windows.Forms.CheckBox();
             this.CheckboxSaveOnClose = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -480,16 +481,30 @@
             this.CheckboxSaveOnClose.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CheckboxSaveOnClose.Location = new System.Drawing.Point(291, 281);
             this.CheckboxSaveOnClose.Name = "CheckboxSaveOnClose";
-            this.CheckboxSaveOnClose.Size = new System.Drawing.Size(77, 16);
+            this.CheckboxSaveOnClose.Size = new System.Drawing.Size(15, 14);
             this.CheckboxSaveOnClose.TabIndex = 35;
-            this.CheckboxSaveOnClose.Text = "Save on close";
             this.CheckboxSaveOnClose.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.linkLabel1.Location = new System.Drawing.Point(309, 281);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(58, 12);
+            this.linkLabel1.TabIndex = 36;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Save on close";
+            this.toolTip1.SetToolTip(this.linkLabel1, "Click here to reset to default settings");
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(447, 351);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.CheckboxSaveOnClose);
             this.Controls.Add(this.CheckboxCloseNoMessage);
             this.Controls.Add(this.bLimitRemove);
@@ -577,5 +592,6 @@
         private System.Windows.Forms.Button bLimitRemove;
         private System.Windows.Forms.CheckBox CheckboxCloseNoMessage;
         private System.Windows.Forms.CheckBox CheckboxSaveOnClose;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

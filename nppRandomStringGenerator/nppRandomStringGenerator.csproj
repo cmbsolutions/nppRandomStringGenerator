@@ -134,7 +134,7 @@
     <None Include="app.config" />
     <None Include="ILMerge.props" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Storage\nppRandomStringGeneratorSettings.json">
+    <EmbeddedResource Include="Storage\nppRandomStringGeneratorSettings.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

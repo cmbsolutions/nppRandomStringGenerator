@@ -71,12 +71,32 @@ namespace nppRandomStringGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to [app]
+        ///appname=nppRandomStringGenerator
+        ///appversion=1.5.0
+        ///
+        ///[config]
+        ///NumericUpDownLength=32
+        ///NumericUpDownQuantity=8
+        ///CheckboxNumbers=true
+        ///CheckboxLowercase=true
+        ///CheckboxUppercase=true
+        ///CheckboxBeginLetter=true
+        ///CheckboxSymbols=true
+        ///TextboxSymbols=ISIjJCUmJygpKissLS4vOjs8PT4/QFtdXl9ge3x9fg==
+        ///CheckboxSimilar=true
+        ///CheckboxDuplicate=true
+        ///CheckboxSequential=true
+        ///TextboxPrefix=bXlfcHJlZml4
+        ///RadioButtonNew=true
+        ///RadioButtonCurrent=false
+        ///RadioButtonInline=false
+        ///TextboxSeperator=;
+        ///CheckboxSaveOnClose=tr [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static byte[] nppRandomStringGeneratorSettings {
+        internal static string nppRandomStringGeneratorSettings {
             get {
-                object obj = ResourceManager.GetObject("nppRandomStringGeneratorSettings", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("nppRandomStringGeneratorSettings", resourceCulture);
             }
         }
     }

@@ -49,7 +49,7 @@ namespace Kbg.NppPluginNET
 
             ConfigAndGenerate = new ConfigAndGenerate();
             ConfigAndGenerate.settings = MySettings;
-
+            ConfigAndGenerate.LoadSettings();
             ConfigAndGenerate.ShowDialog();
 
             ConfigAndGenerate = null;

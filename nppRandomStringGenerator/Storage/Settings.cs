@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using nppRandomStringGenerator.Storage.Models;
-using System.Runtime.Serialization.Json;
+using System.Linq;
 
 namespace nppRandomStringGenerator.Storage
 {
@@ -14,13 +14,13 @@ namespace nppRandomStringGenerator.Storage
 
         private string FilePath { get; set; }
 
-        public void Load()
+        public void Load(bool reset = false)
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string savePath = Path.Combine(appDataPath, "CMBSolutions", "nppRandomStringGenerator");
-            FilePath = Path.Combine(savePath, "nppRandomStringGenerator.json");
+            FilePath = Path.Combine(savePath, "nppRandomStringGenerator.ini");
 
-            if (!File.Exists(FilePath))
+            if (!File.Exists(FilePath) || reset)
             {
                 try
                 {
@@ -30,7 +30,7 @@ namespace nppRandomStringGenerator.Storage
                     }
                     using (StreamWriter writer = new StreamWriter(FilePath))
                     {
-                        writer.WriteLine(Encoding.UTF8.GetString(Resources.nppRandomStringGeneratorSettings));
+                        writer.WriteLine(Resources.nppRandomStringGeneratorSettings);
                     }
                 }
                 catch (Exception)
@@ -42,7 +42,7 @@ namespace nppRandomStringGenerator.Storage
 
             try
             {
-                settings = DeserializeJson<SettingsModel>(FilePath);
+                settings = DeserializeIni(FilePath);
             }
             catch (Exception ex)
             {
@@ -50,39 +50,60 @@ namespace nppRandomStringGenerator.Storage
             }
         }
 
-        private SettingsModel DeserializeJson<SettingsModel>(string json)
+        private SettingsModel DeserializeIni(string ini)
         {
-            using (MemoryStream stream = new MemoryStream())
+            SettingsModel tmp = new SettingsModel();
+            tmp.ConfigItems = new ConfigItem[18];
+
+            using (FileStream stream = new FileStream(ini, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                byte[] data = System.Text.Encoding.UTF8.GetBytes(File.ReadAllText(json));
-                stream.Write(data, 0, data.Length);
-                stream.Position = 0;
-
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SettingsModel));
-                return (SettingsModel)serializer.ReadObject(stream);
-            }
-        }
-
-        private string SerializeToJson<SettingsModel>(SettingsModel obj)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SettingsModel));
-                serializer.WriteObject(stream, obj);
-                stream.Position = 0;
-
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    return reader.ReadToEnd();
+                    String line = reader.ReadLine();
+                    String[] parts = line.Split('=');
+                    tmp.Appname = parts[0];
+
+                    line = reader.ReadLine();
+                    parts = line.Split('=');
+                    tmp.Appversion = parts[1];
+
+                    int i = 0;
+                    while (!reader.EndOfStream || i >= 18)
+                    {
+                        line = reader.ReadLine();
+                        if (line == "" || line == null) break;
+                        parts = line.Split(new char[] { '=' }, 2);
+
+                        tmp.ConfigItems[i] = new ConfigItem { Name = parts[0], Value = parts[1] };
+                        
+                        i++;
+                    }
                 }
             }
+
+            return tmp;
+        }
+
+        private string SerializeToIni(SettingsModel obj)
+        {
+
+            StringBuilder sb = new StringBuilder(); 
+
+            sb.AppendLine($"appname={obj.Appname}");
+            sb.AppendLine($"appversion={obj.Appversion}");
+                    
+            foreach ( ConfigItem configitem in obj.ConfigItems )
+            {
+                sb.AppendLine($"{configitem.Name}={configitem.Value}");
+            }
+            return sb.ToString();
         }
 
         // Save JSON string to a file
         public void Save()
         {
-            string json = SerializeToJson(settings);
-            File.WriteAllText(FilePath, json);                       
+            string ini = SerializeToIni(settings);
+            File.WriteAllText(FilePath, ini);                       
         }
     }
 }
