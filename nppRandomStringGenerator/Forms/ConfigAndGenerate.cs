@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
 using nppRandomStringGenerator.Storage;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Kbg.NppPluginNET
 {
@@ -31,6 +33,8 @@ namespace Kbg.NppPluginNET
         {
             foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
             {
+                if (configitem == null) { continue; }   
+
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
                 if (ctrl.Name.StartsWith("NumericUpDown"))
@@ -42,6 +46,7 @@ namespace Kbg.NppPluginNET
                 {
                     System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
                     check.Checked = Convert.ToBoolean(configitem.Value);
+                    TriggerCheckBoxChangeEvent(check);
                 }
                 if (ctrl.Name.StartsWith("Textbox"))
                 {
@@ -135,24 +140,31 @@ namespace Kbg.NppPluginNET
                 {
                     string code = "";
 
-                    for (int y = 0; y < NumericUpDownLength.Value; y++)
+                    int length = (int)NumericUpDownLength.Value;
+
+                    if (CheckboxDoRandom.Checked)
+                    {
+                        length = rnd.Next((int)NumericUpDownRandomMin.Value, (int)NumericUpDownRandomMax.Value);
+                    }
+
+                    for (int y = 0; y < length; y++)
                     {
                         if (y == 0 && CheckboxBeginLetter.Checked)
                         {
-                            idx = rnd.Next(0, this.StartChars.Length - 1);
+                            idx = rnd.Next(0, this.StartChars.Length);
                             code += this.StartChars[idx];
                             previousChar = (int)this.StartChars[idx];
                         }
                         else
                         {
-                            idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                            idx = rnd.Next(0, this.AvailableChars.Length);
                             currentChar = (int)this.AvailableChars[idx];
 
                             if (CheckboxSequential.Checked)
                             {
                                 while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
                                 {
-                                    idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                                    idx = rnd.Next(0, this.AvailableChars.Length);
                                     currentChar = (int)this.AvailableChars[idx];
                                 }
                             }
@@ -160,7 +172,7 @@ namespace Kbg.NppPluginNET
                             {
                                 while (previousChar == currentChar)
                                 {
-                                    idx = rnd.Next(0, this.AvailableChars.Length - 1);
+                                    idx = rnd.Next(0, this.AvailableChars.Length);
                                     currentChar = (int)this.AvailableChars[idx];
                                 }
                             }
@@ -262,5 +274,64 @@ namespace Kbg.NppPluginNET
             settings.Load(true);
             LoadSettings();
         }
+
+        private void doRandom_CheckedChanged(object sender, EventArgs e)
+        {
+            NumericUpDownRandomMin.Enabled = CheckboxDoRandom.Checked;
+            NumericUpDownRandomMax.Enabled = CheckboxDoRandom.Checked;
+            NumericUpDownLength.Enabled = !CheckboxDoRandom.Checked; 
+        }
+
+        private void nudRandomMin_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (NumericUpDownRandomMin.Value >= NumericUpDownRandomMax.Value)
+            {
+                toolTip2.Active = true;
+                toolTip2.SetToolTip(NumericUpDownRandomMin, "Minimum length must be smaller than maximum length.");
+                NumericUpDownRandomMin.ForeColor = Color.Red;
+                e.Cancel = true;
+            }
+            else
+            {
+                toolTip1.Active = false;
+                NumericUpDownRandomMin.ForeColor = Color.Black;
+            }
+        }
+
+        private void nudRandomMax_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (NumericUpDownRandomMax.Value <= NumericUpDownRandomMin.Value)
+            {
+                toolTip2.Active = true;
+                toolTip2.SetToolTip(NumericUpDownRandomMax, "Maximum length must be bigger than minimum length.");
+                NumericUpDownRandomMax.ForeColor = Color.Red;
+                e.Cancel = true;
+            }
+            else
+            {
+                toolTip1.Active = false;
+                NumericUpDownRandomMax.ForeColor = Color.Black;
+            }
+        }
+
+        private void TriggerCheckBoxChangeEvent(System.Windows.Forms.CheckBox check)
+        {
+            // Find the event handler delegate for CheckedChanged event using reflection
+            EventInfo checkedChangedEvent = check.GetType().GetEvent("CheckedChanged", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (checkedChangedEvent != null)
+            {
+                Delegate eventHandler = (Delegate)check.GetType().GetField("EventClick", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(check);
+
+                // Invoke the event handler delegate
+                if (eventHandler != null)
+                {
+                    foreach (Delegate handler in eventHandler.GetInvocationList())
+                    {
+                        handler.Method.Invoke(handler.Target, new object[] { check, EventArgs.Empty });
+                    }
+                }
+            }
+        }
+
     }
 }
