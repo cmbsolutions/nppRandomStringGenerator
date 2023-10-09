@@ -110,7 +110,7 @@ namespace Kbg.NppPluginNET
                 this.AvailableChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 if (CheckboxBeginLetter.Checked) this.StartChars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             }
-            if (CheckboxSymbols.Checked && TextboxSymbols.TextLength > 0) this.AvailableChars += TextboxSymbols.Text + " ";
+            if (CheckboxSymbols.Checked && TextboxSymbols.TextLength > 0) this.AvailableChars += TextboxSymbols.Text;
             if (CheckboxSimilar.Checked)
             {
                 Regex regexObj = new Regex("[iI1lLoO0|!jJ]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -196,6 +196,7 @@ namespace Kbg.NppPluginNET
                     {
                         this.Editor.AddText(code.Length, code);
                         this.Editor.NewLine();
+                        this.Editor.DelLineLeft();
                     }
                 }
 
