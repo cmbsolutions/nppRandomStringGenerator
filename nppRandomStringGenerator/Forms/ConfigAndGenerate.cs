@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
 using nppRandomStringGenerator.Storage;
@@ -136,7 +137,8 @@ namespace Kbg.NppPluginNET
 
                 Random rnd = new Random();
 
-                for (int i = 0; i < NumericUpDownQuantity.Value; i++)
+                //for (int i = 0; i < NumericUpDownQuantity.Value; i++)
+                var result = Parallel.For(0, (int)NumericUpDownQuantity.Value, (i, state) =>
                 {
                     string code = "";
 
@@ -192,13 +194,14 @@ namespace Kbg.NppPluginNET
                         this.Editor.LineEnd();
                         this.Editor.AddText(code.Length, code);
                         this.Editor.LineDown();
-                    } else
+                    }
+                    else
                     {
                         this.Editor.AddText(code.Length, code);
                         this.Editor.NewLine();
                         this.Editor.DelLineLeft();
                     }
-                }
+                });
 
                 if (!this.CheckboxCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
                 
