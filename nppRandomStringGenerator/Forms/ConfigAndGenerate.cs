@@ -41,7 +41,7 @@ namespace Kbg.NppPluginNET
                 if (ctrl.Name.StartsWith("NumericUpDown"))
                 {
                     NumericUpDown nupdown = ctrl as NumericUpDown;
-                    nupdown.Value = Convert.ToDecimal(configitem.Value);
+                    nupdown.Value = Math.Min(Convert.ToDecimal(configitem.Value), nupdown.Maximum);
                 }
                 if (ctrl.Name.StartsWith("Checkbox"))
                 {
