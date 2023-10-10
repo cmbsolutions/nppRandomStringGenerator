@@ -197,9 +197,12 @@ namespace Kbg.NppPluginNET
                     }
                     else
                     {
+                        if (this.Editor.GetLineCount() > 0)
+                        {
+                            this.Editor.NewLine();
+                            this.Editor.DelLineLeft();
+                        }
                         this.Editor.AddText(code.Length, code);
-                        this.Editor.NewLine();
-                        this.Editor.DelLineLeft();
                     }
                 });
 
