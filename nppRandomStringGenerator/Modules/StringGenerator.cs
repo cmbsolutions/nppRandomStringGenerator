@@ -112,6 +112,8 @@ namespace nppRandomStringGenerator.Modules
                         {
                             this.Editor.AddText(sb.Length, sb.ToString());
                         }
+
+                        sb.Clear();
                     }
                 }
             });
