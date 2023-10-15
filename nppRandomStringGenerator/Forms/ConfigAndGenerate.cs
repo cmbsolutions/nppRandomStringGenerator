@@ -98,7 +98,7 @@ namespace Kbg.NppPluginNET
             settings.Save();
         }
 
-        private void ButtonGenerate_Click(Object sender, EventArgs e)
+        private async void ButtonGenerate_Click(Object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
 
@@ -159,10 +159,9 @@ namespace Kbg.NppPluginNET
 
                 Cts = new CancellationTokenSource();
 
-                Task myTask = Task.Run(() => Generator.GenerateStrings(), Cts.Token);
+                await Task.Run(() => Generator.GenerateStrings(), Cts.Token);
 
-                myTask.Wait(Cts.Token);
-
+                
                 if (!this.CheckboxCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
                 
                 if (this.CheckboxSaveOnClose.Checked) { SaveSettings(); }
