@@ -72,6 +72,8 @@
             this.NumericUpDownRandomMax = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            this.CheckboxMTA = new System.Windows.Forms.CheckBox();
+            this.ButtonCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -603,6 +605,34 @@
             this.toolTip2.IsBalloon = true;
             this.toolTip2.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
+            // CheckboxMTA
+            // 
+            this.CheckboxMTA.AutoSize = true;
+            this.CheckboxMTA.Checked = true;
+            this.CheckboxMTA.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckboxMTA.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckboxMTA.Location = new System.Drawing.Point(291, 283);
+            this.CheckboxMTA.Name = "CheckboxMTA";
+            this.CheckboxMTA.Size = new System.Drawing.Size(97, 16);
+            this.CheckboxMTA.TabIndex = 42;
+            this.CheckboxMTA.Text = "Run multithreaded";
+            this.CheckboxMTA.UseVisualStyleBackColor = true;
+            // 
+            // ButtonCancel
+            // 
+            this.ButtonCancel.BackColor = System.Drawing.Color.DarkRed;
+            this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonCancel.ForeColor = System.Drawing.Color.White;
+            this.ButtonCancel.Location = new System.Drawing.Point(392, 281);
+            this.ButtonCancel.Margin = new System.Windows.Forms.Padding(0);
+            this.ButtonCancel.Name = "ButtonCancel";
+            this.ButtonCancel.Size = new System.Drawing.Size(42, 21);
+            this.ButtonCancel.TabIndex = 43;
+            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonCancel.UseVisualStyleBackColor = false;
+            this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
+            // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -610,6 +640,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(447, 378);
+            this.Controls.Add(this.ButtonCancel);
+            this.Controls.Add(this.CheckboxMTA);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.NumericUpDownRandomMax);
             this.Controls.Add(this.NumericUpDownRandomMin);
@@ -712,5 +744,7 @@
         private System.Windows.Forms.NumericUpDown NumericUpDownRandomMax;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ToolTip toolTip2;
+        private System.Windows.Forms.CheckBox CheckboxMTA;
+        private System.Windows.Forms.Button ButtonCancel;
     }
 }

@@ -4,8 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
+using nppRandomStringGenerator.Modules;
 using nppRandomStringGenerator.Storage;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
@@ -18,8 +21,10 @@ namespace Kbg.NppPluginNET
         private IScintillaGateway Editor;
         private INotepadPPGateway Notepad;
 
-        public Settings settings { get; set; }
+        private StringGenerator Generator;
+        private CancellationTokenSource Cts;
 
+        public Settings settings { get; set; }
 
 
         public ConfigAndGenerate()
@@ -27,6 +32,7 @@ namespace Kbg.NppPluginNET
             InitializeComponent();
             this.Editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
             this.Notepad = new NotepadPPGateway();
+            ButtonCancel.Visible = false;
         }
 
         public void LoadSettings()
@@ -92,7 +98,7 @@ namespace Kbg.NppPluginNET
             settings.Save();
         }
 
-        private void ButtonGenerate_Click(Object sender, EventArgs e)
+        private async void ButtonGenerate_Click(Object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
 
@@ -130,76 +136,32 @@ namespace Kbg.NppPluginNET
                 if (RadioButtonCurrent.Checked) this.Editor.DocumentEnd();
                 if (RadioButtonInline.Checked) this.Editor.DocumentStart();
 
-                int idx = 0;
-                int previousChar = 0;
-                int currentChar = 0;
-
-                Random rnd = new Random();
-
-                for (int i = 0; i < NumericUpDownQuantity.Value; i++)
+                Generator = new StringGenerator
                 {
-                    string code = "";
+                    Editor = this.Editor,
+                    Notepad = this.Notepad,
+                    AvailableCharacters = this.AvailableChars,
+                    StartCharacters = this.StartChars,
+                    IsInline = RadioButtonInline.Checked,
+                    IsDuplicate = CheckboxDuplicate.Checked,
+                    IsSequential = CheckboxSequential.Checked,
+                    Prefix = TextboxPrefix.Text,
+                    RandomMinimumLength = (int)NumericUpDownRandomMin.Value,
+                    RandomMaximumLength = (int)NumericUpDownRandomMax.Value,
+                    DoRandom = CheckboxDoRandom.Checked,
+                    StringLength = (int)NumericUpDownLength.Value,
+                    TextSeperator = TextboxSeperator.Text,
+                    UseStartCharacters = CheckboxBeginLetter.Checked,
+                    StringQuantity = (int)NumericUpDownQuantity.Value
+                };
 
-                    int length = (int)NumericUpDownLength.Value;
+                ButtonCancel.Visible = true;
 
-                    if (CheckboxDoRandom.Checked)
-                    {
-                        length = rnd.Next((int)NumericUpDownRandomMin.Value, (int)NumericUpDownRandomMax.Value);
-                    }
+                Cts = new CancellationTokenSource();
 
-                    for (int y = 0; y < length; y++)
-                    {
-                        if (y == 0 && CheckboxBeginLetter.Checked)
-                        {
-                            idx = rnd.Next(0, this.StartChars.Length);
-                            code += this.StartChars[idx];
-                            previousChar = (int)this.StartChars[idx];
-                        }
-                        else
-                        {
-                            idx = rnd.Next(0, this.AvailableChars.Length);
-                            currentChar = (int)this.AvailableChars[idx];
+                await Task.Run(() => Generator.GenerateStrings(), Cts.Token);
 
-                            if (CheckboxSequential.Checked)
-                            {
-                                while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
-                                {
-                                    idx = rnd.Next(0, this.AvailableChars.Length);
-                                    currentChar = (int)this.AvailableChars[idx];
-                                }
-                            }
-                            if (CheckboxDuplicate.Checked)
-                            {
-                                while (previousChar == currentChar)
-                                {
-                                    idx = rnd.Next(0, this.AvailableChars.Length);
-                                    currentChar = (int)this.AvailableChars[idx];
-                                }
-                            }
-                            previousChar = (int)this.AvailableChars[idx];
-                            code += this.AvailableChars[idx];
-                        }
-                    }
-
-                    if (TextboxPrefix.TextLength > 0)
-                    {
-                        code = TextboxPrefix.Text + code;
-                    }
-
-                    if (RadioButtonInline.Checked)
-                    {
-                        code = TextboxSeperator.Text + code;
-                        this.Editor.LineEnd();
-                        this.Editor.AddText(code.Length, code);
-                        this.Editor.LineDown();
-                    } else
-                    {
-                        this.Editor.AddText(code.Length, code);
-                        this.Editor.NewLine();
-                        this.Editor.DelLineLeft();
-                    }
-                }
-
+                
                 if (!this.CheckboxCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
                 
                 if (this.CheckboxSaveOnClose.Checked) { SaveSettings(); }
@@ -334,5 +296,15 @@ namespace Kbg.NppPluginNET
             }
         }
 
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
+            if (Cts != null)
+            {
+                if (!Cts.IsCancellationRequested)
+                {
+                    Cts.Cancel();
+                }
+            }
+        }
     }
 }
