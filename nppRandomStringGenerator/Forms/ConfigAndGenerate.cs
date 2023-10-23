@@ -22,7 +22,6 @@ namespace Kbg.NppPluginNET
         private INotepadPPGateway Notepad;
 
         private StringGenerator Generator;
-        private CancellationTokenSource Cts;
 
         public Settings settings { get; set; }
 
@@ -100,7 +99,7 @@ namespace Kbg.NppPluginNET
 
         private async void ButtonGenerate_Click(Object sender, EventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
+            //this.Cursor = Cursors.WaitCursor;
 
             this.AvailableChars = "";
             this.StartChars = "";
@@ -157,10 +156,9 @@ namespace Kbg.NppPluginNET
 
                 ButtonCancel.Visible = true;
 
-                Cts = new CancellationTokenSource();
+                await Task.Run(() => Generator.GenerateStrings());
 
-                await Task.Run(() => Generator.GenerateStrings(), Cts.Token);
-
+                ButtonCancel.Visible = false;
                 
                 if (!this.CheckboxCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
                 
@@ -177,7 +175,7 @@ namespace Kbg.NppPluginNET
 
         private void NumericUpDownQuantity_ValueChanged(object sender, EventArgs e)
         {
-            if ( NumericUpDownQuantity.Value > 4096)
+            if ( NumericUpDownQuantity.Value > 1024000)
             {
                 toolTip1.Active = true;
                 toolTip1.SetToolTip(NumericUpDownQuantity, "This could take a while depending on your hardware.");
@@ -210,8 +208,6 @@ namespace Kbg.NppPluginNET
             }
             else
             {
-                NumericUpDownQuantity.Maximum = 10240;
-                NumericUpDownQuantity.Value = 8;
                 NumericUpDownQuantity.Enabled = true;
                 TextboxSeperator.Enabled = false;
             }
@@ -221,15 +217,6 @@ namespace Kbg.NppPluginNET
         private void CheckboxBeginLetter_CheckedChanged(object sender, EventArgs e)
         {
             if (!CheckboxLowercase.Checked && !CheckboxUppercase.Checked) CheckboxBeginLetter.Checked = false;
-        }
-
-        private void bLimitRemove_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Removing the maximum limit could hang your system. Are you sure?", "Above and beyond", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-            {
-                NumericUpDownQuantity.Maximum = Int32.MaxValue;
-                label13.Text = "(min:1, max:--)";
-            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -298,11 +285,11 @@ namespace Kbg.NppPluginNET
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            if (Cts != null)
+            if (Generator != null)
             {
-                if (!Cts.IsCancellationRequested)
+                if (!Generator.CancelJob.IsCancellationRequested)
                 {
-                    Cts.Cancel();
+                    Generator.CancelJob.Cancel();
                 }
             }
         }

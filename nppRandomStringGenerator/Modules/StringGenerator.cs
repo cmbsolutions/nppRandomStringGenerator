@@ -1,8 +1,10 @@
 ﻿using Kbg.NppPluginNET.PluginInfrastructure;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace nppRandomStringGenerator.Modules
@@ -27,6 +29,8 @@ namespace nppRandomStringGenerator.Modules
 
         static object lockEditorAccess = new object();
 
+        public CancellationTokenSource CancelJob { get; set; }
+
         public void GenerateStrings()
         {
             int idx = 0;
@@ -34,100 +38,128 @@ namespace nppRandomStringGenerator.Modules
             int currentChar = 0;
             int BufferCount = 0;
 
+            int MaxWorkLoads = 4;
             int WorkLoad = this.StringQuantity / 4;
+            int MissingWorkload = this.StringQuantity % 4;
 
-            
-
-
-
-            var result = Parallel.For(0, 4, (i, state) =>
+            if ( this.IsInline )
             {
-                StringBuilder sb = new StringBuilder();
-                int length = this.StringLength;
+                WorkLoad = this.StringQuantity;
+                MaxWorkLoads = 1;
+            }
 
-                Random rnd = new Random();
+            CancelJob = new CancellationTokenSource();
 
+            ParallelOptions options = new ParallelOptions()
+            {
+                CancellationToken = CancelJob.Token
+            };
 
-
-                for (int w = 0; w < WorkLoad; w++)
+            try
+            {
+                Parallel.For(0, MaxWorkLoads, options, (i, state) =>
                 {
-                    if (this.DoRandom)
+                    StringBuilder sb = new StringBuilder();
+                    int length = this.StringLength;
+                    int internalWorkload = WorkLoad;
+
+                    if ( i == 0 && !this.IsInline )
                     {
-                        length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
+                        internalWorkload += MissingWorkload;
                     }
 
-                    if (this.IsInline)
-                    {
-                        sb.Append(this.TextSeperator);
-                    }
+                    Random rnd = new Random();
 
-                    if (this.Prefix.Length > 0)
+                    for (int w = 0; w < internalWorkload; w++)
                     {
-                        sb.Append(this.Prefix);
-                    }
-
-                    for (int y = 0; y < length; y++)
-                    {
-                        if (y == 0 && this.UseStartCharacters)
+                        if (CancelJob.IsCancellationRequested)
                         {
-                            idx = rnd.Next(0, this.StartCharacters.Length);
-                            sb.Append(this.StartCharacters[idx]);
-                            previousChar = (int)this.StartCharacters[idx];
+                            Debug.WriteLine($"Breaking loop {i}");
+                            break;
+                        }
+
+                        if (this.DoRandom)
+                        {
+                            length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
+                        }
+
+                        if (this.IsInline)
+                        {
+                            sb.Append(this.TextSeperator);
+                        }
+
+                        if (this.Prefix.Length > 0)
+                        {
+                            sb.Append(this.Prefix);
+                        }
+
+                        for (int y = 0; y < length; y++)
+                        {
+                            if (y == 0 && this.UseStartCharacters)
+                            {
+                                idx = rnd.Next(0, this.StartCharacters.Length);
+                                sb.Append(this.StartCharacters[idx]);
+                                previousChar = (int)this.StartCharacters[idx];
+                            }
+                            else
+                            {
+                                idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                currentChar = (int)this.AvailableCharacters[idx];
+
+                                if (this.IsSequential)
+                                {
+                                    while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
+                                    {
+                                        idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                        currentChar = (int)this.AvailableCharacters[idx];
+                                    }
+                                }
+                                if (this.IsDuplicate)
+                                {
+                                    while (previousChar == currentChar)
+                                    {
+                                        idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                        currentChar = (int)this.AvailableCharacters[idx];
+                                    }
+                                }
+                                previousChar = (int)this.AvailableCharacters[idx];
+                                sb.Append(this.AvailableCharacters[idx]);
+                            }
+                        }
+
+                        if (this.IsInline)
+                        {
+                            //lock (lockEditorAccess)
+                            //{
+                            this.Editor.LineEnd();
+                            this.Editor.AddText(sb.Length, sb.ToString());
+                            this.Editor.LineDown();
+                            sb.Clear();
+                            //}
                         }
                         else
                         {
-                            idx = rnd.Next(0, this.AvailableCharacters.Length);
-                            currentChar = (int)this.AvailableCharacters[idx];
+                            sb.AppendLine();
+                            BufferCount++;
 
-                            if (this.IsSequential)
+                            if (BufferCount >= 512 || w + 1 == internalWorkload)
                             {
-                                while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
-                                {
-                                    idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                    currentChar = (int)this.AvailableCharacters[idx];
-                                }
+
+                                //lock (lockEditorAccess)
+                                //{
+                                this.Editor.AddText(sb.Length, sb.ToString());
+                                //}
+                                BufferCount = 0;
+                                sb.Clear();
                             }
-                            if (this.IsDuplicate)
-                            {
-                                while (previousChar == currentChar)
-                                {
-                                    idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                    currentChar = (int)this.AvailableCharacters[idx];
-                                }
-                            }
-                            previousChar = (int)this.AvailableCharacters[idx];
-                            sb.Append(this.AvailableCharacters[idx]);
                         }
                     }
-
-                    if (this.IsInline)
-                    {
-                        //lock (lockEditorAccess)
-                        //{
-                        this.Editor.LineEnd();
-                        this.Editor.AddText(sb.Length, sb.ToString());
-                        this.Editor.LineDown();
-                        sb.Clear();
-                        //}
-                    }
-                    else
-                    {
-                        sb.AppendLine();
-                        BufferCount++;
-
-                        if (BufferCount >= 512 || w + 1 == WorkLoad)
-                        {
-
-                            //lock (lockEditorAccess)
-                            //{
-                            this.Editor.AddText(sb.Length, sb.ToString());
-                            //}
-                            BufferCount = 0;
-                            sb.Clear();
-                        }
-                    }
-                }
-            });
+                });
+            }
+            catch (OperationCanceledException oce)
+            {
+                Debug.WriteLine(oce.Message);
+            }
         }
     }
 }

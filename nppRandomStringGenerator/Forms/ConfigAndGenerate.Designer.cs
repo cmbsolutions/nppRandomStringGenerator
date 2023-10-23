@@ -63,7 +63,6 @@
             this.TextboxSeperator = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.TextboxPrefix = new System.Windows.Forms.TextBox();
-            this.bLimitRemove = new System.Windows.Forms.Button();
             this.CheckboxCloseNoMessage = new System.Windows.Forms.CheckBox();
             this.CheckboxSaveOnClose = new System.Windows.Forms.CheckBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -136,7 +135,7 @@
             0});
             this.NumericUpDownQuantity.Location = new System.Drawing.Point(174, 52);
             this.NumericUpDownQuantity.Maximum = new decimal(new int[] {
-            10240,
+            4096000,
             0,
             0,
             0});
@@ -146,9 +145,10 @@
             0,
             0});
             this.NumericUpDownQuantity.Name = "NumericUpDownQuantity";
-            this.NumericUpDownQuantity.Size = new System.Drawing.Size(77, 22);
+            this.NumericUpDownQuantity.Size = new System.Drawing.Size(128, 22);
             this.NumericUpDownQuantity.TabIndex = 2;
             this.NumericUpDownQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.NumericUpDownQuantity.ThousandsSeparator = true;
             this.NumericUpDownQuantity.Value = new decimal(new int[] {
             8,
             0,
@@ -404,11 +404,11 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(257, 54);
+            this.label13.Location = new System.Drawing.Point(308, 54);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(100, 13);
+            this.label13.Size = new System.Drawing.Size(118, 13);
             this.label13.TabIndex = 28;
-            this.label13.Text = "(min:1, max:10240)";
+            this.label13.Text = "(min:1, max:4.096.000)";
             // 
             // RadioButtonCurrent
             // 
@@ -470,19 +470,6 @@
             this.TextboxPrefix.Name = "TextboxPrefix";
             this.TextboxPrefix.Size = new System.Drawing.Size(265, 22);
             this.TextboxPrefix.TabIndex = 31;
-            // 
-            // bLimitRemove
-            // 
-            this.bLimitRemove.BackColor = System.Drawing.SystemColors.Control;
-            this.bLimitRemove.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.bLimitRemove.Location = new System.Drawing.Point(356, 51);
-            this.bLimitRemove.Margin = new System.Windows.Forms.Padding(0);
-            this.bLimitRemove.Name = "bLimitRemove";
-            this.bLimitRemove.Size = new System.Drawing.Size(73, 21);
-            this.bLimitRemove.TabIndex = 33;
-            this.bLimitRemove.Text = "Remove limit";
-            this.bLimitRemove.UseVisualStyleBackColor = false;
-            this.bLimitRemove.Click += new System.EventHandler(this.bLimitRemove_Click);
             // 
             // CheckboxCloseNoMessage
             // 
@@ -650,7 +637,6 @@
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.CheckboxSaveOnClose);
             this.Controls.Add(this.CheckboxCloseNoMessage);
-            this.Controls.Add(this.bLimitRemove);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.TextboxPrefix);
             this.Controls.Add(this.groupBox1);
@@ -734,7 +720,6 @@
         private System.Windows.Forms.TextBox TextboxSeperator;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox TextboxPrefix;
-        private System.Windows.Forms.Button bLimitRemove;
         private System.Windows.Forms.CheckBox CheckboxCloseNoMessage;
         private System.Windows.Forms.CheckBox CheckboxSaveOnClose;
         private System.Windows.Forms.LinkLabel linkLabel1;
