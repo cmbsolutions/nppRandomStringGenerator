@@ -1,8 +1,6 @@
 ﻿using Kbg.NppPluginNET.PluginInfrastructure;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,9 +23,16 @@ namespace nppRandomStringGenerator.Modules
         public bool IsDuplicate { get; set; }
         public string Prefix { get; set; }
         public bool IsInline { get; set; }
+        public bool IsCancelled { get; set; }
         public string TextSeperator { get; set; }
+        
+        private TimeSpan InternalProcessTime;
+        public TimeSpan ProcessTime
+        {
+            get { return InternalProcessTime; }
+        }
 
-        static object lockEditorAccess = new object();
+        private Object LockingEditor = new Object();
 
         public CancellationTokenSource CancelJob { get; set; }
 
@@ -38,15 +43,8 @@ namespace nppRandomStringGenerator.Modules
             int currentChar = 0;
             int BufferCount = 0;
 
-            int MaxWorkLoads = 4;
             int WorkLoad = this.StringQuantity / 4;
             int MissingWorkload = this.StringQuantity % 4;
-
-            if ( this.IsInline )
-            {
-                WorkLoad = this.StringQuantity;
-                MaxWorkLoads = 1;
-            }
 
             CancelJob = new CancellationTokenSource();
 
@@ -55,15 +53,16 @@ namespace nppRandomStringGenerator.Modules
                 CancellationToken = CancelJob.Token
             };
 
+            Stopwatch sw = Stopwatch.StartNew();
             try
             {
-                Parallel.For(0, MaxWorkLoads, options, (i, state) =>
+                Parallel.For(0, 4, options, (i, state) =>
                 {
                     StringBuilder sb = new StringBuilder();
                     int length = this.StringLength;
                     int internalWorkload = WorkLoad;
 
-                    if ( i == 0 && !this.IsInline )
+                    if ( i == 0 )
                     {
                         internalWorkload += MissingWorkload;
                     }
@@ -129,26 +128,29 @@ namespace nppRandomStringGenerator.Modules
 
                         if (this.IsInline)
                         {
-                            //lock (lockEditorAccess)
-                            //{
-                            this.Editor.LineEnd();
-                            this.Editor.AddText(sb.Length, sb.ToString());
-                            this.Editor.LineDown();
+                            int line = i * internalWorkload + w;
+
+                            if (i > 0) line += MissingWorkload;
+
+                            lock (this.LockingEditor)
+                            {
+
+                                this.Editor.GotoLine(line);
+                                this.Editor.LineEnd();
+                                this.Editor.AddText(sb.Length, sb.ToString());
+                            }
+                            
                             sb.Clear();
-                            //}
                         }
                         else
                         {
                             sb.AppendLine();
                             BufferCount++;
 
-                            if (BufferCount >= 512 || w + 1 == internalWorkload)
+                            if (BufferCount >= 1024 || w + 1 == internalWorkload)
                             {
-
-                                //lock (lockEditorAccess)
-                                //{
                                 this.Editor.AddText(sb.Length, sb.ToString());
-                                //}
+
                                 BufferCount = 0;
                                 sb.Clear();
                             }
@@ -159,7 +161,11 @@ namespace nppRandomStringGenerator.Modules
             catch (OperationCanceledException oce)
             {
                 Debug.WriteLine(oce.Message);
+                this.IsCancelled = true;
             }
+            sw.Stop();
+
+            this.InternalProcessTime = sw.Elapsed;
         }
     }
 }

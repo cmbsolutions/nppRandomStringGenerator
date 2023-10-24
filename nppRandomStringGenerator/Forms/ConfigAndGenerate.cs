@@ -42,23 +42,23 @@ namespace Kbg.NppPluginNET
 
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
-                if (ctrl.Name.StartsWith("NumericUpDown"))
+                if (ctrl != null && ctrl.Name.StartsWith("NumericUpDown"))
                 {
                     NumericUpDown nupdown = ctrl as NumericUpDown;
                     nupdown.Value = Math.Min(Convert.ToDecimal(configitem.Value), nupdown.Maximum);
                 }
-                if (ctrl.Name.StartsWith("Checkbox"))
+                if (ctrl != null && ctrl.Name.StartsWith("Checkbox"))
                 {
                     System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
                     check.Checked = Convert.ToBoolean(configitem.Value);
                     TriggerCheckBoxChangeEvent(check);
                 }
-                if (ctrl.Name.StartsWith("Textbox"))
+                if (ctrl != null && ctrl.Name.StartsWith("Textbox"))
                 {
                     TextBox txt = ctrl as TextBox;
                     txt.Text = configitem.Value;
                 }
-                if (ctrl.Name.StartsWith("Radio"))
+                if (ctrl != null && ctrl.Name.StartsWith("Radio"))
                 {
                     System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
                     radio.Checked = Convert.ToBoolean(configitem.Value);
@@ -72,22 +72,22 @@ namespace Kbg.NppPluginNET
             {
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
-                if (ctrl.Name.StartsWith("NumericUpDown"))
+                if (ctrl != null && ctrl.Name.StartsWith("NumericUpDown"))
                 {
                     NumericUpDown nupdown = ctrl as NumericUpDown;
                     configitem.Value = nupdown.Value.ToString();
                 }
-                if (ctrl.Name.StartsWith("Checkbox"))
+                if (ctrl != null && ctrl.Name.StartsWith("Checkbox"))
                 {
                     System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
                     configitem.Value = (check.Checked ? "true" : "false");
                 }
-                if (ctrl.Name.StartsWith("Textbox"))
+                if (ctrl != null && ctrl.Name.StartsWith("Textbox"))
                 {
                     TextBox txt = ctrl as TextBox;
                     configitem.Value = txt.Text;
                 }
-                if (ctrl.Name.StartsWith("Radio"))
+                if (ctrl != null && ctrl.Name.StartsWith("Radio"))
                 {
                     System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
                     configitem.Value = (radio.Checked ? "true" : "false");
@@ -99,7 +99,15 @@ namespace Kbg.NppPluginNET
 
         private async void ButtonGenerate_Click(Object sender, EventArgs e)
         {
-            //this.Cursor = Cursors.WaitCursor;
+            if (this.RadioButtonInline.Checked && NumericUpDownQuantity.Value > 5000)
+            {
+                if (MessageBox.Show($"It will take allot of time to process {this.NumericUpDownQuantity.Value} lines and Notepad++ will be frozen until it is done.\nFor example it will take 20 seconds to process 5000 lines on a AMD Ryzen 9 5900. Are you sure you want to start this process?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                {
+                    return;
+                }
+            }
+            
+            this.Cursor = Cursors.WaitCursor;
 
             this.AvailableChars = "";
             this.StartChars = "";
@@ -160,7 +168,16 @@ namespace Kbg.NppPluginNET
 
                 ButtonCancel.Visible = false;
                 
-                if (!this.CheckboxCloseNoMessage.Checked) { MessageBox.Show("Strings are generated."); }
+                if (!this.CheckboxCloseNoMessage.Checked) {
+                    if (Generator.IsCancelled)
+                    {
+                        MessageBox.Show($"The generation was cancelled after {Generator.ProcessTime.TotalSeconds} seconds.");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Strings are generated in {Generator.ProcessTime.TotalSeconds} seconds.");
+                    }
+                }
                 
                 if (this.CheckboxSaveOnClose.Checked) { SaveSettings(); }
                 this.Close();
@@ -208,6 +225,7 @@ namespace Kbg.NppPluginNET
             }
             else
             {
+                NumericUpDownQuantity.Maximum = 4096000;
                 NumericUpDownQuantity.Enabled = true;
                 TextboxSeperator.Enabled = false;
             }
