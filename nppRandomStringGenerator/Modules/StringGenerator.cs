@@ -42,9 +42,11 @@ namespace nppRandomStringGenerator.Modules
             int previousChar = 0;
             int currentChar = 0;
             int BufferCount = 0;
+            int cores = 4;
 
-            int WorkLoad = this.StringQuantity / 4;
-            int MissingWorkload = this.StringQuantity % 4;
+            int WorkLoad = this.StringQuantity / cores;
+            int MissingWorkload = this.StringQuantity % cores;
+
 
             CancelJob = new CancellationTokenSource();
 
@@ -56,7 +58,7 @@ namespace nppRandomStringGenerator.Modules
             Stopwatch sw = Stopwatch.StartNew();
             try
             {
-                Parallel.For(0, 4, options, (i, state) =>
+                Parallel.For(0, cores, options, (i, state) =>
                 {
                     StringBuilder sb = new StringBuilder();
                     int length = this.StringLength;
@@ -134,7 +136,7 @@ namespace nppRandomStringGenerator.Modules
 
                             lock (this.LockingEditor)
                             {
-
+                                
                                 this.Editor.GotoLine(line);
                                 this.Editor.LineEnd();
                                 this.Editor.AddText(sb.Length, sb.ToString());

@@ -337,10 +337,9 @@
             // 
             // ButtonGenerate
             // 
-            this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonGenerate.Location = new System.Drawing.Point(291, 346);
+            this.ButtonGenerate.Location = new System.Drawing.Point(287, 346);
             this.ButtonGenerate.Name = "ButtonGenerate";
             this.ButtonGenerate.Size = new System.Drawing.Size(144, 25);
             this.ButtonGenerate.TabIndex = 23;
@@ -379,10 +378,11 @@
             // 
             // linkLabel1
             // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.linkLabel1.Location = new System.Drawing.Point(309, 302);
+            this.linkLabel1.Location = new System.Drawing.Point(299, 302);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(58, 12);
             this.linkLabel1.TabIndex = 36;
@@ -472,11 +472,12 @@
             // 
             // CheckboxCloseNoMessage
             // 
+            this.CheckboxCloseNoMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckboxCloseNoMessage.AutoSize = true;
             this.CheckboxCloseNoMessage.Checked = true;
             this.CheckboxCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(291, 318);
+            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(287, 318);
             this.CheckboxCloseNoMessage.Name = "CheckboxCloseNoMessage";
             this.CheckboxCloseNoMessage.Size = new System.Drawing.Size(135, 16);
             this.CheckboxCloseNoMessage.TabIndex = 34;
@@ -485,11 +486,12 @@
             // 
             // CheckboxSaveOnClose
             // 
+            this.CheckboxSaveOnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckboxSaveOnClose.AutoSize = true;
             this.CheckboxSaveOnClose.Checked = true;
             this.CheckboxSaveOnClose.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxSaveOnClose.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(291, 302);
+            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(284, 302);
             this.CheckboxSaveOnClose.Name = "CheckboxSaveOnClose";
             this.CheckboxSaveOnClose.Size = new System.Drawing.Size(15, 14);
             this.CheckboxSaveOnClose.TabIndex = 35;
@@ -593,10 +595,11 @@
             // 
             // ButtonCancel
             // 
+            this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonCancel.BackColor = System.Drawing.Color.DarkRed;
             this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCancel.ForeColor = System.Drawing.Color.White;
-            this.ButtonCancel.Location = new System.Drawing.Point(291, 347);
+            this.ButtonCancel.Location = new System.Drawing.Point(287, 347);
             this.ButtonCancel.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(144, 24);
@@ -612,7 +615,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(447, 378);
+            this.ClientSize = new System.Drawing.Size(443, 378);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.NumericUpDownRandomMax);

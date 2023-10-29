@@ -162,7 +162,7 @@ namespace Kbg.NppPluginNET
                     StringQuantity = (int)NumericUpDownQuantity.Value
                 };
 
-                ButtonCancel.Visible = true;
+                if (!RadioButtonInline.Checked) ButtonCancel.Visible = true;
 
                 await Task.Run(() => Generator.GenerateStrings());
 
