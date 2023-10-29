@@ -63,7 +63,6 @@
             this.TextboxSeperator = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.TextboxPrefix = new System.Windows.Forms.TextBox();
-            this.bLimitRemove = new System.Windows.Forms.Button();
             this.CheckboxCloseNoMessage = new System.Windows.Forms.CheckBox();
             this.CheckboxSaveOnClose = new System.Windows.Forms.CheckBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -72,6 +71,7 @@
             this.NumericUpDownRandomMax = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            this.ButtonCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -134,7 +134,7 @@
             0});
             this.NumericUpDownQuantity.Location = new System.Drawing.Point(174, 52);
             this.NumericUpDownQuantity.Maximum = new decimal(new int[] {
-            10240,
+            4096000,
             0,
             0,
             0});
@@ -144,9 +144,10 @@
             0,
             0});
             this.NumericUpDownQuantity.Name = "NumericUpDownQuantity";
-            this.NumericUpDownQuantity.Size = new System.Drawing.Size(77, 22);
+            this.NumericUpDownQuantity.Size = new System.Drawing.Size(128, 22);
             this.NumericUpDownQuantity.TabIndex = 2;
             this.NumericUpDownQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.NumericUpDownQuantity.ThousandsSeparator = true;
             this.NumericUpDownQuantity.Value = new decimal(new int[] {
             8,
             0,
@@ -336,10 +337,9 @@
             // 
             // ButtonGenerate
             // 
-            this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonGenerate.Location = new System.Drawing.Point(291, 346);
+            this.ButtonGenerate.Location = new System.Drawing.Point(287, 346);
             this.ButtonGenerate.Name = "ButtonGenerate";
             this.ButtonGenerate.Size = new System.Drawing.Size(144, 25);
             this.ButtonGenerate.TabIndex = 23;
@@ -378,10 +378,11 @@
             // 
             // linkLabel1
             // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.linkLabel1.Location = new System.Drawing.Point(309, 302);
+            this.linkLabel1.Location = new System.Drawing.Point(299, 302);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(58, 12);
             this.linkLabel1.TabIndex = 36;
@@ -402,11 +403,11 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(257, 54);
+            this.label13.Location = new System.Drawing.Point(308, 54);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(100, 13);
+            this.label13.Size = new System.Drawing.Size(118, 13);
             this.label13.TabIndex = 28;
-            this.label13.Text = "(min:1, max:10240)";
+            this.label13.Text = "(min:1, max:4.096.000)";
             // 
             // RadioButtonCurrent
             // 
@@ -469,26 +470,14 @@
             this.TextboxPrefix.Size = new System.Drawing.Size(265, 22);
             this.TextboxPrefix.TabIndex = 31;
             // 
-            // bLimitRemove
-            // 
-            this.bLimitRemove.BackColor = System.Drawing.SystemColors.Control;
-            this.bLimitRemove.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.bLimitRemove.Location = new System.Drawing.Point(356, 51);
-            this.bLimitRemove.Margin = new System.Windows.Forms.Padding(0);
-            this.bLimitRemove.Name = "bLimitRemove";
-            this.bLimitRemove.Size = new System.Drawing.Size(73, 21);
-            this.bLimitRemove.TabIndex = 33;
-            this.bLimitRemove.Text = "Remove limit";
-            this.bLimitRemove.UseVisualStyleBackColor = false;
-            this.bLimitRemove.Click += new System.EventHandler(this.bLimitRemove_Click);
-            // 
             // CheckboxCloseNoMessage
             // 
+            this.CheckboxCloseNoMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckboxCloseNoMessage.AutoSize = true;
             this.CheckboxCloseNoMessage.Checked = true;
             this.CheckboxCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(291, 318);
+            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(287, 318);
             this.CheckboxCloseNoMessage.Name = "CheckboxCloseNoMessage";
             this.CheckboxCloseNoMessage.Size = new System.Drawing.Size(135, 16);
             this.CheckboxCloseNoMessage.TabIndex = 34;
@@ -497,11 +486,12 @@
             // 
             // CheckboxSaveOnClose
             // 
+            this.CheckboxSaveOnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckboxSaveOnClose.AutoSize = true;
             this.CheckboxSaveOnClose.Checked = true;
             this.CheckboxSaveOnClose.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxSaveOnClose.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(291, 302);
+            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(284, 302);
             this.CheckboxSaveOnClose.Name = "CheckboxSaveOnClose";
             this.CheckboxSaveOnClose.Size = new System.Drawing.Size(15, 14);
             this.CheckboxSaveOnClose.TabIndex = 35;
@@ -603,13 +593,30 @@
             this.toolTip2.IsBalloon = true;
             this.toolTip2.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
+            // ButtonCancel
+            // 
+            this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonCancel.BackColor = System.Drawing.Color.DarkRed;
+            this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonCancel.ForeColor = System.Drawing.Color.White;
+            this.ButtonCancel.Location = new System.Drawing.Point(287, 347);
+            this.ButtonCancel.Margin = new System.Windows.Forms.Padding(0);
+            this.ButtonCancel.Name = "ButtonCancel";
+            this.ButtonCancel.Size = new System.Drawing.Size(144, 24);
+            this.ButtonCancel.TabIndex = 43;
+            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.ButtonCancel.UseVisualStyleBackColor = false;
+            this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
+            // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(447, 378);
+            this.ClientSize = new System.Drawing.Size(443, 378);
+            this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.NumericUpDownRandomMax);
             this.Controls.Add(this.NumericUpDownRandomMin);
@@ -618,7 +625,6 @@
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.CheckboxSaveOnClose);
             this.Controls.Add(this.CheckboxCloseNoMessage);
-            this.Controls.Add(this.bLimitRemove);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.TextboxPrefix);
             this.Controls.Add(this.groupBox1);
@@ -702,7 +708,6 @@
         private System.Windows.Forms.TextBox TextboxSeperator;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox TextboxPrefix;
-        private System.Windows.Forms.Button bLimitRemove;
         private System.Windows.Forms.CheckBox CheckboxCloseNoMessage;
         private System.Windows.Forms.CheckBox CheckboxSaveOnClose;
         private System.Windows.Forms.LinkLabel linkLabel1;
@@ -712,5 +717,6 @@
         private System.Windows.Forms.NumericUpDown NumericUpDownRandomMax;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ToolTip toolTip2;
+        private System.Windows.Forms.Button ButtonCancel;
     }
 }

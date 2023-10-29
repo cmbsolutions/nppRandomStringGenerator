@@ -36,13 +36,13 @@ jobs:
       if: matrix.build_platform == 'x64' && matrix.build_configuration == 'Release'
       uses: actions/upload-artifact@v3
       with:
-          name: nppRandomStringGenerator.1.7.1.x64
+          name: nppRandomStringGenerator.1.8.0.x64
           path: nppRandomStringGenerator\bin\${{ matrix.build_configuration }}-x64\nppRandomStringGenerator.dll
 
     - name: Archive artifacts for x86
       if: matrix.build_platform == 'x86' && matrix.build_configuration == 'Release'
       uses: actions/upload-artifact@v3
       with:
-          name: nppRandomStringGenerator.1.7.1.x86
+          name: nppRandomStringGenerator.1.8.0.x86
           path: nppRandomStringGenerator\bin\${{ matrix.build_configuration }}\nppRandomStringGenerator.dll
 

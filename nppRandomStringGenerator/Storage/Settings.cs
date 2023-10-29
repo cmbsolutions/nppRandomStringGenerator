@@ -45,7 +45,7 @@ namespace nppRandomStringGenerator.Storage
                 settings = DeserializeIni(FilePath);
 
                 
-                if (settings.Appversion != "1.7.2")
+                if (settings.Appversion != "1.8.0")
                 {
                     SettingsModel defaults = DeserializeIniFromString(Resources.nppRandomStringGeneratorSettings);
 
@@ -57,7 +57,7 @@ namespace nppRandomStringGenerator.Storage
                         }
                     }
                     settings.Appname = "nppRandomStringGenerator";
-                    settings.Appversion = "1.7.2";
+                    settings.Appversion = "1.8.0";
                 }
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace nppRandomStringGenerator.Storage
         private SettingsModel DeserializeIni(string ini)
         {
             SettingsModel tmp = new SettingsModel();
-            tmp.ConfigItems = new ConfigItem[21];
+            tmp.ConfigItems = new ConfigItem[22];
 
             using (FileStream stream = new FileStream(ini, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -77,14 +77,14 @@ namespace nppRandomStringGenerator.Storage
                 {
                     String line = reader.ReadLine();
                     String[] parts = line.Split('=');
-                    tmp.Appname = parts[0];
+                    tmp.Appname = parts[1];
 
                     line = reader.ReadLine();
                     parts = line.Split('=');
                     tmp.Appversion = parts[1];
 
                     int i = 0;
-                    while (!reader.EndOfStream || i >= 21)
+                    while (!reader.EndOfStream || i >= 22)
                     {
                         line = reader.ReadLine();
                         if (line == "" || line == null) break;
@@ -103,20 +103,20 @@ namespace nppRandomStringGenerator.Storage
         private SettingsModel DeserializeIniFromString(string ini)
         {
             SettingsModel tmp = new SettingsModel();
-            tmp.ConfigItems = new ConfigItem[21];
+            tmp.ConfigItems = new ConfigItem[22];
 
             using (StringReader reader = new StringReader(ini))
             {
                 String line = reader.ReadLine();
                 String[] parts = line.Split('=');
-                tmp.Appname = parts[0];
+                tmp.Appname = parts[1];
 
                 line = reader.ReadLine();
                 parts = line.Split('=');
                 tmp.Appversion = parts[1];
 
                 int i = 0;
-                while (line != "" || i >= 21)
+                while (line != "" || i >= 22)
                 {
                     line = reader.ReadLine();
                     if (line == "" || line == null) break;
