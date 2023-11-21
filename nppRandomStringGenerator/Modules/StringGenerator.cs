@@ -79,74 +79,10 @@ namespace nppRandomStringGenerator.Modules
                             break;
                         }
 
-                        if (this.DoRandom)
+                        if (true)
                         {
-                            length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
-                        }
 
-                        if (this.IsInline)
-                        {
-                            sb.Append(this.TextSeperator);
-                        }
-
-                        if (this.Prefix.Length > 0)
-                        {
-                            sb.Append(this.Prefix);
-                        }
-
-                        for (int y = 0; y < length; y++)
-                        {
-                            if (y == 0 && this.UseStartCharacters)
-                            {
-                                idx = rnd.Next(0, this.StartCharacters.Length);
-                                sb.Append(this.StartCharacters[idx]);
-                                previousChar = (int)this.StartCharacters[idx];
-                            }
-                            else
-                            {
-                                idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                currentChar = (int)this.AvailableCharacters[idx];
-
-                                if (this.IsSequential)
-                                {
-                                    while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
-                                    {
-                                        idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                        currentChar = (int)this.AvailableCharacters[idx];
-                                    }
-                                }
-                                if (this.IsDuplicate)
-                                {
-                                    while (previousChar == currentChar)
-                                    {
-                                        idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                        currentChar = (int)this.AvailableCharacters[idx];
-                                    }
-                                }
-                                previousChar = (int)this.AvailableCharacters[idx];
-                                sb.Append(this.AvailableCharacters[idx]);
-                            }
-                        }
-
-                        if (this.IsInline)
-                        {
-                            int line = i * internalWorkload + w;
-
-                            if (i > 0) line += MissingWorkload;
-
-                            lock (this.LockingEditor)
-                            {
-                                
-                                this.Editor.GotoLine(line);
-                                this.Editor.LineEnd();
-                                this.Editor.AddText(sb.Length, sb.ToString());
-                            }
-                            
-                            sb.Clear();
-                        }
-                        else
-                        {
-                            sb.AppendLine();
+                            sb.AppendLine(Guid.NewGuid().ToString());
                             BufferCount++;
 
                             if (BufferCount >= 1024 || w + 1 == internalWorkload)
@@ -155,6 +91,89 @@ namespace nppRandomStringGenerator.Modules
 
                                 BufferCount = 0;
                                 sb.Clear();
+                            }
+                        }
+                        else
+                        {
+
+
+                            if (this.DoRandom)
+                            {
+                                length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
+                            }
+
+                            if (this.IsInline)
+                            {
+                                sb.Append(this.TextSeperator);
+                            }
+
+                            if (this.Prefix.Length > 0)
+                            {
+                                sb.Append(this.Prefix);
+                            }
+
+                            for (int y = 0; y < length; y++)
+                            {
+                                if (y == 0 && this.UseStartCharacters)
+                                {
+                                    idx = rnd.Next(0, this.StartCharacters.Length);
+                                    sb.Append(this.StartCharacters[idx]);
+                                    previousChar = (int)this.StartCharacters[idx];
+                                }
+                                else
+                                {
+                                    idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                    currentChar = (int)this.AvailableCharacters[idx];
+
+                                    if (this.IsSequential)
+                                    {
+                                        while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
+                                        {
+                                            idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                            currentChar = (int)this.AvailableCharacters[idx];
+                                        }
+                                    }
+                                    if (this.IsDuplicate)
+                                    {
+                                        while (previousChar == currentChar)
+                                        {
+                                            idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                            currentChar = (int)this.AvailableCharacters[idx];
+                                        }
+                                    }
+                                    previousChar = (int)this.AvailableCharacters[idx];
+                                    sb.Append(this.AvailableCharacters[idx]);
+                                }
+                            }
+
+                            if (this.IsInline)
+                            {
+                                int line = i * internalWorkload + w;
+
+                                if (i > 0) line += MissingWorkload;
+
+                                lock (this.LockingEditor)
+                                {
+
+                                    this.Editor.GotoLine(line);
+                                    this.Editor.LineEnd();
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+                                }
+
+                                sb.Clear();
+                            }
+                            else
+                            {
+                                sb.AppendLine();
+                                BufferCount++;
+
+                                if (BufferCount >= 1024 || w + 1 == internalWorkload)
+                                {
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+
+                                    BufferCount = 0;
+                                    sb.Clear();
+                                }
                             }
                         }
                     }
