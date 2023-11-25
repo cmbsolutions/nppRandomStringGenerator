@@ -25,7 +25,11 @@ namespace nppRandomStringGenerator.Modules
         public bool IsInline { get; set; }
         public bool IsCancelled { get; set; }
         public string TextSeperator { get; set; }
-        
+        public bool DoGuids { get; set; }
+        public string GuidFormat { get; set; }
+        public int GuidQuantity { get; set; }
+
+
         private TimeSpan InternalProcessTime;
         public TimeSpan ProcessTime
         {
@@ -38,14 +42,17 @@ namespace nppRandomStringGenerator.Modules
 
         public void GenerateStrings()
         {
-            int idx = 0;
-            int previousChar = 0;
-            int currentChar = 0;
-            int BufferCount = 0;
+
             int cores = 4;
 
             int WorkLoad = this.StringQuantity / cores;
             int MissingWorkload = this.StringQuantity % cores;
+
+            if (DoGuids)
+            {
+                WorkLoad = this.GuidQuantity / cores;
+                MissingWorkload = this.GuidQuantity % cores;
+            }
 
 
             CancelJob = new CancellationTokenSource();
@@ -60,6 +67,11 @@ namespace nppRandomStringGenerator.Modules
             {
                 Parallel.For(0, cores, options, (i, state) =>
                 {
+                    int idx = 0;
+                    int previousChar = 0;
+                    int currentChar = 0;
+                    int BufferCount = 0;
+
                     StringBuilder sb = new StringBuilder();
                     int length = this.StringLength;
                     int internalWorkload = WorkLoad;
@@ -79,24 +91,44 @@ namespace nppRandomStringGenerator.Modules
                             break;
                         }
 
-                        if (true)
+                        if (DoGuids)
                         {
-
-                            sb.AppendLine(Guid.NewGuid().ToString());
-                            BufferCount++;
-
-                            if (BufferCount >= 1024 || w + 1 == internalWorkload)
+                            if (this.IsInline)
                             {
-                                this.Editor.AddText(sb.Length, sb.ToString());
+                                int line = i * internalWorkload + w;
 
-                                BufferCount = 0;
+                                if (i > 0) line += MissingWorkload;
+
+                                sb.Append(Guid.NewGuid().ToString(this.GuidFormat));
+
+                                lock (this.LockingEditor)
+                                {
+
+                                    this.Editor.GotoLine(line);
+                                    this.Editor.LineEnd();
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+                                }
+
                                 sb.Clear();
+                            }
+                            else
+                            {
+                                sb.AppendLine(Guid.NewGuid().ToString(this.GuidFormat));
+
+                                BufferCount++;
+
+
+                                if (BufferCount >= 1024 || w + 1 == internalWorkload)
+                                {
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+
+                                    BufferCount = 0;
+                                    sb.Clear();
+                                }
                             }
                         }
                         else
                         {
-
-
                             if (this.DoRandom)
                             {
                                 length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
@@ -118,19 +150,19 @@ namespace nppRandomStringGenerator.Modules
                                 {
                                     idx = rnd.Next(0, this.StartCharacters.Length);
                                     sb.Append(this.StartCharacters[idx]);
-                                    previousChar = (int)this.StartCharacters[idx];
+                                    previousChar = this.StartCharacters[idx];
                                 }
                                 else
                                 {
                                     idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                    currentChar = (int)this.AvailableCharacters[idx];
+                                    currentChar = this.AvailableCharacters[idx];
 
                                     if (this.IsSequential)
                                     {
                                         while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
                                         {
                                             idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                            currentChar = (int)this.AvailableCharacters[idx];
+                                            currentChar = this.AvailableCharacters[idx];
                                         }
                                     }
                                     if (this.IsDuplicate)
@@ -138,10 +170,10 @@ namespace nppRandomStringGenerator.Modules
                                         while (previousChar == currentChar)
                                         {
                                             idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                            currentChar = (int)this.AvailableCharacters[idx];
+                                            currentChar = this.AvailableCharacters[idx];
                                         }
                                     }
-                                    previousChar = (int)this.AvailableCharacters[idx];
+                                    previousChar = this.AvailableCharacters[idx];
                                     sb.Append(this.AvailableCharacters[idx]);
                                 }
                             }
