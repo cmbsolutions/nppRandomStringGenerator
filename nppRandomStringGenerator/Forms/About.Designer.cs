@@ -34,9 +34,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -77,7 +78,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(276, 214);
+            this.button1.Location = new System.Drawing.Point(276, 211);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -105,32 +106,12 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Benchmarks";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(3, 40);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(337, 20);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "- 5000 x 32 inline in 20.32 seconds on AMD Ryzen 9 5900X/64Gb";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(3, 20);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(337, 20);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "- 2.000.000 x 32 in 6.14 seconds on AMD Ryzen 9 5900X/64Gb";
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 2);
@@ -147,6 +128,37 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(343, 79);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(3, 20);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(337, 20);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "- 2.000.000 x 32 in 6.14 seconds on AMD Ryzen 9 5900X/64Gb";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(3, 40);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(337, 20);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "- 5000 x 32 inline in 20.32 seconds on AMD Ryzen 9 5900X/64Gb";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Location = new System.Drawing.Point(3, 60);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(337, 20);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "- 4.096.000 GUID\'s in 1.92 seconds on AMD Ryzen 9 5900X/64Gb";
+            // 
             // About
             // 
             this.AcceptButton = this.button1;
@@ -154,7 +166,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(353, 239);
+            this.ClientSize = new System.Drawing.Size(353, 236);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -188,5 +200,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

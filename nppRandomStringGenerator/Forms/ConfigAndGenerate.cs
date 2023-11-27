@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -23,6 +24,17 @@ namespace Kbg.NppPluginNET
 
         private StringGenerator Generator;
 
+        private readonly List<KeyValuePair<string, string>> GuidInfos = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("N", "32 digits:\r\n\r\nExample: 00000000000000000000000000000000"),
+            new KeyValuePair<string, string>("D", "32 digits separated by hyphens:\r\n\r\nExample: 00000000-0000-0000-0000-000000000000"),
+            new KeyValuePair<string, string>("B", "32 digits separated by hyphens, enclosed in braces:\r\n\r\nExample: {00000000-0000-0000-0000-000000000000}"),
+            new KeyValuePair<string, string>("P", "32 digits separated by hyphens, enclosed in parentheses:\r\n\r\nExample: (00000000-0000-0000-0000-000000000000)"),
+            new KeyValuePair<string, string>("X", "Four hexadecimal values enclosed in braces, where the fourth value is a subset of eight hexadecimal values that is also enclosed in braces:\r\n\r\nExample: {0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}")
+        };
+
+        
+        
         public Settings settings { get; set; }
 
 
@@ -63,6 +75,16 @@ namespace Kbg.NppPluginNET
                     System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
                     radio.Checked = Convert.ToBoolean(configitem.Value);
                 }
+                if (ctrl != null && ctrl.Name.StartsWith("TabControl"))
+                {
+                    System.Windows.Forms.TabControl tab = ctrl as System.Windows.Forms.TabControl;
+                    tab.SelectedTab = tab.TabPages[Convert.ToInt32(configitem.Value)];
+                }
+                if (ctrl != null && ctrl.Name.StartsWith("ComboBox"))
+                {
+                    ComboBox combo = ctrl as ComboBox;
+                    combo.Text = configitem.Value;
+                }
             }
         }
 
@@ -91,6 +113,16 @@ namespace Kbg.NppPluginNET
                 {
                     System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
                     configitem.Value = (radio.Checked ? "true" : "false");
+                }
+                if (ctrl != null && ctrl.Name.StartsWith("TabControl"))
+                {
+                    System.Windows.Forms.TabControl tab = ctrl as System.Windows.Forms.TabControl;
+                    configitem.Value = tab.SelectedIndex.ToString();
+                }
+                if (ctrl != null && ctrl.Name.StartsWith("ComboBox"))
+                {
+                    ComboBox combo = ctrl as ComboBox;
+                    configitem.Value = combo.Text;
                 }
             }
 
@@ -137,7 +169,7 @@ namespace Kbg.NppPluginNET
                 if (CheckboxBeginLetter.Checked) this.StartChars = this.StartChars.Replace(TextboxSeperator.Text, "");
             }
 
-            if (this.AvailableChars.Length > 0)
+            if (this.AvailableChars.Length > 0 || TabControl1.SelectedTab == TabPageGUID)
             {
                 if (RadioButtonNew.Checked) this.Notepad.FileNew();
                 if (RadioButtonCurrent.Checked) this.Editor.DocumentEnd();
@@ -159,7 +191,10 @@ namespace Kbg.NppPluginNET
                     StringLength = (int)NumericUpDownLength.Value,
                     TextSeperator = TextboxSeperator.Text,
                     UseStartCharacters = CheckboxBeginLetter.Checked,
-                    StringQuantity = (int)NumericUpDownQuantity.Value
+                    StringQuantity = (int)NumericUpDownQuantity.Value,
+                    DoGuids = TabControl1.SelectedTab == TabPageGUID,
+                    GuidFormat = ComboBoxGUIDFormat.Text,
+                    GuidQuantity = (int)NumericUpDownGUIDQuantity.Value
                 };
 
                 if (!RadioButtonInline.Checked) ButtonCancel.Visible = true;
@@ -310,6 +345,17 @@ namespace Kbg.NppPluginNET
                     Generator.CancelJob.Cancel();
                 }
             }
+        }
+
+        private void ComboBoxGUIDFormat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            label20.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            label20.Text = GuidInfos.FirstOrDefault(c => c.Key == ComboBoxGUIDFormat.Text).Value;
+            label20.Visible = true;
         }
     }
 }

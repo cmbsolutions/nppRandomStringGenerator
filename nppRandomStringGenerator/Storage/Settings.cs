@@ -45,7 +45,7 @@ namespace nppRandomStringGenerator.Storage
                 settings = DeserializeIni(FilePath);
 
                 
-                if (settings.Appversion != "1.8.0")
+                if (settings.Appversion != "1.9.0")
                 {
                     SettingsModel defaults = DeserializeIniFromString(Resources.nppRandomStringGeneratorSettings);
 
@@ -57,7 +57,7 @@ namespace nppRandomStringGenerator.Storage
                         }
                     }
                     settings.Appname = "nppRandomStringGenerator";
-                    settings.Appversion = "1.8.0";
+                    settings.Appversion = "1.9.0";
                 }
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace nppRandomStringGenerator.Storage
         private SettingsModel DeserializeIni(string ini)
         {
             SettingsModel tmp = new SettingsModel();
-            tmp.ConfigItems = new ConfigItem[22];
+            tmp.ConfigItems = new ConfigItem[25];
 
             using (FileStream stream = new FileStream(ini, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -84,7 +84,7 @@ namespace nppRandomStringGenerator.Storage
                     tmp.Appversion = parts[1];
 
                     int i = 0;
-                    while (!reader.EndOfStream || i >= 22)
+                    while (!reader.EndOfStream || i >= 25)
                     {
                         line = reader.ReadLine();
                         if (line == "" || line == null) break;
@@ -103,7 +103,7 @@ namespace nppRandomStringGenerator.Storage
         private SettingsModel DeserializeIniFromString(string ini)
         {
             SettingsModel tmp = new SettingsModel();
-            tmp.ConfigItems = new ConfigItem[22];
+            tmp.ConfigItems = new ConfigItem[25];
 
             using (StringReader reader = new StringReader(ini))
             {
@@ -116,7 +116,7 @@ namespace nppRandomStringGenerator.Storage
                 tmp.Appversion = parts[1];
 
                 int i = 0;
-                while (line != "" || i >= 22)
+                while (line != "" || i >= 25)
                 {
                     line = reader.ReadLine();
                     if (line == "" || line == null) break;

@@ -71,11 +71,18 @@ namespace nppRandomStringGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [app]
-        ///appname=nppRandomStringGenerator
-        ///appversion=1.5.0
-        ///
-        ///[config]
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap information_button {
+            get {
+                object obj = ResourceManager.GetObject("information_button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to appname=nppRandomStringGenerator
+        ///appversion=1.9.0
         ///NumericUpDownLength=32
         ///NumericUpDownQuantity=8
         ///CheckboxNumbers=true
@@ -83,16 +90,18 @@ namespace nppRandomStringGenerator.Properties {
         ///CheckboxUppercase=true
         ///CheckboxBeginLetter=true
         ///CheckboxSymbols=true
-        ///TextboxSymbols=ISIjJCUmJygpKissLS4vOjs8PT4/QFtdXl9ge3x9fg==
+        ///TextboxSymbols=!&quot;#$%&amp;&apos;(\)*+,-./:;&lt;=&gt;?@[ ]^_`{|}~
         ///CheckboxSimilar=true
         ///CheckboxDuplicate=true
         ///CheckboxSequential=true
-        ///TextboxPrefix=bXlfcHJlZml4
+        ///TextboxPrefix=my_prefix
         ///RadioButtonNew=true
         ///RadioButtonCurrent=false
         ///RadioButtonInline=false
         ///TextboxSeperator=;
-        ///CheckboxSaveOnClose=tr [rest of string was truncated]&quot;;.
+        ///CheckboxSaveOnClose=true
+        ///CheckboxCloseNoMessage=true
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string nppRandomStringGeneratorSettings {
             get {
