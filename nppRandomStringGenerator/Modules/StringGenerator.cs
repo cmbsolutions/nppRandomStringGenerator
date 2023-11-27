@@ -43,7 +43,7 @@ namespace nppRandomStringGenerator.Modules
         public void GenerateStrings()
         {
 
-            int cores = 4;
+            int cores = Environment.ProcessorCount/2;
 
             int WorkLoad = this.StringQuantity / cores;
             int MissingWorkload = this.StringQuantity % cores;
@@ -59,7 +59,8 @@ namespace nppRandomStringGenerator.Modules
 
             ParallelOptions options = new ParallelOptions()
             {
-                CancellationToken = CancelJob.Token
+                CancellationToken = CancelJob.Token,
+                MaxDegreeOfParallelism = cores
             };
 
             Stopwatch sw = Stopwatch.StartNew();
