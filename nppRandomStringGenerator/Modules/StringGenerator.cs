@@ -25,7 +25,11 @@ namespace nppRandomStringGenerator.Modules
         public bool IsInline { get; set; }
         public bool IsCancelled { get; set; }
         public string TextSeperator { get; set; }
-        
+        public bool DoGuids { get; set; }
+        public string GuidFormat { get; set; }
+        public int GuidQuantity { get; set; }
+
+
         private TimeSpan InternalProcessTime;
         public TimeSpan ProcessTime
         {
@@ -38,21 +42,25 @@ namespace nppRandomStringGenerator.Modules
 
         public void GenerateStrings()
         {
-            int idx = 0;
-            int previousChar = 0;
-            int currentChar = 0;
-            int BufferCount = 0;
-            int cores = 4;
+
+            int cores = Environment.ProcessorCount/2;
 
             int WorkLoad = this.StringQuantity / cores;
             int MissingWorkload = this.StringQuantity % cores;
+
+            if (DoGuids)
+            {
+                WorkLoad = this.GuidQuantity / cores;
+                MissingWorkload = this.GuidQuantity % cores;
+            }
 
 
             CancelJob = new CancellationTokenSource();
 
             ParallelOptions options = new ParallelOptions()
             {
-                CancellationToken = CancelJob.Token
+                CancellationToken = CancelJob.Token,
+                MaxDegreeOfParallelism = cores
             };
 
             Stopwatch sw = Stopwatch.StartNew();
@@ -60,6 +68,11 @@ namespace nppRandomStringGenerator.Modules
             {
                 Parallel.For(0, cores, options, (i, state) =>
                 {
+                    int idx = 0;
+                    int previousChar = 0;
+                    int currentChar = 0;
+                    int BufferCount = 0;
+
                     StringBuilder sb = new StringBuilder();
                     int length = this.StringLength;
                     int internalWorkload = WorkLoad;
@@ -79,82 +92,121 @@ namespace nppRandomStringGenerator.Modules
                             break;
                         }
 
-                        if (this.DoRandom)
+                        if (DoGuids)
                         {
-                            length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
-                        }
-
-                        if (this.IsInline)
-                        {
-                            sb.Append(this.TextSeperator);
-                        }
-
-                        if (this.Prefix.Length > 0)
-                        {
-                            sb.Append(this.Prefix);
-                        }
-
-                        for (int y = 0; y < length; y++)
-                        {
-                            if (y == 0 && this.UseStartCharacters)
+                            if (this.IsInline)
                             {
-                                idx = rnd.Next(0, this.StartCharacters.Length);
-                                sb.Append(this.StartCharacters[idx]);
-                                previousChar = (int)this.StartCharacters[idx];
+                                int line = i * internalWorkload + w;
+
+                                if (i > 0) line += MissingWorkload;
+
+                                sb.Append(Guid.NewGuid().ToString(this.GuidFormat));
+
+                                lock (this.LockingEditor)
+                                {
+
+                                    this.Editor.GotoLine(line);
+                                    this.Editor.LineEnd();
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+                                }
+
+                                sb.Clear();
                             }
                             else
                             {
-                                idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                currentChar = (int)this.AvailableCharacters[idx];
+                                sb.AppendLine(Guid.NewGuid().ToString(this.GuidFormat));
 
-                                if (this.IsSequential)
+                                BufferCount++;
+
+
+                                if (BufferCount >= 1024 || w + 1 == internalWorkload)
                                 {
-                                    while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
-                                    {
-                                        idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                        currentChar = (int)this.AvailableCharacters[idx];
-                                    }
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+
+                                    BufferCount = 0;
+                                    sb.Clear();
                                 }
-                                if (this.IsDuplicate)
-                                {
-                                    while (previousChar == currentChar)
-                                    {
-                                        idx = rnd.Next(0, this.AvailableCharacters.Length);
-                                        currentChar = (int)this.AvailableCharacters[idx];
-                                    }
-                                }
-                                previousChar = (int)this.AvailableCharacters[idx];
-                                sb.Append(this.AvailableCharacters[idx]);
                             }
-                        }
-
-                        if (this.IsInline)
-                        {
-                            int line = i * internalWorkload + w;
-
-                            if (i > 0) line += MissingWorkload;
-
-                            lock (this.LockingEditor)
-                            {
-                                
-                                this.Editor.GotoLine(line);
-                                this.Editor.LineEnd();
-                                this.Editor.AddText(sb.Length, sb.ToString());
-                            }
-                            
-                            sb.Clear();
                         }
                         else
                         {
-                            sb.AppendLine();
-                            BufferCount++;
-
-                            if (BufferCount >= 1024 || w + 1 == internalWorkload)
+                            if (this.DoRandom)
                             {
-                                this.Editor.AddText(sb.Length, sb.ToString());
+                                length = rnd.Next(this.RandomMinimumLength, this.RandomMaximumLength);
+                            }
 
-                                BufferCount = 0;
+                            if (this.IsInline)
+                            {
+                                sb.Append(this.TextSeperator);
+                            }
+
+                            if (this.Prefix.Length > 0)
+                            {
+                                sb.Append(this.Prefix);
+                            }
+
+                            for (int y = 0; y < length; y++)
+                            {
+                                if (y == 0 && this.UseStartCharacters)
+                                {
+                                    idx = rnd.Next(0, this.StartCharacters.Length);
+                                    sb.Append(this.StartCharacters[idx]);
+                                    previousChar = this.StartCharacters[idx];
+                                }
+                                else
+                                {
+                                    idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                    currentChar = this.AvailableCharacters[idx];
+
+                                    if (this.IsSequential)
+                                    {
+                                        while (previousChar - 1 == currentChar || previousChar + 1 == currentChar)
+                                        {
+                                            idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                            currentChar = this.AvailableCharacters[idx];
+                                        }
+                                    }
+                                    if (this.IsDuplicate)
+                                    {
+                                        while (previousChar == currentChar)
+                                        {
+                                            idx = rnd.Next(0, this.AvailableCharacters.Length);
+                                            currentChar = this.AvailableCharacters[idx];
+                                        }
+                                    }
+                                    previousChar = this.AvailableCharacters[idx];
+                                    sb.Append(this.AvailableCharacters[idx]);
+                                }
+                            }
+
+                            if (this.IsInline)
+                            {
+                                int line = i * internalWorkload + w;
+
+                                if (i > 0) line += MissingWorkload;
+
+                                lock (this.LockingEditor)
+                                {
+
+                                    this.Editor.GotoLine(line);
+                                    this.Editor.LineEnd();
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+                                }
+
                                 sb.Clear();
+                            }
+                            else
+                            {
+                                sb.AppendLine();
+                                BufferCount++;
+
+                                if (BufferCount >= 1024 || w + 1 == internalWorkload)
+                                {
+                                    this.Editor.AddText(sb.Length, sb.ToString());
+
+                                    BufferCount = 0;
+                                    sb.Clear();
+                                }
                             }
                         }
                     }
