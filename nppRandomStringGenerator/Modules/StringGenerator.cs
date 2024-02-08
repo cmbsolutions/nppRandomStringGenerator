@@ -82,7 +82,7 @@ namespace nppRandomStringGenerator.Modules
                         internalWorkload += MissingWorkload;
                     }
 
-                    Random rnd = new Random();
+                    Random rnd = new Random(i);
 
                     for (int w = 0; w < internalWorkload; w++)
                     {
