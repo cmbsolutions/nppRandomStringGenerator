@@ -75,13 +75,13 @@
             this.TabControl1 = new System.Windows.Forms.TabControl();
             this.TabPageRandom = new System.Windows.Forms.TabPage();
             this.TabPageGUID = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label20 = new System.Windows.Forms.Label();
+            this.ComboBoxGUIDFormat = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.NumericUpDownGUIDQuantity = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.ComboBoxGUIDFormat = new System.Windows.Forms.ComboBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -353,9 +353,9 @@
             // 
             this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonGenerate.Location = new System.Drawing.Point(308, 388);
+            this.ButtonGenerate.Location = new System.Drawing.Point(275, 388);
             this.ButtonGenerate.Name = "ButtonGenerate";
-            this.ButtonGenerate.Size = new System.Drawing.Size(144, 25);
+            this.ButtonGenerate.Size = new System.Drawing.Size(120, 25);
             this.ButtonGenerate.TabIndex = 23;
             this.ButtonGenerate.Text = "Generate";
             this.ButtonGenerate.UseVisualStyleBackColor = true;
@@ -396,7 +396,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.linkLabel1.Location = new System.Drawing.Point(320, 344);
+            this.linkLabel1.Location = new System.Drawing.Point(296, 346);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(58, 12);
             this.linkLabel1.TabIndex = 36;
@@ -492,7 +492,7 @@
             this.CheckboxCloseNoMessage.Checked = true;
             this.CheckboxCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(308, 360);
+            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(278, 361);
             this.CheckboxCloseNoMessage.Name = "CheckboxCloseNoMessage";
             this.CheckboxCloseNoMessage.Size = new System.Drawing.Size(135, 16);
             this.CheckboxCloseNoMessage.TabIndex = 34;
@@ -506,7 +506,7 @@
             this.CheckboxSaveOnClose.Checked = true;
             this.CheckboxSaveOnClose.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxSaveOnClose.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(305, 344);
+            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(275, 346);
             this.CheckboxSaveOnClose.Name = "CheckboxSaveOnClose";
             this.CheckboxSaveOnClose.Size = new System.Drawing.Size(15, 14);
             this.CheckboxSaveOnClose.TabIndex = 35;
@@ -611,16 +611,16 @@
             // ButtonCancel
             // 
             this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ButtonCancel.BackColor = System.Drawing.Color.DarkRed;
-            this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonCancel.BackColor = System.Drawing.Color.DarkGray;
+            this.ButtonCancel.Enabled = false;
+            this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCancel.ForeColor = System.Drawing.Color.White;
-            this.ButtonCancel.Location = new System.Drawing.Point(308, 389);
+            this.ButtonCancel.Location = new System.Drawing.Point(398, 389);
             this.ButtonCancel.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(144, 24);
+            this.ButtonCancel.Size = new System.Drawing.Size(54, 24);
             this.ButtonCancel.TabIndex = 43;
             this.ButtonCancel.Text = "Cancel";
-            this.ButtonCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.ButtonCancel.UseVisualStyleBackColor = false;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -693,6 +693,52 @@
             this.TabPageGUID.TabIndex = 1;
             this.TabPageGUID.Text = "GUID\'s";
             // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::nppRandomStringGenerator.Properties.Resources.information_button;
+            this.button1.Location = new System.Drawing.Point(313, 33);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 40;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label20
+            // 
+            this.label20.Location = new System.Drawing.Point(15, 65);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(433, 96);
+            this.label20.TabIndex = 39;
+            this.label20.Text = "label20";
+            this.label20.Visible = false;
+            // 
+            // ComboBoxGUIDFormat
+            // 
+            this.ComboBoxGUIDFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxGUIDFormat.FormattingEnabled = true;
+            this.ComboBoxGUIDFormat.Items.AddRange(new object[] {
+            "N",
+            "D",
+            "B",
+            "P",
+            "X"});
+            this.ComboBoxGUIDFormat.Location = new System.Drawing.Point(179, 35);
+            this.ComboBoxGUIDFormat.Name = "ComboBoxGUIDFormat";
+            this.ComboBoxGUIDFormat.Size = new System.Drawing.Size(128, 21);
+            this.ComboBoxGUIDFormat.TabIndex = 38;
+            this.ComboBoxGUIDFormat.SelectedIndexChanged += new System.EventHandler(this.ComboBoxGUIDFormat_SelectedIndexChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(15, 38);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(85, 13);
+            this.label19.TabIndex = 32;
+            this.label19.Text = "Output format:";
+            // 
             // NumericUpDownGUIDQuantity
             // 
             this.NumericUpDownGUIDQuantity.Increment = new decimal(new int[] {
@@ -739,52 +785,6 @@
             this.label18.Size = new System.Drawing.Size(118, 13);
             this.label18.TabIndex = 31;
             this.label18.Text = "(min:1, max:4.096.000)";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(15, 38);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(85, 13);
-            this.label19.TabIndex = 32;
-            this.label19.Text = "Output format:";
-            // 
-            // ComboBoxGUIDFormat
-            // 
-            this.ComboBoxGUIDFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboBoxGUIDFormat.FormattingEnabled = true;
-            this.ComboBoxGUIDFormat.Items.AddRange(new object[] {
-            "N",
-            "D",
-            "B",
-            "P",
-            "X"});
-            this.ComboBoxGUIDFormat.Location = new System.Drawing.Point(179, 35);
-            this.ComboBoxGUIDFormat.Name = "ComboBoxGUIDFormat";
-            this.ComboBoxGUIDFormat.Size = new System.Drawing.Size(128, 21);
-            this.ComboBoxGUIDFormat.TabIndex = 38;
-            this.ComboBoxGUIDFormat.SelectedIndexChanged += new System.EventHandler(this.ComboBoxGUIDFormat_SelectedIndexChanged);
-            // 
-            // label20
-            // 
-            this.label20.Location = new System.Drawing.Point(15, 65);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(433, 96);
-            this.label20.TabIndex = 39;
-            this.label20.Text = "label20";
-            this.label20.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = global::nppRandomStringGenerator.Properties.Resources.information_button;
-            this.button1.Location = new System.Drawing.Point(313, 33);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(23, 23);
-            this.button1.TabIndex = 40;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ConfigAndGenerate
             // 
