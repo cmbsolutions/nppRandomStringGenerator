@@ -33,11 +33,11 @@ jobs:
       run: msbuild nppRandomStringGenerator.sln /p:configuration="${{ matrix.build_configuration }}" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
 
     - name: Extract DLL version
-          id: get_version
-          shell: powershell
-          run: |
-            $version = (Get-Item -Path nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll).VersionInfo.FileVersion
-            Write-Output "::set-output name=version::$version"
+      id: get_version
+      shell: powershell
+      run: |
+        $version = (Get-Item -Path nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll).VersionInfo.FileVersion
+        Write-Output "::set-output name=version::$version"
         
     - name: Archive artifacts for x64
       if: matrix.build_platform == 'x64'
