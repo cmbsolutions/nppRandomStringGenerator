@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace nppRandomStringGenerator.Modules
 {
@@ -81,8 +82,13 @@ namespace nppRandomStringGenerator.Modules
                     {
                         internalWorkload += MissingWorkload;
                     }
-
-                    Random rnd = new Random(i);
+                    Byte[] buffer = new Byte[4];
+                    using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+                    {
+                        rng.GetBytes( buffer );
+                    }
+                    int rndInt = BitConverter.ToInt32( buffer, 0 );
+                    Random rnd = new Random(rndInt);
 
                     for (int w = 0; w < internalWorkload; w++)
                     {

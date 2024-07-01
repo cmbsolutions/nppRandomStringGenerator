@@ -43,7 +43,7 @@ namespace Kbg.NppPluginNET
             InitializeComponent();
             this.Editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
             this.Notepad = new NotepadPPGateway();
-            ButtonCancel.Visible = false;
+            ButtonCancel.Enabled = false;
         }
 
         public void LoadSettings()
@@ -197,12 +197,14 @@ namespace Kbg.NppPluginNET
                     GuidQuantity = (int)NumericUpDownGUIDQuantity.Value
                 };
 
-                if (!RadioButtonInline.Checked) ButtonCancel.Visible = true;
+                ButtonGenerate.Enabled = false;
+                if (!RadioButtonInline.Checked) ButtonCancel.Enabled = true;
 
                 await Task.Run(() => Generator.GenerateStrings());
 
-                ButtonCancel.Visible = false;
-                
+                ButtonCancel.Enabled = false;
+                ButtonGenerate.Enabled = true;
+
                 if (!this.CheckboxCloseNoMessage.Checked) {
                     if (Generator.IsCancelled)
                     {
