@@ -32,17 +32,24 @@ jobs:
       working-directory: nppRandomStringGenerator\
       run: msbuild nppRandomStringGenerator.sln /p:configuration="${{ matrix.build_configuration }}" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
 
+    - name: Extract DLL version
+          id: get_version
+          shell: powershell
+          run: |
+            $version = (Get-Item -Path nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll).VersionInfo.FileVersion
+            Write-Output "::set-output name=version::$version"
+        
     - name: Archive artifacts for x64
-      if: matrix.build_platform == 'x64' && matrix.build_configuration == 'Release'
+      if: matrix.build_platform == 'x64'
       uses: actions/upload-artifact@v4
       with:
-          name: nppRandomStringGenerator.1.9.1.x64
-          path: nppRandomStringGenerator\bin\${{ matrix.build_configuration }}-x64\nppRandomStringGenerator.dll
+          name: nppRandomStringGenerator.$(steps.get_version.outputs.version).x64
+          path: nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll
 
     - name: Archive artifacts for x86
-      if: matrix.build_platform == 'x86' && matrix.build_configuration == 'Release'
+      if: matrix.build_platform == 'x86'
       uses: actions/upload-artifact@v4
       with:
-          name: nppRandomStringGenerator.1.9.1.x86
-          path: nppRandomStringGenerator\bin\${{ matrix.build_configuration }}\nppRandomStringGenerator.dll
+          name: nppRandomStringGenerator.$(steps.get_version.outputs.version).x86
+          path: nppRandomStringGenerator\bin\Release\nppRandomStringGenerator.dll
 
