@@ -32,24 +32,35 @@ jobs:
       working-directory: nppRandomStringGenerator\
       run: msbuild nppRandomStringGenerator.sln /p:configuration="${{ matrix.build_configuration }}" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
 
-    - name: Extract DLL version
-          id: get_version
-          shell: powershell
-          run: |
-            $version = (Get-Item -Path nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll).VersionInfo.FileVersion
-            Write-Output "::set-output name=version::$version"
-        
+    - name: Extract DLL version x64
+      if: matrix.build_platform == 'x64'
+      id: get_version_x64
+      shell: powershell
+      run: |
+        $dllPath = "nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll"
+        $version = (Get-Item -Path $dllPath).VersionInfo.ProductVersion
+        echo "version=$version" >> $env:GITHUB_ENV
+
     - name: Archive artifacts for x64
       if: matrix.build_platform == 'x64'
       uses: actions/upload-artifact@v4
       with:
-          name: nppRandomStringGenerator.$(steps.get_version.outputs.version).x64
+          name: nppRandomStringGenerator.${{ env.version }}.x64
           path: nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll
 
+    - name: Extract DLL version x86
+      if: matrix.build_platform == 'x86'
+      id: get_version_x86
+      shell: powershell
+      run: |
+        $dllPath = "nppRandomStringGenerator\bin\Release\nppRandomStringGenerator.dll"
+        $version = (Get-Item -Path $dllPath).VersionInfo.ProductVersion
+        echo "version=$version" >> $env:GITHUB_ENV
+        
     - name: Archive artifacts for x86
       if: matrix.build_platform == 'x86'
       uses: actions/upload-artifact@v4
       with:
-          name: nppRandomStringGenerator.$(steps.get_version.outputs.version).x86
+          name: nppRandomStringGenerator.${{ env.version }}.x86
           path: nppRandomStringGenerator\bin\Release\nppRandomStringGenerator.dll
 
