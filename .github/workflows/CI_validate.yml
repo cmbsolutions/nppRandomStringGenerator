@@ -1,0 +1,33 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:    
+      - main
+
+jobs:
+  build:
+    runs-on: windows-2019
+    strategy:
+      max-parallel: 4
+      matrix:
+        build_configuration: [Release]
+        build_platform: [x64, x86]
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2.0.0
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+
+    - name: Nuget restore solution
+      working-directory: nppRandomStringGenerator\
+      run: nuget restore nppRandomStringGenerator.sln
+
+    - name: MSBuild of solution
+      working-directory: nppRandomStringGenerator\
+      run: msbuild nppRandomStringGenerator.sln /p:configuration="${{ matrix.build_configuration }}" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
