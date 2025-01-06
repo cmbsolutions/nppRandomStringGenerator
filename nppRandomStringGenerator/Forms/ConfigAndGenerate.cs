@@ -259,12 +259,19 @@ namespace Kbg.NppPluginNET
                 NumericUpDownQuantity.Maximum = this.Editor.GetLineCount();
                 NumericUpDownQuantity.Value = this.Editor.GetLineCount();
                 TextboxSeperator.Enabled = true;
+
+                NumericUpDownGUIDQuantity.Enabled = false;
+                NumericUpDownGUIDQuantity.Maximum = this.Editor.GetLineCount();
+                NumericUpDownGUIDQuantity.Value = this.Editor.GetLineCount();
             }
             else
             {
                 NumericUpDownQuantity.Maximum = 4096000;
                 NumericUpDownQuantity.Enabled = true;
                 TextboxSeperator.Enabled = false;
+
+                NumericUpDownGUIDQuantity.Maximum = 4096000;
+                NumericUpDownGUIDQuantity.Enabled = true;
             }
 
         }
