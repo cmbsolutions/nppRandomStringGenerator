@@ -24,7 +24,13 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         L_ASM, L_DIFF, L_PROPS, L_PS, L_RUBY, L_SMALLTALK, L_VHDL, L_KIX, L_AU3,
         L_CAML, L_ADA, L_VERILOG, L_MATLAB, L_HASKELL, L_INNO, L_SEARCHRESULT,
         L_CMAKE, L_YAML, L_COBOL, L_GUI4CLI, L_D, L_POWERSHELL, L_R, L_JSP,
-        L_COFFEESCRIPT, L_JSON, L_JAVASCRIPT, L_FORTRAN_77,
+        L_COFFEESCRIPT, L_JSON, L_JAVASCRIPT, L_FORTRAN_77, L_BAANC, L_SREC,
+        L_IHEX, L_TEHEX, L_SWIFT,
+        L_ASN1, L_AVS, L_BLITZBASIC, L_PUREBASIC, L_FREEBASIC,
+        L_CSOUND, L_ERLANG, L_ESCRIPT, L_FORTH, L_LATEX,
+        L_MMIXAL, L_NIM, L_NNCRONTAB, L_OSCRIPT, L_REBOL,
+        L_REGISTRY, L_RUST, L_SPICE, L_TXT2TAGS, L_VISUALPROLOG,
+        L_TYPESCRIPT, L_JSON5, L_MSSQL, L_GDSCRIPT, L_HOLLYWOOD,
         // Don't use L_JS, use L_JAVASCRIPT instead
         // The end of enumated language type, so it should be always at the end
         L_EXTERNAL
@@ -45,7 +51,6 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         ALL_OPEN_FILES = 0,
         PRIMARY_VIEW = 1,
         SECOND_VIEW = 2,
-
         NPPM_GETOPENFILENAMES = Constants.NPPMSG + 8,
 
         NPPM_MODELESSDIALOG = Constants.NPPMSG + 12,
@@ -76,12 +81,12 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         STATUSBAR_UNICODE_TYPE = 4,
         STATUSBAR_TYPING_MODE = 5,
 
+        /// <summary>
+        /// INT NPPM_GETMENUHANDLE(INT menuChoice, 0)<br></br>
+        /// Return: menu handle (HMENU) of choice (plugin menu handle (<see cref="NPPPLUGINMENU"/>) or Notepad++ main menu handle (<see cref="NPPMAINMENU"/>))
+        /// </summary>
         NPPM_GETMENUHANDLE = Constants.NPPMSG + 25,
         NPPPLUGINMENU = 0,
-        /// <summary>
-        /// INT NPPM_GETMENUHANDLE(INT menuChoice, 0)
-        /// Return: menu handle (HMENU) of choice (plugin menu handle or Notepad++ main menu handle)
-        /// </summary>
         NPPMAINMENU = 1,
 
         /// <summary>
@@ -527,6 +532,66 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         NPPM_GETPLUGINHOMEPATH = Constants.NPPMSG + 97,
 
+        /// <summary>
+        /// INT NPPM_GETSETTINGSCLOUDPATH(size_t strLen, TCHAR *settingsOnCloudPath)
+        /// Get settings on cloud path. It's useful if plugins want to store its settings on Cloud, if this path is set.
+        /// Returns the number of TCHAR copied/to copy. If the return value is 0, then this path is not set, or the "strLen" is not enough to copy the path.
+        /// Users should call it with settingsCloudPath be NULL to get the required number of TCHAR (not including the terminating nul character),
+        /// allocate settingsCloudPath buffer with the return value + 1, then call it again to get the path.
+        /// </summary>
+        NPPM_GETSETTINGSONCLOUDPATH = Constants.NPPMSG + 98,
+
+        /// <summary>
+        /// BOOL NPPM_SETLINENUMBERWIDTHMODE(0, INT widthMode)
+        /// Set line number margin width in dynamic width mode (LINENUMWIDTH_DYNAMIC) or constant width mode (LINENUMWIDTH_CONSTANT)
+        /// It may help some plugins to disable non-dynamic line number margins width to have a smoothly visual effect while vertical scrolling the content in Notepad++
+        /// If calling is successful return TRUE, otherwise return FALSE.
+        /// </summary>
+        NPPM_SETLINENUMBERWIDTHMODE = Constants.NPPMSG + 99,
+        LINENUMWIDTH_DYNAMIC = 0,
+        LINENUMWIDTH_CONSTANT = 1,
+
+        /// <summary>
+        /// INT NPPM_GETLINENUMBERWIDTHMODE(0, 0)
+        /// Get line number margin width in dynamic width mode (LINENUMWIDTH_DYNAMIC) or constant width mode (LINENUMWIDTH_CONSTANT)
+        /// </summary>
+        NPPM_GETLINENUMBERWIDTHMODE = Constants.NPPMSG + 100,
+
+        /// <summary>
+        /// VOID NPPM_ADDTOOLBARICON_FORDARKMODE(UINT funcItem[X]._cmdID, toolbarIconsWithDarkMode iconHandles)
+        /// Use NPPM_ADDTOOLBARICON_FORDARKMODE instead obsolete NPPM_ADDTOOLBARICON which doesn't support the dark mode
+        /// 2 formats / 3 icons are needed:  1 * BMP + 2 * ICO 
+        /// All 3 handles below should be set so the icon will be displayed correctly if toolbar icon sets are changed by users, also in dark mode
+        /// </summary>
+        NPPM_ADDTOOLBARICON_FORDARKMODE = Constants.NPPMSG + 101,
+
+        // BOOL NPPM_ALLOCATEINDICATOR(int numberRequested, int* startNumber)
+        // Allocates an indicator number to a plugin: if a plugin needs to add an indicator,
+        // it has to use this message to get the indicator number, in order to prevent a conflict with the other plugins.
+        // wParam[in]: numberRequested is the number of ID you request for the reservation
+        // lParam[out]: startNumber will be set to the initial command ID if successful
+        // Return TRUE if successful, FALSE otherwise. startNumber will also be set to 0 if unsuccessful
+        //
+        // Example: If a plugin needs 1 indicator ID, the following code can be used :
+        //
+        //    int idBegin;
+        //    BOOL isAllocatedSuccessful = ::SendMessage(nppData._nppHandle, NPPM_ALLOCATEINDICATOR, 1, &idBegin);
+        //
+        // if isAllocatedSuccessful is TRUE, and value of idBegin is 7
+        // then indicator ID 7 is preserved by Notepad++, and it is safe to be used by the plugin.
+        NPPM_ALLOCATEINDICATOR = Constants.NPPMSG + 113,
+
+        /// <summary>
+        /// int NPPM_GETNATIVELANGFILENAME(size_t strLen, char* nativeLangFileName)<br></br>
+        /// Get the Current native language file name string.<br></br>
+        /// Users should call it with nativeLangFileName as NULL to get the required number of char (not including the terminating nul character),<br></br>
+        /// allocate commandLineStr buffer with the return value + 1, then call it again to get the current native language file name string.<br></br>
+        /// wParam[in]: strLen is "commandLineStr" buffer length<br></br>
+        /// lParam[out]: commandLineStr recieves all copied native language file name string<br></br>
+        /// Return the number of char copied/to copy
+        /// </summary>
+        NPPM_GETNATIVELANGFILENAME = Constants.NPPMSG + 116,
+
         RUNCOMMAND_USER = Constants.WM_USER + 3000,
         NPPM_GETFULLCURRENTPATH = RUNCOMMAND_USER + FULL_CURRENT_PATH,
         NPPM_GETCURRENTDIRECTORY = RUNCOMMAND_USER + CURRENT_DIRECTORY,
@@ -772,6 +837,62 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         NPPN_FILEDELETED = NPPN_FIRST + 26,
 
+        /// <summary>
+        /// To notify plugins that Dark Mode was enabled/disabled
+        /// scnNotification->nmhdr.code = NPPN_DARKMODECHANGED;
+        /// scnNotification->nmhdr.hwndFrom = hwndNpp;
+        /// scnNotification->nmhdr.idFrom = 0;
+        /// </summary>
+        NPPN_DARKMODECHANGED = NPPN_FIRST + 27,
+
+        /// <summary>
+        /// To notify plugins that the new argument for plugins (via '-pluginMessage="YOUR_PLUGIN_ARGUMENT"' in command line) is available
+        /// scnNotification->nmhdr.code = NPPN_CMDLINEPLUGINMSG;
+        /// scnNotification->nmhdr.hwndFrom = hwndNpp;
+        /// scnNotification->nmhdr.idFrom = pluginMessage; //where pluginMessage is pointer of type wchar_t
+        /// </summary>
+        NPPN_CMDLINEPLUGINMSG = NPPN_FIRST + 28,
+
+        ///<summary>
+        /// To notify lexer plugins that the buffer (in idFrom) is just applied to a external lexer
+        /// scnNotification->nmhdr.code = NPPN_EXTERNALLEXERBUFFER;
+        /// scnNotification->nmhdr.hwndFrom = hwndNpp;
+        /// scnNotification->nmhdr.idFrom = BufferID; //where pluginMessage is pointer of type wchar_t
+        ///</summary>
+        NPPN_EXTERNALLEXERBUFFER = NPPN_FIRST + 29,
+
+        /// <summary>
+        /// To notify plugins that the current document is just modified by Replace All action.<br></br>
+        /// For solving the performance issue (from v8.6.4), Notepad++ doesn't trigger SCN_MODIFIED during Replace All action anymore.<br></br>
+        /// As a result, the plugins which monitor SCN_MODIFIED should also monitor NPPN_GLOBALMODIFIED.<br></br>
+        /// <strong>This notification is implemented in Notepad++ v8.6.5.</strong><br></br>
+        /// scnNotification->nmhdr.code = NPPN_GLOBALMODIFIED;<br></br>
+        /// scnNotification->nmhdr.hwndFrom = BufferID;<br></br>
+        /// scnNotifiNATIVELANGCHANGEDcation->nmhdr.idFrom = 0; // preserved for the future use, must be zero
+        /// </summary>
+        NPPN_GLOBALMODIFIED = NPPN_FIRST + 30,
+
+
+        ///<summary>
+        /// To notify plugins that the current native language is just changed to another one.<br></br>
+        /// Use NPPM_GETNATIVELANGFILENAME to get current native language file name.<br></br>
+        /// Use NPPM_GETMENUHANDLE(NPPPLUGINMENU, 0) to get submenu "Plugins" handle (HMENU)<br></br>
+        /// scnNotification->nmhdr.code = NPPN_NATIVELANGCHANGED;<br></br>
+        /// scnNotification->nmhdr.hwndFrom = hwndNpp<br></br>
+        /// scnNotification->nmhdr.idFrom = 0; // preserved for the future use, must be zero
+        ///</summary>
+        NPPN_NATIVELANGCHANGED = NPPN_FIRST + 31,
+
         /* --Autogenerated -- end of section automatically generated from notepad-plus-plus\PowerEditor\src\MISC\PluginsManager\Notepad_plus_msgs.h * */
+    }
+
+    public enum StatusBarSection
+    {
+        DocType,
+        DocSize,
+        CurPos,
+        EofFormat,
+        UnicodeType,
+        TypingMode,
     }
 }

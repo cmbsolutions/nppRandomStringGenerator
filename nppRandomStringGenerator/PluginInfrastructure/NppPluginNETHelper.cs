@@ -37,7 +37,13 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct FuncItem
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        /// <summary>
+        /// The maximum number of UTF-16 characters in a FuncItem name.<br></br>
+        /// This is one less than the number listed <a href="https://github.com/notepad-plus-plus/notepad-plus-plus/blob/master/PowerEditor/src/MISC/PluginsManager/PluginInterface.h#L51">the relevant code</a>, because that is the length of a C string
+        /// </summary>
+        public const int MAX_FUNC_ITEM_NAME_LENGTH = 63;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_FUNC_ITEM_NAME_LENGTH + 1)] // +1 for terminating nul char
         public string _itemName;
         public NppFuncItemDelegate _pFunc;
         public int _cmdID;
@@ -175,17 +181,21 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
             //nmhdr.hwndFrom = hwndNpp;
             //nmhdr.IdFrom = ctrlIdNpp;
 
-            DMN_DOCK                    = (DMN_FIRST + 2),
-            DMN_FLOAT                    = (DMN_FIRST + 3)
-            //nmhdr.Code = DWORD(DMN_XXX, int newContainer);
-            //nmhdr.hwndFrom = hwndNpp;
-            //nmhdr.IdFrom = ctrlIdNpp;
+            DMN_DOCK                     = (DMN_FIRST + 2),
+            DMN_FLOAT                    = (DMN_FIRST + 3),
+            DMN_SWITCHIN                 = (DMN_FIRST + 4),
+            DMN_SWITCHOFF                = (DMN_FIRST + 5),
+            DMN_FLOATDROPPED             = (DMN_FIRST + 6),
+        //nmhdr.Code = DWORD(DMN_XXX, int newContainer);
+        //nmhdr.hwndFrom = hwndNpp;
+        //nmhdr.IdFrom = ctrlIdNpp;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct toolbarIcons
     {
-        public IntPtr hToolbarBmp;
-        public IntPtr hToolbarIcon;
+        public IntPtr hToolbarBmp;			// standard icon (color)
+        public IntPtr hToolbarIcon;			// Fluent UI icon (black)
+        public IntPtr hToolbarIconDarkMode;	// Fluent UI icon (white)
     }
 }

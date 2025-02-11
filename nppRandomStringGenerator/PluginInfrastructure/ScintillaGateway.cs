@@ -20,6 +20,45 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
 
         public static readonly int LengthZeroTerminator = "\0".Length;
 
+        /// <summary>
+        /// if bytes is null, returns null.<br></br>
+        /// Else, returns bytes decoded from UTF-8 as a string, with all trailing NULL bytes stripped off.
+        /// </summary>
+        public static string Utf8BytesToNullStrippedString(byte[] bytes)
+        {
+            if (bytes is null)
+                return null;
+            int lastNullCharPos = bytes.Length - 1;
+            // this only bypasses NULL chars because no char
+            // other than NULL can have any 0-valued bytes in UTF-8.
+            // See https://en.wikipedia.org/wiki/UTF-8#Encoding
+            for (; lastNullCharPos >= 0 && bytes[lastNullCharPos] == '\x00'; lastNullCharPos--) { }
+            return Encoding.UTF8.GetString(bytes, 0, lastNullCharPos + 1);
+        }
+
+        /// <summary>
+        /// Recall that all Scintilla methods have the signature 
+        /// (scintilla* scin, SciMsg msg, void* wParam, void* lParam) -&gt; void*<br></br>
+        /// Many of these scintilla methods are bimodal in the following way<br></br>
+        /// * if lParam is 0, return the length of the buffer to be filled and have no side effects. The wParam may be involved in telling Scintilla how big the buffer needs to be.<br></br>
+        /// * if lParam is greater than 0, it is assumed to be a pointer to a buffer. Now the wParam indicates what the text will need to be.<br></br><br></br>
+        /// This sets lParam to 0 to get the length, allocates a buffer of that length,<br></br>
+        /// uses the second mode to fill a buffer,<br></br>
+        /// and returns a string of the UTF8-decoded buffer with all trailing '\x00' chars stripped off.
+        /// </summary>
+        /// <param name="msg">message to send</param>
+        /// <param name="wParam">another parameter for defining what the buffer should contain</param>
+        /// <returns></returns>
+        private unsafe string GetNullStrippedStringFromMessageThatReturnsLength(SciMsg msg, IntPtr wParam=default)
+        {
+            int length = Win32.SendMessage(scintilla, msg, wParam, (IntPtr)Unused).ToInt32();
+            byte[] textBuffer = new byte[length];
+            fixed (byte* textPtr = textBuffer)
+            {
+                Win32.SendMessage(scintilla, msg, wParam, (IntPtr)textPtr);
+                return Utf8BytesToNullStrippedString(textBuffer);
+            }
+        }
 
         public ScintillaGateway(IntPtr scintilla)
         {
@@ -139,9 +178,21 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         }
 
         /// <summary>Returns the number of bytes in the document. (Scintilla feature 2006)</summary>
-        public int GetLength()
+        public long GetLength()
         {
-            return (int)Win32.SendMessage(scintilla, SciMsg.SCI_GETLENGTH, (IntPtr) Unused, (IntPtr) Unused);
+            return (long)Win32.SendMessage(scintilla, SciMsg.SCI_GETLENGTH, (IntPtr) Unused, (IntPtr) Unused);
+        }
+
+        public bool TryGetLengthAsInt(out int result)
+        {
+            long longRes = GetLength();
+            if (longRes > int.MaxValue)
+            {
+                result = -1;
+                return false;
+            }
+            result = (int)longRes;
+            return true;
         }
 
         /// <summary>Returns the character byte at the position. (Scintilla feature 2007)</summary>
@@ -310,14 +361,9 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// Result is NUL-terminated.
         /// (Scintilla feature 2027)
         /// </summary>
-        public unsafe string GetCurLine(int length)
+        public unsafe string GetCurLine()
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETCURLINE, (IntPtr) length, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETCURLINE);
         }
 
         /// <summary>Retrieve the position of the last correctly styled character. (Scintilla feature 2028)</summary>
@@ -708,12 +754,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string StyleGetFont(int style)
         {
-            byte[] fontNameBuffer = new byte[10000];
-            fixed (byte* fontNamePtr = fontNameBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_STYLEGETFONT, (IntPtr) style, (IntPtr) fontNamePtr);
-                return Encoding.UTF8.GetString(fontNameBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_STYLEGETFONT, (IntPtr)style);
         }
 
         /// <summary>Get is a style to have its end of line filled or not. (Scintilla feature 2487)</summary>
@@ -911,12 +952,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string GetWordChars()
         {
-            byte[] charactersBuffer = new byte[10000];
-            fixed (byte* charactersPtr = charactersBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETWORDCHARS, (IntPtr) Unused, (IntPtr) charactersPtr);
-                return Encoding.UTF8.GetString(charactersBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETWORDCHARS);
         }
 
         /// <summary>Set the number of characters to have directly indexed categories (Scintilla feature 2720)</summary>
@@ -1551,12 +1587,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string GetLine(int line)
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETLINE, (IntPtr) line, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETLINE, (IntPtr)line);
         }
 
         /// <summary>Returns the number of lines in the document. There is always at least one. (Scintilla feature 2154)</summary>
@@ -1609,12 +1640,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string GetSelText()
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETSELTEXT, (IntPtr) Unused, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETSELTEXT);
         }
 
         /// <summary>
@@ -1758,19 +1784,15 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
             }
         }
 
-        /// <summary>
-        /// Retrieve all the text in the document.
-        /// Returns number of characters retrieved.
-        /// Result is NUL-terminated.
-        /// (Scintilla feature 2182)
-        /// </summary>
-        public unsafe string GetText(int length)
+        public unsafe string GetText(int length = -1)
         {
-            byte[] textBuffer = new byte[10000];
+            if (length < 1 && !TryGetLengthAsInt(out length))
+                return "";
+            byte[] textBuffer = new byte[length];
             fixed (byte* textPtr = textBuffer)
             {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETTEXT, (IntPtr) length, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
+                Win32.SendMessage(scintilla, SciMsg.SCI_GETTEXT, length, (IntPtr)textPtr);
+                return Utf8BytesToNullStrippedString(textBuffer);
             }
         }
 
@@ -1861,12 +1883,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Retrieve the text in the target. (Scintilla feature 2687)</summary>
         public unsafe string GetTargetText()
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETTARGETTEXT, (IntPtr) Unused, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETTARGETTEXT);
         }
 
         /// <summary>Make the target range start and end be the same as the selection range start and end. (Scintilla feature 2287)</summary>
@@ -2129,12 +2146,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the default fold display text. (Scintilla feature 2723)</summary>
         public unsafe string GetDefaultFoldDisplayText()
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETDEFAULTFOLDDISPLAYTEXT, (IntPtr) Unused, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETDEFAULTFOLDDISPLAYTEXT);
         }
 
         /// <summary>Expand or contract a fold header. (Scintilla feature 2237)</summary>
@@ -2474,12 +2486,11 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string GetTag(int tagNumber)
         {
-            byte[] tagValueBuffer = new byte[10000];
-            fixed (byte* tagValuePtr = tagValueBuffer)
+            if (tagNumber < 0)
             {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETTAG, (IntPtr) tagNumber, (IntPtr) tagValuePtr);
-                return Encoding.UTF8.GetString(tagValueBuffer).TrimEnd('\0');
+                throw new ArgumentException("tagNumber must be non-negative integer");
             }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETTAG, (IntPtr)tagNumber);
         }
 
         /// <summary>Join the lines in the target. (Scintilla feature 2288)</summary>
@@ -3639,12 +3650,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the set of characters making up whitespace for when moving or selecting by word. (Scintilla feature 2647)</summary>
         public unsafe string GetWhitespaceChars()
         {
-            byte[] charactersBuffer = new byte[10000];
-            fixed (byte* charactersPtr = charactersBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETWHITESPACECHARS, (IntPtr) Unused, (IntPtr) charactersPtr);
-                return Encoding.UTF8.GetString(charactersBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETWHITESPACECHARS);
         }
 
         /// <summary>
@@ -3663,12 +3669,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the set of characters making up punctuation characters (Scintilla feature 2649)</summary>
         public unsafe string GetPunctuationChars()
         {
-            byte[] charactersBuffer = new byte[10000];
-            fixed (byte* charactersPtr = charactersBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETPUNCTUATIONCHARS, (IntPtr) Unused, (IntPtr) charactersPtr);
-                return Encoding.UTF8.GetString(charactersBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETPUNCTUATIONCHARS);
         }
 
         /// <summary>Reset the set of characters for whitespace and word characters to the defaults. (Scintilla feature 2444)</summary>
@@ -3691,12 +3692,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string AutoCGetCurrentText()
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_AUTOCGETCURRENTTEXT, (IntPtr) Unused, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_AUTOCGETCURRENTTEXT);
         }
 
         /// <summary>Set auto-completion case insensitive behaviour to either prefer case-sensitive matches or have no preference. (Scintilla feature 2634)</summary>
@@ -3748,12 +3744,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string TargetAsUTF8()
         {
-            byte[] sBuffer = new byte[10000];
-            fixed (byte* sPtr = sBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_TARGETASUTF8, (IntPtr) Unused, (IntPtr) sPtr);
-                return Encoding.UTF8.GetString(sBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_TARGETASUTF8);
         }
 
         /// <summary>
@@ -3776,12 +3767,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         {
             fixed (byte* utf8Ptr = Encoding.UTF8.GetBytes(utf8))
             {
-                byte[] encodedBuffer = new byte[10000];
-                fixed (byte* encodedPtr = encodedBuffer)
-                {
-                    Win32.SendMessage(scintilla, SciMsg.SCI_ENCODEDFROMUTF8, (IntPtr) utf8Ptr, (IntPtr) encodedPtr);
-                    return Encoding.UTF8.GetString(encodedBuffer).TrimEnd('\0');
-                }
+                return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_ENCODEDFROMUTF8, (IntPtr)utf8Ptr);
             }
         }
 
@@ -4030,12 +4016,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the text in the text margin for a line (Scintilla feature 2531)</summary>
         public unsafe string MarginGetText(int line)
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_MARGINGETTEXT, (IntPtr) line, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_MARGINGETTEXT, (IntPtr)line);
         }
 
         /// <summary>Set the style number for the text margin for a line (Scintilla feature 2532)</summary>
@@ -4062,12 +4043,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the styles in the text margin for a line (Scintilla feature 2535)</summary>
         public unsafe string MarginGetStyles(int line)
         {
-            byte[] stylesBuffer = new byte[10000];
-            fixed (byte* stylesPtr = stylesBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_MARGINGETSTYLES, (IntPtr) line, (IntPtr) stylesPtr);
-                return Encoding.UTF8.GetString(stylesBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_MARGINGETSTYLES, (IntPtr)line);
         }
 
         /// <summary>Clear the margin text on all lines (Scintilla feature 2536)</summary>
@@ -4112,12 +4088,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the annotation text for a line (Scintilla feature 2541)</summary>
         public unsafe string AnnotationGetText(int line)
         {
-            byte[] textBuffer = new byte[10000];
-            fixed (byte* textPtr = textBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_ANNOTATIONGETTEXT, (IntPtr) line, (IntPtr) textPtr);
-                return Encoding.UTF8.GetString(textBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_ANNOTATIONGETTEXT, (IntPtr)line);
         }
 
         /// <summary>Set the style number for the annotations for a line (Scintilla feature 2542)</summary>
@@ -4144,12 +4115,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Get the annotation styles for a line (Scintilla feature 2545)</summary>
         public unsafe string AnnotationGetStyles(int line)
         {
-            byte[] stylesBuffer = new byte[10000];
-            fixed (byte* stylesPtr = stylesBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_ANNOTATIONGETSTYLES, (IntPtr) line, (IntPtr) stylesPtr);
-                return Encoding.UTF8.GetString(stylesBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_ANNOTATIONGETSTYLES, (IntPtr)line);
         }
 
         /// <summary>Get the number of annotation lines for a line (Scintilla feature 2546)</summary>
@@ -4765,12 +4731,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         {
             fixed (byte* encodedCharacterPtr = Encoding.UTF8.GetBytes(encodedCharacter))
             {
-                byte[] representationBuffer = new byte[10000];
-                fixed (byte* representationPtr = representationBuffer)
-                {
-                    Win32.SendMessage(scintilla, SciMsg.SCI_GETREPRESENTATION, (IntPtr) encodedCharacterPtr, (IntPtr) representationPtr);
-                    return Encoding.UTF8.GetString(representationBuffer).TrimEnd('\0');
-                }
+                return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETREPRESENTATION, (IntPtr)encodedCharacterPtr);
             }
         }
 
@@ -4861,12 +4822,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         {
             fixed (byte* keyPtr = Encoding.UTF8.GetBytes(key))
             {
-                byte[] valueBuffer = new byte[10000];
-                fixed (byte* valuePtr = valueBuffer)
-                {
-                    Win32.SendMessage(scintilla, SciMsg.SCI_GETPROPERTY, (IntPtr) keyPtr, (IntPtr) valuePtr);
-                    return Encoding.UTF8.GetString(valueBuffer).TrimEnd('\0');
-                }
+                return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETPROPERTY, (IntPtr)keyPtr);
             }
         }
 
@@ -4880,12 +4836,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         {
             fixed (byte* keyPtr = Encoding.UTF8.GetBytes(key))
             {
-                byte[] valueBuffer = new byte[10000];
-                fixed (byte* valuePtr = valueBuffer)
-                {
-                    Win32.SendMessage(scintilla, SciMsg.SCI_GETPROPERTYEXPANDED, (IntPtr) keyPtr, (IntPtr) valuePtr);
-                    return Encoding.UTF8.GetString(valueBuffer).TrimEnd('\0');
-                }
+                return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETPROPERTYEXPANDED, (IntPtr)keyPtr);
             }
         }
 
@@ -4910,12 +4861,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string GetLexerLanguage()
         {
-            byte[] languageBuffer = new byte[10000];
-            fixed (byte* languagePtr = languageBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETLEXERLANGUAGE, (IntPtr) Unused, (IntPtr) languagePtr);
-                return Encoding.UTF8.GetString(languageBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETLEXERLANGUAGE);
         }
 
         /// <summary>For private communication between an application and a known lexer. (Scintilla feature 4013)</summary>
@@ -4931,12 +4877,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string PropertyNames()
         {
-            byte[] namesBuffer = new byte[10000];
-            fixed (byte* namesPtr = namesBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_PROPERTYNAMES, (IntPtr) Unused, (IntPtr) namesPtr);
-                return Encoding.UTF8.GetString(namesBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_PROPERTYNAMES);
         }
 
         /// <summary>Retrieve the type of a property. (Scintilla feature 4015)</summary>
@@ -4957,12 +4898,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         {
             fixed (byte* namePtr = Encoding.UTF8.GetBytes(name))
             {
-                byte[] descriptionBuffer = new byte[10000];
-                fixed (byte* descriptionPtr = descriptionBuffer)
-                {
-                    Win32.SendMessage(scintilla, SciMsg.SCI_DESCRIBEPROPERTY, (IntPtr) namePtr, (IntPtr) descriptionPtr);
-                    return Encoding.UTF8.GetString(descriptionBuffer).TrimEnd('\0');
-                }
+                return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_DESCRIBEPROPERTY, (IntPtr)namePtr);
             }
         }
 
@@ -4973,12 +4909,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string DescribeKeyWordSets()
         {
-            byte[] descriptionsBuffer = new byte[10000];
-            fixed (byte* descriptionsPtr = descriptionsBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_DESCRIBEKEYWORDSETS, (IntPtr) Unused, (IntPtr) descriptionsPtr);
-                return Encoding.UTF8.GetString(descriptionsBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_DESCRIBEKEYWORDSETS);
         }
 
         /// <summary>
@@ -5053,12 +4984,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string GetSubStyleBases()
         {
-            byte[] stylesBuffer = new byte[10000];
-            fixed (byte* stylesPtr = stylesBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_GETSUBSTYLEBASES, (IntPtr) Unused, (IntPtr) stylesPtr);
-                return Encoding.UTF8.GetString(stylesBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_GETSUBSTYLEBASES);
         }
 
         /// <summary>Retrieve the number of named styles for the lexer. (Scintilla feature 4029)</summary>
@@ -5074,12 +5000,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string NameOfStyle(int style)
         {
-            byte[] nameBuffer = new byte[10000];
-            fixed (byte* namePtr = nameBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_NAMEOFSTYLE, (IntPtr) style, (IntPtr) namePtr);
-                return Encoding.UTF8.GetString(nameBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_NAMEOFSTYLE, (IntPtr)style);
         }
 
         /// <summary>
@@ -5089,12 +5010,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string TagsOfStyle(int style)
         {
-            byte[] tagsBuffer = new byte[10000];
-            fixed (byte* tagsPtr = tagsBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_TAGSOFSTYLE, (IntPtr) style, (IntPtr) tagsPtr);
-                return Encoding.UTF8.GetString(tagsBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_TAGSOFSTYLE, (IntPtr)style);
         }
 
         /// <summary>
@@ -5104,12 +5020,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// </summary>
         public unsafe string DescriptionOfStyle(int style)
         {
-            byte[] descriptionBuffer = new byte[10000];
-            fixed (byte* descriptionPtr = descriptionBuffer)
-            {
-                Win32.SendMessage(scintilla, SciMsg.SCI_DESCRIPTIONOFSTYLE, (IntPtr) style, (IntPtr) descriptionPtr);
-                return Encoding.UTF8.GetString(descriptionBuffer).TrimEnd('\0');
-            }
+            return GetNullStrippedStringFromMessageThatReturnsLength(SciMsg.SCI_DESCRIPTIONOFSTYLE, (IntPtr)style);
         }
 
         /// <summary>Retrieve bidirectional text display state. (Scintilla feature 2708)</summary>
