@@ -198,7 +198,8 @@ namespace Kbg.NppPluginNET
                 };
 
                 ButtonGenerate.Enabled = false;
-                if (!RadioButtonInline.Checked) ButtonCancel.Enabled = true;
+                //if (!RadioButtonInline.Checked)
+                ButtonCancel.Enabled = true;
 
                 await Task.Run(() => Generator.GenerateStrings());
 
@@ -365,6 +366,11 @@ namespace Kbg.NppPluginNET
         {
             label20.Text = GuidInfos.FirstOrDefault(c => c.Key == ComboBoxGUIDFormat.Text).Value;
             label20.Visible = true;
+        }
+
+        private void bReset_Click(object sender, EventArgs e)
+        {
+            TextboxSymbols.Text = "!@#$%^&*()_+-=[]{};':,.<>?";
         }
     }
 }
