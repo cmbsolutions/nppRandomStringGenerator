@@ -198,7 +198,8 @@ namespace Kbg.NppPluginNET
                 };
 
                 ButtonGenerate.Enabled = false;
-                if (!RadioButtonInline.Checked) ButtonCancel.Enabled = true;
+                //if (!RadioButtonInline.Checked)
+                ButtonCancel.Enabled = true;
 
                 await Task.Run(() => Generator.GenerateStrings());
 
@@ -259,12 +260,19 @@ namespace Kbg.NppPluginNET
                 NumericUpDownQuantity.Maximum = this.Editor.GetLineCount();
                 NumericUpDownQuantity.Value = this.Editor.GetLineCount();
                 TextboxSeperator.Enabled = true;
+
+                NumericUpDownGUIDQuantity.Enabled = false;
+                NumericUpDownGUIDQuantity.Maximum = this.Editor.GetLineCount();
+                NumericUpDownGUIDQuantity.Value = this.Editor.GetLineCount();
             }
             else
             {
                 NumericUpDownQuantity.Maximum = 4096000;
                 NumericUpDownQuantity.Enabled = true;
                 TextboxSeperator.Enabled = false;
+
+                NumericUpDownGUIDQuantity.Maximum = 4096000;
+                NumericUpDownGUIDQuantity.Enabled = true;
             }
 
         }
@@ -358,6 +366,11 @@ namespace Kbg.NppPluginNET
         {
             label20.Text = GuidInfos.FirstOrDefault(c => c.Key == ComboBoxGUIDFormat.Text).Value;
             label20.Visible = true;
+        }
+
+        private void bReset_Click(object sender, EventArgs e)
+        {
+            TextboxSymbols.Text = "!@#$%^&*()_+-=[]{};':,.<>?";
         }
     }
 }

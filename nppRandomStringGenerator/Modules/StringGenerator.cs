@@ -193,7 +193,6 @@ namespace nppRandomStringGenerator.Modules
 
                                 lock (this.LockingEditor)
                                 {
-
                                     this.Editor.GotoLine(line);
                                     this.Editor.LineEnd();
                                     this.Editor.AddText(sb.Length, sb.ToString());

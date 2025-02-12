@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Kbg.NppPluginNET.PluginInfrastructure;
-using NppPlugin.DllExport;
+using RGiesecke.DllExport;
 
 namespace Kbg.NppPluginNET
 {
@@ -50,7 +50,7 @@ namespace Kbg.NppPluginNET
             if (notification.Header.Code == (uint)NppMsg.NPPN_TBMODIFICATION)
             {
                 PluginBase._funcItems.RefreshItems();
-                Main.SetToolBarIcon();
+                Main.SetToolBarIcons();
             }
             else if (notification.Header.Code == (uint)NppMsg.NPPN_SHUTDOWN)
             {

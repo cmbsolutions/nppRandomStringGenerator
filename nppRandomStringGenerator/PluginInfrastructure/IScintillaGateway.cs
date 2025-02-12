@@ -55,7 +55,15 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         void ClearDocumentStyle();
 
         /// <summary>Returns the number of bytes in the document. (Scintilla feature 2006)</summary>
-        int GetLength();
+        long GetLength();
+
+        /// <summary>
+        /// If <see cref="GetLength"/> would return a value greater than <see cref="int.MaxValue"/>, return false and set result to -1.<br></br>
+        /// Otherwise, return true and set result to the number of bytes in the document.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        bool TryGetLengthAsInt(out int result);
 
         /// <summary>Returns the character byte at the position. (Scintilla feature 2007)</summary>
         int GetCharAt(int pos);
@@ -157,7 +165,7 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// Result is NUL-terminated.
         /// (Scintilla feature 2027)
         /// </summary>
-        unsafe string GetCurLine(int length);
+        unsafe string GetCurLine();
 
         /// <summary>Retrieve the position of the last correctly styled character. (Scintilla feature 2028)</summary>
         int GetEndStyled();
@@ -909,12 +917,12 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         unsafe void SetText(string text);
 
         /// <summary>
-        /// Retrieve all the text in the document.
-        /// Returns number of characters retrieved.
-        /// Result is NUL-terminated.
+        /// You may wish to use Npp.TryGetLengthAsInt instead, as it indicates when the length of the document is too great.<br></br>
+        /// If length = -1 and the document has more than <see cref="int.MaxValue"/> characters, return "".<br></br>
+        /// Otherwise, returns all the text in the document if length = -1 (or the first length chars of the document).<br></br>
         /// (Scintilla feature 2182)
         /// </summary>
-        unsafe string GetText(int length);
+        unsafe string GetText(int length = -1);
 
         /// <summary>Retrieve the number of characters in the document. (Scintilla feature 2183)</summary>
         int GetTextLength();
@@ -2516,7 +2524,10 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
         /// <summary>Set up the key words used by the lexer. (Scintilla feature 4005)</summary>
         unsafe void SetKeyWords(int keyWordSet, string keyWords);
 
-        /// <summary>Set the lexing language of the document based on string name. (Scintilla feature 4006)</summary>
+        /// <summary>Set the lexing language of the document based on string name. (Scintilla feature 4006)<br></br>
+        /// NOTE! This function does not seem to do anything as of 08/25/2022.<br></br>
+        /// Use INotepadNPPGateWay.SetCurrentLanguage instead.
+        /// </summary>
         unsafe void SetLexerLanguage(string language);
 
         /// <summary>Load a lexer library (dll / so). (Scintilla feature 4007)</summary>

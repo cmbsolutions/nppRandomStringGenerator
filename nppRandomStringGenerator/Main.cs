@@ -1,16 +1,21 @@
 ﻿using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
+using NppPluginNET.Utils;
 using nppRandomStringGenerator.Storage;
 
 namespace Kbg.NppPluginNET
 {
     class Main
     {
+        public static readonly string PluginConfigDirectory = Path.Combine(Npp.notepad.GetConfigDirectory(), PluginName);
         internal const string PluginName = "nppRandomStringGenerator";
         static ConfigAndGenerate ConfigAndGenerate = null;
         static About About = null;
         static Settings MySettings = null;
+        public static bool isShuttingDown = false;
+
 
         public static void OnNotification(ScNotification notification)
         {  
@@ -31,7 +36,7 @@ namespace Kbg.NppPluginNET
             PluginBase.SetCommand(1, "&About", AboutnppRandomStringGenerator);
         }
 
-        internal static void SetToolBarIcon()
+        internal static void SetToolBarIcons()
         {
 
         }
