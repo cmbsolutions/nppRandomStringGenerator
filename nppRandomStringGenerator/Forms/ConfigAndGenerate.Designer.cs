@@ -74,6 +74,7 @@
             this.ButtonCancel = new System.Windows.Forms.Button();
             this.TabControl1 = new System.Windows.Forms.TabControl();
             this.TabPageRandom = new System.Windows.Forms.TabPage();
+            this.bReset = new System.Windows.Forms.Button();
             this.TabPageGUID = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
@@ -611,7 +612,7 @@
             // ButtonCancel
             // 
             this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ButtonCancel.BackColor = System.Drawing.Color.DarkGray;
+            this.ButtonCancel.BackColor = System.Drawing.Color.Maroon;
             this.ButtonCancel.Enabled = false;
             this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCancel.ForeColor = System.Drawing.Color.White;
@@ -639,6 +640,7 @@
             // TabPageRandom
             // 
             this.TabPageRandom.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPageRandom.Controls.Add(this.bReset);
             this.TabPageRandom.Controls.Add(this.label1);
             this.TabPageRandom.Controls.Add(this.NumericUpDownLength);
             this.TabPageRandom.Controls.Add(this.label16);
@@ -675,6 +677,18 @@
             this.TabPageRandom.Size = new System.Drawing.Size(456, 287);
             this.TabPageRandom.TabIndex = 0;
             this.TabPageRandom.Text = "Random strings";
+            // 
+            // bReset
+            // 
+            this.bReset.Image = global::nppRandomStringGenerator.Properties.Resources.undo;
+            this.bReset.Location = new System.Drawing.Point(383, 166);
+            this.bReset.Margin = new System.Windows.Forms.Padding(0);
+            this.bReset.Name = "bReset";
+            this.bReset.Size = new System.Drawing.Size(24, 24);
+            this.bReset.TabIndex = 42;
+            this.toolTip1.SetToolTip(this.bReset, "Restore default symbols");
+            this.bReset.UseVisualStyleBackColor = true;
+            this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
             // TabPageGUID
             // 
@@ -882,5 +896,6 @@
         private System.Windows.Forms.ComboBox ComboBoxGUIDFormat;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bReset;
     }
 }
