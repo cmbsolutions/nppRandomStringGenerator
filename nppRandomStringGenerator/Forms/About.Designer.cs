@@ -35,12 +35,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +48,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 9);
+            this.label1.Location = new System.Drawing.Point(55, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(277, 39);
             this.label1.TabIndex = 0;
@@ -59,7 +59,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(12, 57);
+            this.linkLabel1.Location = new System.Drawing.Point(29, 57);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(328, 13);
             this.linkLabel1.TabIndex = 1;
@@ -71,7 +71,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(99, 81);
+            this.label2.Location = new System.Drawing.Point(116, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(154, 26);
             this.label2.TabIndex = 2;
@@ -81,7 +81,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(301, 273);
+            this.button1.Location = new System.Drawing.Point(307, 273);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -95,7 +95,7 @@
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(362, 20);
+            this.label3.Size = new System.Drawing.Size(368, 20);
             this.label3.TabIndex = 4;
             this.label3.Text = "- 1.000.000 x 128 in 8.42 seconds on AMD Ryzen 9 5900X/64Gb";
             // 
@@ -104,7 +104,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(2, 110);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(374, 162);
+            this.groupBox1.Size = new System.Drawing.Size(380, 162);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Benchmarks";
@@ -133,8 +133,18 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(368, 141);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(374, 141);
             this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label9.Location = new System.Drawing.Point(3, 60);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(368, 20);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "- 4.096.000 x 256 in 4.89 seconds on AMD Ryzen 9 7950X3D/96Gb";
             // 
             // label8
             // 
@@ -142,9 +152,9 @@
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Location = new System.Drawing.Point(3, 100);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(362, 20);
+            this.label8.Size = new System.Drawing.Size(368, 20);
             this.label8.TabIndex = 9;
-            this.label8.Text = "- 5000 x 32 inline in 10.60 seconds on AMD Ryzen 9 7950X3D/96Gb";
+            this.label8.Text = "- 1.000.000 x 64 inline in 0.97 seconds on AMD Ryzen 9 7950X3D/96Gb";
             // 
             // label7
             // 
@@ -152,7 +162,7 @@
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Location = new System.Drawing.Point(3, 20);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(362, 20);
+            this.label7.Size = new System.Drawing.Size(368, 20);
             this.label7.TabIndex = 8;
             this.label7.Text = "- 1.000.000 x 128 in 0.72 seconds on AMD Ryzen 9 7950X3D/96Gb";
             // 
@@ -162,7 +172,7 @@
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Location = new System.Drawing.Point(3, 120);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(362, 20);
+            this.label6.Size = new System.Drawing.Size(368, 20);
             this.label6.TabIndex = 7;
             this.label6.Text = "- 4.096.000 GUID\'s in 1.92 seconds on AMD Ryzen 9 5900X/64Gb";
             // 
@@ -172,7 +182,7 @@
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Location = new System.Drawing.Point(3, 40);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(362, 20);
+            this.label5.Size = new System.Drawing.Size(368, 20);
             this.label5.TabIndex = 6;
             this.label5.Text = "- 2.000.000 x 32 in 6.14 seconds on AMD Ryzen 9 5900X/64Gb";
             // 
@@ -180,22 +190,12 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.ForeColor = System.Drawing.Color.Black;
             this.label4.Location = new System.Drawing.Point(3, 80);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(362, 20);
+            this.label4.Size = new System.Drawing.Size(368, 20);
             this.label4.TabIndex = 5;
-            this.label4.Text = "- 5000 x 32 inline in 20.32 seconds on AMD Ryzen 9 5900X/64Gb";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label9.Location = new System.Drawing.Point(3, 60);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(362, 20);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "- 4.096.000 x 256 in 4.89 seconds on AMD Ryzen 9 7950X3D/96Gb";
+            this.label4.Text = "- 1.000.000 x 64 inline in 1.77 seconds on AMD Ryzen 9 5900X/64Gb";
             // 
             // About
             // 
@@ -204,7 +204,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(378, 298);
+            this.ClientSize = new System.Drawing.Size(384, 298);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
