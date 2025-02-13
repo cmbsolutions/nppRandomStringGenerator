@@ -41,6 +41,8 @@ namespace nppRandomStringGenerator.Modules
 
         public CancellationTokenSource CancelJob { get; set; }
 
+        private string[] AllLines;
+
         public void GenerateStrings()
         {
 
@@ -55,7 +57,6 @@ namespace nppRandomStringGenerator.Modules
                 MissingWorkload = this.GuidQuantity % cores;
             }
 
-
             CancelJob = new CancellationTokenSource();
 
             ParallelOptions options = new ParallelOptions()
@@ -63,6 +64,11 @@ namespace nppRandomStringGenerator.Modules
                 CancellationToken = CancelJob.Token,
                 MaxDegreeOfParallelism = cores
             };
+
+            if (this.IsInline)
+            {
+                AllLines = this.Editor.GetText().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            }
 
             Stopwatch sw = Stopwatch.StartNew();
             try
@@ -106,15 +112,11 @@ namespace nppRandomStringGenerator.Modules
 
                                 if (i > 0) line += MissingWorkload;
 
+                                sb.Append(this.TextSeperator);
+
                                 sb.Append(Guid.NewGuid().ToString(this.GuidFormat));
 
-                                lock (this.LockingEditor)
-                                {
-
-                                    this.Editor.GotoLine(line);
-                                    this.Editor.LineEnd();
-                                    this.Editor.AddText(sb.Length, sb.ToString());
-                                }
+                                AllLines[line] += sb.ToString();
 
                                 sb.Clear();
                             }
@@ -123,7 +125,6 @@ namespace nppRandomStringGenerator.Modules
                                 sb.AppendLine(Guid.NewGuid().ToString(this.GuidFormat));
 
                                 BufferCount++;
-
 
                                 if (BufferCount >= 1024 || w + 1 == internalWorkload)
                                 {
@@ -191,12 +192,7 @@ namespace nppRandomStringGenerator.Modules
 
                                 if (i > 0) line += MissingWorkload;
 
-                                lock (this.LockingEditor)
-                                {
-                                    this.Editor.GotoLine(line);
-                                    this.Editor.LineEnd();
-                                    this.Editor.AddText(sb.Length, sb.ToString());
-                                }
+                                AllLines[line] += sb.ToString();
 
                                 sb.Clear();
                             }
@@ -222,6 +218,22 @@ namespace nppRandomStringGenerator.Modules
                 Debug.WriteLine(oce.Message);
                 this.IsCancelled = true;
             }
+
+
+            if (this.IsInline)
+            {
+                int totalLength = 0;
+                for (int i = 0; i < this.AllLines.Length; i++)
+                {
+                    totalLength += this.AllLines[i].Length;
+                }
+
+                totalLength += (this.AllLines.Length * Environment.NewLine.Length) - Environment.NewLine.Length;
+
+                this.Editor.ClearAll();
+                this.Editor.AddText(totalLength, string.Join(Environment.NewLine, this.AllLines));
+            }
+
             sw.Stop();
 
             this.InternalProcessTime = sw.Elapsed;
