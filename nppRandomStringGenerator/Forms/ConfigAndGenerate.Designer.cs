@@ -55,6 +55,7 @@
             this.RadioButtonInline = new System.Windows.Forms.RadioButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.bReset = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.RadioButtonCurrent = new System.Windows.Forms.RadioButton();
@@ -74,7 +75,6 @@
             this.ButtonCancel = new System.Windows.Forms.Button();
             this.TabControl1 = new System.Windows.Forms.TabControl();
             this.TabPageRandom = new System.Windows.Forms.TabPage();
-            this.bReset = new System.Windows.Forms.Button();
             this.TabPageGUID = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
@@ -83,6 +83,9 @@
             this.NumericUpDownGUIDQuantity = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.CheckboxDarkMode = new System.Windows.Forms.CheckBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.TextboxSuffix = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -354,7 +357,7 @@
             // 
             this.ButtonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonGenerate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonGenerate.Location = new System.Drawing.Point(275, 388);
+            this.ButtonGenerate.Location = new System.Drawing.Point(275, 406);
             this.ButtonGenerate.Name = "ButtonGenerate";
             this.ButtonGenerate.Size = new System.Drawing.Size(120, 25);
             this.ButtonGenerate.TabIndex = 23;
@@ -397,7 +400,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.linkLabel1.Location = new System.Drawing.Point(296, 346);
+            this.linkLabel1.Location = new System.Drawing.Point(296, 341);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(58, 12);
             this.linkLabel1.TabIndex = 36;
@@ -405,6 +408,18 @@
             this.linkLabel1.Text = "Save on close";
             this.toolTip1.SetToolTip(this.linkLabel1, "Click here to reset to default settings");
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // bReset
+            // 
+            this.bReset.Image = global::nppRandomStringGenerator.Properties.Resources.undo;
+            this.bReset.Location = new System.Drawing.Point(383, 166);
+            this.bReset.Margin = new System.Windows.Forms.Padding(0);
+            this.bReset.Name = "bReset";
+            this.bReset.Size = new System.Drawing.Size(24, 24);
+            this.bReset.TabIndex = 42;
+            this.toolTip1.SetToolTip(this.bReset, "Restore default symbols");
+            this.bReset.UseVisualStyleBackColor = true;
+            this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
             // label11
             // 
@@ -442,7 +457,7 @@
             this.groupBox1.Controls.Add(this.RadioButtonNew);
             this.groupBox1.Controls.Add(this.RadioButtonCurrent);
             this.groupBox1.Controls.Add(this.RadioButtonInline);
-            this.groupBox1.Location = new System.Drawing.Point(4, 315);
+            this.groupBox1.Location = new System.Drawing.Point(4, 333);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(265, 98);
             this.groupBox1.TabIndex = 30;
@@ -493,7 +508,7 @@
             this.CheckboxCloseNoMessage.Checked = true;
             this.CheckboxCloseNoMessage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxCloseNoMessage.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(278, 361);
+            this.CheckboxCloseNoMessage.Location = new System.Drawing.Point(278, 356);
             this.CheckboxCloseNoMessage.Name = "CheckboxCloseNoMessage";
             this.CheckboxCloseNoMessage.Size = new System.Drawing.Size(135, 16);
             this.CheckboxCloseNoMessage.TabIndex = 34;
@@ -507,7 +522,7 @@
             this.CheckboxSaveOnClose.Checked = true;
             this.CheckboxSaveOnClose.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckboxSaveOnClose.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(275, 346);
+            this.CheckboxSaveOnClose.Location = new System.Drawing.Point(275, 341);
             this.CheckboxSaveOnClose.Name = "CheckboxSaveOnClose";
             this.CheckboxSaveOnClose.Size = new System.Drawing.Size(15, 14);
             this.CheckboxSaveOnClose.TabIndex = 35;
@@ -616,7 +631,7 @@
             this.ButtonCancel.Enabled = false;
             this.ButtonCancel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCancel.ForeColor = System.Drawing.Color.White;
-            this.ButtonCancel.Location = new System.Drawing.Point(398, 389);
+            this.ButtonCancel.Location = new System.Drawing.Point(398, 407);
             this.ButtonCancel.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(54, 24);
@@ -634,12 +649,14 @@
             this.TabControl1.Multiline = true;
             this.TabControl1.Name = "TabControl1";
             this.TabControl1.SelectedIndex = 0;
-            this.TabControl1.Size = new System.Drawing.Size(464, 313);
+            this.TabControl1.Size = new System.Drawing.Size(464, 331);
             this.TabControl1.TabIndex = 44;
             // 
             // TabPageRandom
             // 
             this.TabPageRandom.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPageRandom.Controls.Add(this.label21);
+            this.TabPageRandom.Controls.Add(this.TextboxSuffix);
             this.TabPageRandom.Controls.Add(this.bReset);
             this.TabPageRandom.Controls.Add(this.label1);
             this.TabPageRandom.Controls.Add(this.NumericUpDownLength);
@@ -674,21 +691,9 @@
             this.TabPageRandom.Location = new System.Drawing.Point(4, 22);
             this.TabPageRandom.Name = "TabPageRandom";
             this.TabPageRandom.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageRandom.Size = new System.Drawing.Size(456, 287);
+            this.TabPageRandom.Size = new System.Drawing.Size(456, 305);
             this.TabPageRandom.TabIndex = 0;
             this.TabPageRandom.Text = "Random strings";
-            // 
-            // bReset
-            // 
-            this.bReset.Image = global::nppRandomStringGenerator.Properties.Resources.undo;
-            this.bReset.Location = new System.Drawing.Point(383, 166);
-            this.bReset.Margin = new System.Windows.Forms.Padding(0);
-            this.bReset.Name = "bReset";
-            this.bReset.Size = new System.Drawing.Size(24, 24);
-            this.bReset.TabIndex = 42;
-            this.toolTip1.SetToolTip(this.bReset, "Restore default symbols");
-            this.bReset.UseVisualStyleBackColor = true;
-            this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
             // TabPageGUID
             // 
@@ -800,13 +805,46 @@
             this.label18.TabIndex = 31;
             this.label18.Text = "(min:1, max:4.096.000)";
             // 
+            // CheckboxDarkMode
+            // 
+            this.CheckboxDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CheckboxDarkMode.AutoSize = true;
+            this.CheckboxDarkMode.Checked = true;
+            this.CheckboxDarkMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckboxDarkMode.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckboxDarkMode.Location = new System.Drawing.Point(278, 373);
+            this.CheckboxDarkMode.Name = "CheckboxDarkMode";
+            this.CheckboxDarkMode.Size = new System.Drawing.Size(67, 16);
+            this.CheckboxDarkMode.TabIndex = 45;
+            this.CheckboxDarkMode.Text = "Dark Mode";
+            this.CheckboxDarkMode.UseVisualStyleBackColor = true;
+            this.CheckboxDarkMode.Visible = false;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(15, 281);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(39, 13);
+            this.label21.TabIndex = 44;
+            this.label21.Text = "Suffix:";
+            // 
+            // TextboxSuffix
+            // 
+            this.TextboxSuffix.Location = new System.Drawing.Point(179, 278);
+            this.TextboxSuffix.Name = "TextboxSuffix";
+            this.TextboxSuffix.Size = new System.Drawing.Size(265, 22);
+            this.TextboxSuffix.TabIndex = 43;
+            // 
             // ConfigAndGenerate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(464, 420);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(464, 438);
+            this.Controls.Add(this.CheckboxDarkMode);
             this.Controls.Add(this.TabControl1);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.linkLabel1);
@@ -815,6 +853,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.ButtonGenerate);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -897,5 +936,8 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button bReset;
+        private System.Windows.Forms.CheckBox CheckboxDarkMode;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox TextboxSuffix;
     }
 }
