@@ -4,7 +4,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using nppRandomStringGenerator.Storage.Models;
-using System.Linq;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace nppRandomStringGenerator.Storage
 {
@@ -44,21 +45,42 @@ namespace nppRandomStringGenerator.Storage
             {
                 settings = DeserializeIni(FilePath);
 
-                
-                if (settings.Appversion != "1.9.0")
+
+                if (settings.Appversion != "1.9.6")
                 {
                     SettingsModel defaults = DeserializeIniFromString(Resources.nppRandomStringGeneratorSettings);
 
-                    for (int i=0; i < defaults.ConfigItems.Length; i++)
+                    foreach (ConfigItem configitem in defaults.ConfigItems)
                     {
-                        if (settings.ConfigItems[i] == null)
+                        if (!settings.ConfigItems.Exists(c => c.Name == configitem.Name))
                         {
-                            settings.ConfigItems[i] = defaults.ConfigItems[i];
+                            settings.ConfigItems.Add(configitem);
                         }
                     }
                     settings.Appname = "nppRandomStringGenerator";
-                    settings.Appversion = "1.9.0";
+                    settings.Appversion = "1.9.6";
                 }
+                //else
+                //{
+                //    string check = "";
+                //    foreach (ConfigItem configitem in settings.ConfigItems)
+                //    {
+                //        check += configitem.Name + "|";
+                //    }
+                //    check = check.TrimEnd('|');
+                    
+                //    string checkHash;
+                //    using (MD5 md5 = MD5.Create())
+                //    {
+                //        byte[] hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(check));
+                //        checkHash = BitConverter.ToString(hashBytes).Replace("-", "").ToUpperInvariant();
+                //    }
+                //    if ( check != "392FD30BC7A07D4CBD4F176F9C57A835")
+                //    {
+                //        MessageBox.Show("Unknown settings found. Resetting to defaults.", "nppRandomStringGenerator", MessageBoxButtons.OK);
+
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -68,8 +90,10 @@ namespace nppRandomStringGenerator.Storage
 
         private SettingsModel DeserializeIni(string ini)
         {
-            SettingsModel tmp = new SettingsModel();
-            tmp.ConfigItems = new ConfigItem[25];
+            SettingsModel tmp = new SettingsModel
+            {
+                ConfigItems = new List<ConfigItem>()
+            };
 
             using (FileStream stream = new FileStream(ini, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -83,16 +107,13 @@ namespace nppRandomStringGenerator.Storage
                     parts = line.Split('=');
                     tmp.Appversion = parts[1];
 
-                    int i = 0;
-                    while (!reader.EndOfStream || i >= 25)
+                    while (!reader.EndOfStream)
                     {
                         line = reader.ReadLine();
                         if (line == "" || line == null) break;
                         parts = line.Split(new char[] { '=' }, 2);
 
-                        tmp.ConfigItems[i] = new ConfigItem { Name = parts[0], Value = parts[1] };
-                        
-                        i++;
+                        tmp.ConfigItems.Add(new ConfigItem { Name = parts[0], Value = parts[1] });
                     }
                 }
             }
@@ -102,8 +123,10 @@ namespace nppRandomStringGenerator.Storage
 
         private SettingsModel DeserializeIniFromString(string ini)
         {
-            SettingsModel tmp = new SettingsModel();
-            tmp.ConfigItems = new ConfigItem[25];
+            SettingsModel tmp = new SettingsModel
+            {
+                ConfigItems = new List<ConfigItem>()
+            };
 
             using (StringReader reader = new StringReader(ini))
             {
@@ -115,16 +138,13 @@ namespace nppRandomStringGenerator.Storage
                 parts = line.Split('=');
                 tmp.Appversion = parts[1];
 
-                int i = 0;
-                while (line != "" || i >= 25)
+                while (line != "")
                 {
                     line = reader.ReadLine();
                     if (line == "" || line == null) break;
                     parts = line.Split(new char[] { '=' }, 2);
 
-                    tmp.ConfigItems[i] = new ConfigItem { Name = parts[0], Value = parts[1] };
-
-                    i++;
+                    tmp.ConfigItems.Add(new ConfigItem { Name = parts[0], Value = parts[1] });
                 }
             }
 
