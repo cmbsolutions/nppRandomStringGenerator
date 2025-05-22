@@ -23,12 +23,14 @@ namespace nppRandomStringGenerator.Modules
         public bool IsSequential { get; set; }
         public bool IsDuplicate { get; set; }
         public string Prefix { get; set; }
+        public string Suffix { get; set; }
         public bool IsInline { get; set; }
         public bool IsCancelled { get; set; }
         public string TextSeperator { get; set; }
         public bool DoGuids { get; set; }
         public string GuidFormat { get; set; }
         public int GuidQuantity { get; set; }
+        public int Cores { get; set; }
 
 
         private TimeSpan InternalProcessTime;
@@ -46,15 +48,15 @@ namespace nppRandomStringGenerator.Modules
         public void GenerateStrings()
         {
 
-            int cores = Environment.ProcessorCount/2;
+            //int cores = Environment.ProcessorCount/2;
 
-            int WorkLoad = this.StringQuantity / cores;
-            int MissingWorkload = this.StringQuantity % cores;
+            int WorkLoad = this.StringQuantity / Cores;
+            int MissingWorkload = this.StringQuantity % Cores;
 
             if (DoGuids)
             {
-                WorkLoad = this.GuidQuantity / cores;
-                MissingWorkload = this.GuidQuantity % cores;
+                WorkLoad = this.GuidQuantity / Cores;
+                MissingWorkload = this.GuidQuantity % Cores;
             }
 
             CancelJob = new CancellationTokenSource();
@@ -62,7 +64,7 @@ namespace nppRandomStringGenerator.Modules
             ParallelOptions options = new ParallelOptions()
             {
                 CancellationToken = CancelJob.Token,
-                MaxDegreeOfParallelism = cores
+                MaxDegreeOfParallelism = Cores
             };
 
             if (this.IsInline)
@@ -73,7 +75,7 @@ namespace nppRandomStringGenerator.Modules
             Stopwatch sw = Stopwatch.StartNew();
             try
             {
-                Parallel.For(0, cores, options, (i, state) =>
+                Parallel.For(0, Cores, options, (i, state) =>
                 {
                     int idx = 0;
                     int previousChar = 0;
@@ -192,12 +194,21 @@ namespace nppRandomStringGenerator.Modules
 
                                 if (i > 0) line += MissingWorkload;
 
+                                if (this.Suffix.Length > 0)
+                                {
+                                    sb.Append(this.Suffix);
+                                }
+
                                 AllLines[line] += sb.ToString();
 
                                 sb.Clear();
                             }
                             else
                             {
+                                if (this.Suffix.Length > 0)
+                                {
+                                    sb.Append(this.Suffix);
+                                }
                                 sb.AppendLine();
                                 BufferCount++;
 

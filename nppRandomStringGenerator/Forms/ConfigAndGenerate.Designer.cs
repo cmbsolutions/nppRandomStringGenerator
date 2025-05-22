@@ -75,6 +75,8 @@
             this.ButtonCancel = new System.Windows.Forms.Button();
             this.TabControl1 = new System.Windows.Forms.TabControl();
             this.TabPageRandom = new System.Windows.Forms.TabPage();
+            this.label21 = new System.Windows.Forms.Label();
+            this.TextboxSuffix = new System.Windows.Forms.TextBox();
             this.TabPageGUID = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
@@ -84,8 +86,9 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.CheckboxDarkMode = new System.Windows.Forms.CheckBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.TextboxSuffix = new System.Windows.Forms.TextBox();
+            this.tabPageAdvanced = new System.Windows.Forms.TabPage();
+            this.label22 = new System.Windows.Forms.Label();
+            this.numericUpDownCores = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -95,6 +98,8 @@
             this.TabPageRandom.SuspendLayout();
             this.TabPageGUID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownGUIDQuantity)).BeginInit();
+            this.tabPageAdvanced.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCores)).BeginInit();
             this.SuspendLayout();
             // 
             // NumericUpDownLength
@@ -644,6 +649,7 @@
             // 
             this.TabControl1.Controls.Add(this.TabPageRandom);
             this.TabControl1.Controls.Add(this.TabPageGUID);
+            this.TabControl1.Controls.Add(this.tabPageAdvanced);
             this.TabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.TabControl1.Location = new System.Drawing.Point(0, 0);
             this.TabControl1.Multiline = true;
@@ -695,6 +701,22 @@
             this.TabPageRandom.TabIndex = 0;
             this.TabPageRandom.Text = "Random strings";
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(15, 281);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(39, 13);
+            this.label21.TabIndex = 44;
+            this.label21.Text = "Suffix:";
+            // 
+            // TextboxSuffix
+            // 
+            this.TextboxSuffix.Location = new System.Drawing.Point(179, 278);
+            this.TextboxSuffix.Name = "TextboxSuffix";
+            this.TextboxSuffix.Size = new System.Drawing.Size(265, 22);
+            this.TextboxSuffix.TabIndex = 43;
+            // 
             // TabPageGUID
             // 
             this.TabPageGUID.BackColor = System.Drawing.SystemColors.Control;
@@ -708,7 +730,7 @@
             this.TabPageGUID.Location = new System.Drawing.Point(4, 22);
             this.TabPageGUID.Name = "TabPageGUID";
             this.TabPageGUID.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageGUID.Size = new System.Drawing.Size(456, 287);
+            this.TabPageGUID.Size = new System.Drawing.Size(456, 305);
             this.TabPageGUID.TabIndex = 1;
             this.TabPageGUID.Text = "GUID\'s";
             // 
@@ -820,21 +842,48 @@
             this.CheckboxDarkMode.UseVisualStyleBackColor = true;
             this.CheckboxDarkMode.Visible = false;
             // 
-            // label21
+            // tabPageAdvanced
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(15, 281);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(39, 13);
-            this.label21.TabIndex = 44;
-            this.label21.Text = "Suffix:";
+            this.tabPageAdvanced.Controls.Add(this.numericUpDownCores);
+            this.tabPageAdvanced.Controls.Add(this.label22);
+            this.tabPageAdvanced.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAdvanced.Name = "tabPageAdvanced";
+            this.tabPageAdvanced.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAdvanced.Size = new System.Drawing.Size(456, 305);
+            this.tabPageAdvanced.TabIndex = 2;
+            this.tabPageAdvanced.Text = "Advanced";
             // 
-            // TextboxSuffix
+            // label22
             // 
-            this.TextboxSuffix.Location = new System.Drawing.Point(179, 278);
-            this.TextboxSuffix.Name = "TextboxSuffix";
-            this.TextboxSuffix.Size = new System.Drawing.Size(265, 22);
-            this.TextboxSuffix.TabIndex = 43;
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(8, 8);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(59, 13);
+            this.label22.TabIndex = 0;
+            this.label22.Text = "Use cores:";
+            // 
+            // numericUpDownCores
+            // 
+            this.numericUpDownCores.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericUpDownCores.Location = new System.Drawing.Point(104, 6);
+            this.numericUpDownCores.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownCores.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownCores.Name = "numericUpDownCores";
+            this.numericUpDownCores.Size = new System.Drawing.Size(50, 22);
+            this.numericUpDownCores.TabIndex = 1;
+            this.numericUpDownCores.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // ConfigAndGenerate
             // 
@@ -875,6 +924,9 @@
             this.TabPageGUID.ResumeLayout(false);
             this.TabPageGUID.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownGUIDQuantity)).EndInit();
+            this.tabPageAdvanced.ResumeLayout(false);
+            this.tabPageAdvanced.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCores)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -939,5 +991,8 @@
         private System.Windows.Forms.CheckBox CheckboxDarkMode;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox TextboxSuffix;
+        private System.Windows.Forms.TabPage tabPageAdvanced;
+        private System.Windows.Forms.NumericUpDown numericUpDownCores;
+        private System.Windows.Forms.Label label22;
     }
 }
