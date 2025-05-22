@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace nppRandomStringGenerator.Storage.Models
 {
@@ -6,7 +6,7 @@ namespace nppRandomStringGenerator.Storage.Models
     {
         public string Appname { get; set; }
         public string Appversion { get; set; }
-        public ConfigItem[] ConfigItems { get; set; }
+        public List<ConfigItem> ConfigItems { get; set; }
     }
 
     public class ConfigItem

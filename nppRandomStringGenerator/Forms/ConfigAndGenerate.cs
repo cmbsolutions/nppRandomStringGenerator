@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
 using nppRandomStringGenerator.Modules;
 using nppRandomStringGenerator.Storage;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Kbg.NppPluginNET
 {
@@ -44,6 +41,10 @@ namespace Kbg.NppPluginNET
             this.Editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
             this.Notepad = new NotepadPPGateway();
             ButtonCancel.Enabled = false;
+            numericUpDownCores.Maximum = Environment.ProcessorCount;
+            numericUpDownCores.Value = (int)(Environment.ProcessorCount / 2);
+            CheckboxDarkMode.Visible = false;
+            TabControl1.TabPages.Remove(tabPageAdvanced);
         }
 
         public void LoadSettings()
@@ -185,6 +186,7 @@ namespace Kbg.NppPluginNET
                     IsDuplicate = CheckboxDuplicate.Checked,
                     IsSequential = CheckboxSequential.Checked,
                     Prefix = TextboxPrefix.Text,
+                    Suffix = TextboxSuffix.Text,
                     RandomMinimumLength = (int)NumericUpDownRandomMin.Value,
                     RandomMaximumLength = (int)NumericUpDownRandomMax.Value,
                     DoRandom = CheckboxDoRandom.Checked,
@@ -194,7 +196,8 @@ namespace Kbg.NppPluginNET
                     StringQuantity = (int)NumericUpDownQuantity.Value,
                     DoGuids = TabControl1.SelectedTab == TabPageGUID,
                     GuidFormat = ComboBoxGUIDFormat.Text,
-                    GuidQuantity = (int)NumericUpDownGUIDQuantity.Value
+                    GuidQuantity = (int)NumericUpDownGUIDQuantity.Value,
+                    Cores = (int)numericUpDownCores.Value
                 };
 
                 ButtonGenerate.Enabled = false;
