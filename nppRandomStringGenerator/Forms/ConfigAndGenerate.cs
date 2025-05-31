@@ -51,7 +51,7 @@ namespace Kbg.NppPluginNET
         {
             foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
             {
-                if (configitem == null) { continue; }   
+                if (configitem == null || configitem.Name.StartsWith("Quick")) { continue; }   
 
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
@@ -93,6 +93,8 @@ namespace Kbg.NppPluginNET
         {
             foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
             {
+                if (configitem.Name.StartsWith("Quick")) { continue; }
+
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
                 if (ctrl != null && ctrl.Name.StartsWith("NumericUpDown"))
@@ -132,14 +134,6 @@ namespace Kbg.NppPluginNET
 
         private async void ButtonGenerate_Click(Object sender, EventArgs e)
         {
-            //if (this.RadioButtonInline.Checked && NumericUpDownQuantity.Value > 5000)
-            //{
-            //    if (MessageBox.Show($"It will take allot of time to process {this.NumericUpDownQuantity.Value} lines and Notepad++ will be frozen until it is done.\nFor example it will take 20 seconds to process 5000 lines on a AMD Ryzen 9 5900. Are you sure you want to start this process?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
-            //    {
-            //        return;
-            //    }
-            //}
-            
             this.Cursor = Cursors.WaitCursor;
 
             this.AvailableChars = "";

@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Kbg.NppPluginNET.PluginInfrastructure;
 using NppPluginNET.Utils;
+using nppRandomStringGenerator.Forms;
 using nppRandomStringGenerator.Storage;
 
 namespace Kbg.NppPluginNET
@@ -14,6 +16,7 @@ namespace Kbg.NppPluginNET
         static ConfigAndGenerate ConfigAndGenerate = null;
         static About About = null;
         static Settings MySettings = null;
+        static InsertGuid mInsertGuid = null;
         public static bool isShuttingDown = false;
 
 
@@ -32,8 +35,25 @@ namespace Kbg.NppPluginNET
 
         internal static void CommandMenuInit()
         {
-            PluginBase.SetCommand(0, "Config && Generate", myDockableDialog );
-            PluginBase.SetCommand(1, "&About", AboutnppRandomStringGenerator);
+            PluginBase.SetCommand(0, "Config && Generate", myDockableDialog);
+            PluginBase.SetCommand(1, "Insert GUID at cursor", myDockableGuidDialog);
+            PluginBase.SetCommand(2, "&About", AboutnppRandomStringGenerator);
+        }
+
+        private static void myDockableGuidDialog()
+        {
+            MySettings = new Settings();
+            MySettings.Load();
+
+            mInsertGuid = new InsertGuid
+            {
+                settings = MySettings
+            };
+            mInsertGuid.LoadSettings();
+            mInsertGuid.ShowDialog();
+
+            mInsertGuid = null;
+
         }
 
         internal static void SetToolBarIcons()
