@@ -5,7 +5,6 @@ using System.Text;
 using System.Windows.Forms;
 using nppRandomStringGenerator.Storage.Models;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 namespace nppRandomStringGenerator.Storage
 {
@@ -46,7 +45,7 @@ namespace nppRandomStringGenerator.Storage
                 settings = DeserializeIni(FilePath);
 
 
-                if (settings.Appversion != "1.9.6")
+                if (settings.Appversion != "1.9.7")
                 {
                     SettingsModel defaults = DeserializeIniFromString(Resources.nppRandomStringGeneratorSettings);
 
@@ -58,7 +57,7 @@ namespace nppRandomStringGenerator.Storage
                         }
                     }
                     settings.Appname = "nppRandomStringGenerator";
-                    settings.Appversion = "1.9.6";
+                    settings.Appversion = "1.9.7";
                 }
                 //else
                 //{
