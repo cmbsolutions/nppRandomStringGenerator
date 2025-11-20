@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       max-parallel: 4
       matrix:
@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2.0.0
@@ -43,7 +43,7 @@ jobs:
 
     - name: Archive artifacts for x64
       if: matrix.build_platform == 'x64'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
           name: nppRandomStringGenerator.${{ env.version }}.x64
           path: nppRandomStringGenerator\bin\Release-x64\nppRandomStringGenerator.dll
@@ -59,7 +59,7 @@ jobs:
         
     - name: Archive artifacts for x86
       if: matrix.build_platform == 'x86'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
           name: nppRandomStringGenerator.${{ env.version }}.x86
           path: nppRandomStringGenerator\bin\Release\nppRandomStringGenerator.dll
