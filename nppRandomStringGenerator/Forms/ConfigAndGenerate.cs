@@ -30,8 +30,8 @@ namespace Kbg.NppPluginNET
             new KeyValuePair<string, string>("X", "Four hexadecimal values enclosed in braces, where the fourth value is a subset of eight hexadecimal values that is also enclosed in braces:\r\n\r\nExample: {0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}")
         };
 
-        
-        
+
+
         public Settings settings { get; set; }
 
 
@@ -51,7 +51,7 @@ namespace Kbg.NppPluginNET
         {
             foreach (nppRandomStringGenerator.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
             {
-                if (configitem == null || configitem.Name.StartsWith("Quick")) { continue; }   
+                if (configitem == null || configitem.Name.StartsWith("Quick")) { continue; }
 
                 Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
 
@@ -191,7 +191,9 @@ namespace Kbg.NppPluginNET
                     DoGuids = TabControl1.SelectedTab == TabPageGUID,
                     GuidFormat = ComboBoxGUIDFormat.Text,
                     GuidQuantity = (int)NumericUpDownGUIDQuantity.Value,
-                    Cores = (int)numericUpDownCores.Value
+                    Cores = (int)numericUpDownCores.Value,
+                    IsReplace = RadioButtonReplace.Checked,
+                    TextReplace = TextBoxReplace.Text
                 };
 
                 ButtonGenerate.Enabled = false;
@@ -203,7 +205,8 @@ namespace Kbg.NppPluginNET
                 ButtonCancel.Enabled = false;
                 ButtonGenerate.Enabled = true;
 
-                if (!this.CheckboxCloseNoMessage.Checked) {
+                if (!this.CheckboxCloseNoMessage.Checked)
+                {
                     if (Generator.IsCancelled)
                     {
                         MessageBox.Show($"The generation was cancelled after {Generator.ProcessTime.TotalSeconds} seconds.");
@@ -213,7 +216,7 @@ namespace Kbg.NppPluginNET
                         MessageBox.Show($"Strings are generated in {Generator.ProcessTime.TotalSeconds} seconds.");
                     }
                 }
-                
+
                 if (this.CheckboxSaveOnClose.Checked) { SaveSettings(); }
                 this.Close();
             }
@@ -227,12 +230,13 @@ namespace Kbg.NppPluginNET
 
         private void NumericUpDownQuantity_ValueChanged(object sender, EventArgs e)
         {
-            if ( NumericUpDownQuantity.Value > 1024000)
+            if (NumericUpDownQuantity.Value > 1024000)
             {
                 toolTip1.Active = true;
                 toolTip1.SetToolTip(NumericUpDownQuantity, "This could take a while depending on your hardware.");
                 NumericUpDownQuantity.ForeColor = Color.Red;
-            } else
+            }
+            else
             {
                 toolTip1.Active = false;
                 NumericUpDownQuantity.ForeColor = Color.Black;
@@ -289,7 +293,7 @@ namespace Kbg.NppPluginNET
         {
             NumericUpDownRandomMin.Enabled = CheckboxDoRandom.Checked;
             NumericUpDownRandomMax.Enabled = CheckboxDoRandom.Checked;
-            NumericUpDownLength.Enabled = !CheckboxDoRandom.Checked; 
+            NumericUpDownLength.Enabled = !CheckboxDoRandom.Checked;
         }
 
         private void nudRandomMin_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -368,6 +372,51 @@ namespace Kbg.NppPluginNET
         private void bReset_Click(object sender, EventArgs e)
         {
             TextboxSymbols.Text = "!@#$%^&*()_+-=[]{};':,.<>?";
+        }
+
+        private void RadioButtonReplace_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RadioButtonReplace.Checked)
+            {
+                int ReplacementCount = this.GetReplacementCount();
+                LabelCount.Text = $"{ReplacementCount} occurrences";
+                NumericUpDownQuantity.Enabled = false;
+                NumericUpDownQuantity.Maximum = this.Editor.GetLineCount();
+                NumericUpDownQuantity.Value = this.Editor.GetLineCount();
+                TextBoxReplace.Enabled = true;
+
+                NumericUpDownGUIDQuantity.Enabled = false;
+                NumericUpDownGUIDQuantity.Maximum = this.Editor.GetLineCount();
+                NumericUpDownGUIDQuantity.Value = this.Editor.GetLineCount();
+            }
+            else
+            {
+                NumericUpDownQuantity.Maximum = 4096000;
+                NumericUpDownQuantity.Enabled = true;
+                TextBoxReplace.Enabled = false;
+
+                NumericUpDownGUIDQuantity.Maximum = 4096000;
+                NumericUpDownGUIDQuantity.Enabled = true;
+            }
+        }
+
+        private int GetReplacementCount()
+        {
+            string sourceText = this.Editor.GetText();
+            string searchText = TextBoxReplace.Text;
+
+            int count = (sourceText.Length - sourceText.Replace(searchText, "").Length) / searchText.Length;
+
+            return count;
+        }
+
+        private void TextBoxReplace_TextChanged(object sender, EventArgs e)
+        {
+            if (RadioButtonReplace.Checked && TextBoxReplace.Text.Length > 0)
+            {
+                int ReplacementCount = this.GetReplacementCount();
+                LabelCount.Text = $"{ReplacementCount} occurrences";
+            }
         }
     }
 }
