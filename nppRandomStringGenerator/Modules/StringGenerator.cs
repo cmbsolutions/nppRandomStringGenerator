@@ -25,8 +25,10 @@ namespace nppRandomStringGenerator.Modules
         public string Prefix { get; set; }
         public string Suffix { get; set; }
         public bool IsInline { get; set; }
+        public bool IsReplace { get; set; }
         public bool IsCancelled { get; set; }
         public string TextSeperator { get; set; }
+        public string TextReplace { get; set; }
         public bool DoGuids { get; set; }
         public string GuidFormat { get; set; }
         public int GuidQuantity { get; set; }
@@ -67,7 +69,7 @@ namespace nppRandomStringGenerator.Modules
                 MaxDegreeOfParallelism = Cores
             };
 
-            if (this.IsInline)
+            if (this.IsInline || this.IsReplace)
             {
                 AllLines = this.Editor.GetText().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             }
@@ -121,6 +123,13 @@ namespace nppRandomStringGenerator.Modules
                                 AllLines[line] += sb.ToString();
 
                                 sb.Clear();
+                            }
+                            else if (this.IsReplace) {
+                                int line = i * internalWorkload + w;
+
+                                if (i > 0) line += MissingWorkload;
+
+                                AllLines[line] = AllLines[line].Replace(TextReplace, Guid.NewGuid().ToString(this.GuidFormat));
                             }
                             else
                             {
@@ -203,7 +212,19 @@ namespace nppRandomStringGenerator.Modules
 
                                 sb.Clear();
                             }
-                            else
+                            else if (this.IsReplace)
+                            {
+                                int line = i * internalWorkload + w;
+                                if (i > 0) line += MissingWorkload;
+                                string newString = sb.ToString();
+                                if (this.Suffix.Length > 0)
+                                {
+                                    newString += this.Suffix;
+                                }
+                                AllLines[line] = AllLines[line].Replace(TextReplace, newString);
+                                sb.Clear();
+                            }
+                            else 
                             {
                                 if (this.Suffix.Length > 0)
                                 {
@@ -231,7 +252,7 @@ namespace nppRandomStringGenerator.Modules
             }
 
 
-            if (this.IsInline)
+            if (this.IsInline || this.IsReplace)
             {
                 int totalLength = 0;
                 for (int i = 0; i < this.AllLines.Length; i++)
