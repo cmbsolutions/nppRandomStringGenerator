@@ -45,7 +45,7 @@ namespace nppRandomStringGenerator.Storage
                 settings = DeserializeIni(FilePath);
 
 
-                if (settings.Appversion != "1.9.7")
+                if (settings.Appversion != "1.9.8")
                 {
                     SettingsModel defaults = DeserializeIniFromString(Resources.nppRandomStringGeneratorSettings);
 
@@ -57,7 +57,7 @@ namespace nppRandomStringGenerator.Storage
                         }
                     }
                     settings.Appname = "nppRandomStringGenerator";
-                    settings.Appversion = "1.9.7";
+                    settings.Appversion = "1.9.8";
                 }
                 //else
                 //{
