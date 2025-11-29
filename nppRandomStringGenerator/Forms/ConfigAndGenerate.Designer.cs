@@ -60,6 +60,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.RadioButtonCurrent = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.LabelCount = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.TextBoxReplace = new System.Windows.Forms.TextBox();
             this.RadioButtonReplace = new System.Windows.Forms.RadioButton();
@@ -92,7 +93,6 @@
             this.numericUpDownCores = new System.Windows.Forms.NumericUpDown();
             this.label22 = new System.Windows.Forms.Label();
             this.CheckboxDarkMode = new System.Windows.Forms.CheckBox();
-            this.LabelCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -477,6 +477,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Generate to:";
             // 
+            // LabelCount
+            // 
+            this.LabelCount.AutoSize = true;
+            this.LabelCount.Location = new System.Drawing.Point(167, 92);
+            this.LabelCount.Name = "LabelCount";
+            this.LabelCount.Size = new System.Drawing.Size(73, 13);
+            this.LabelCount.TabIndex = 35;
+            this.LabelCount.Text = "0 occurences";
+            // 
             // label23
             // 
             this.label23.AutoSize = true;
@@ -491,7 +500,7 @@
             this.TextBoxReplace.Enabled = false;
             this.TextBoxReplace.Location = new System.Drawing.Point(168, 106);
             this.TextBoxReplace.Margin = new System.Windows.Forms.Padding(1);
-            this.TextBoxReplace.MaxLength = 1;
+            this.TextBoxReplace.MaxLength = 50;
             this.TextBoxReplace.Name = "TextBoxReplace";
             this.TextBoxReplace.Size = new System.Drawing.Size(73, 22);
             this.TextBoxReplace.TabIndex = 33;
@@ -925,15 +934,6 @@
             this.CheckboxDarkMode.Text = "Dark Mode";
             this.CheckboxDarkMode.UseVisualStyleBackColor = true;
             this.CheckboxDarkMode.Visible = false;
-            // 
-            // LabelCount
-            // 
-            this.LabelCount.AutoSize = true;
-            this.LabelCount.Location = new System.Drawing.Point(167, 92);
-            this.LabelCount.Name = "LabelCount";
-            this.LabelCount.Size = new System.Drawing.Size(73, 13);
-            this.LabelCount.TabIndex = 35;
-            this.LabelCount.Text = "0 occurences";
             // 
             // ConfigAndGenerate
             // 
