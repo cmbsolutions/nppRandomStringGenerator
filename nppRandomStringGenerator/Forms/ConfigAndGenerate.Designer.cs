@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.NumericUpDownLength = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -56,6 +57,16 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.bReset = new System.Windows.Forms.Button();
+            this.tabLayout = new System.Windows.Forms.TabPage();
+            this.BtnDown = new System.Windows.Forms.Button();
+            this.BtnUp = new System.Windows.Forms.Button();
+            this.BtnRemove = new System.Windows.Forms.Button();
+            this.BtnAdd = new System.Windows.Forms.Button();
+            this.dgvLayout = new System.Windows.Forms.DataGridView();
+            this.cFieldname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cMaxLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cMask = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cRequired = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.RadioButtonCurrent = new System.Windows.Forms.RadioButton();
@@ -95,6 +106,8 @@
             this.CheckboxDarkMode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
+            this.tabLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLayout)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownRandomMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownRandomMax)).BeginInit();
@@ -430,6 +443,98 @@
             this.bReset.UseVisualStyleBackColor = true;
             this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
+            // tabLayout
+            // 
+            this.tabLayout.BackColor = System.Drawing.SystemColors.Control;
+            this.tabLayout.Controls.Add(this.BtnDown);
+            this.tabLayout.Controls.Add(this.BtnUp);
+            this.tabLayout.Controls.Add(this.BtnRemove);
+            this.tabLayout.Controls.Add(this.BtnAdd);
+            this.tabLayout.Controls.Add(this.dgvLayout);
+            this.tabLayout.Location = new System.Drawing.Point(4, 22);
+            this.tabLayout.Name = "tabLayout";
+            this.tabLayout.Padding = new System.Windows.Forms.Padding(3);
+            this.tabLayout.Size = new System.Drawing.Size(456, 305);
+            this.tabLayout.TabIndex = 3;
+            this.tabLayout.Text = "Layout";
+            this.toolTip1.SetToolTip(this.tabLayout, "Define a field layout and then generate random data in each field.\r\n");
+            // 
+            // BtnDown
+            // 
+            this.BtnDown.Image = global::nppRandomStringGenerator.Properties.Resources.button_green_down;
+            this.BtnDown.Location = new System.Drawing.Point(3, 101);
+            this.BtnDown.Name = "BtnDown";
+            this.BtnDown.Size = new System.Drawing.Size(30, 32);
+            this.BtnDown.TabIndex = 4;
+            this.BtnDown.UseVisualStyleBackColor = true;
+            // 
+            // BtnUp
+            // 
+            this.BtnUp.Image = global::nppRandomStringGenerator.Properties.Resources.button_green_up;
+            this.BtnUp.Location = new System.Drawing.Point(3, 70);
+            this.BtnUp.Name = "BtnUp";
+            this.BtnUp.Size = new System.Drawing.Size(30, 31);
+            this.BtnUp.TabIndex = 3;
+            this.BtnUp.UseVisualStyleBackColor = true;
+            // 
+            // BtnRemove
+            // 
+            this.BtnRemove.Image = global::nppRandomStringGenerator.Properties.Resources.button_green_remove;
+            this.BtnRemove.Location = new System.Drawing.Point(3, 33);
+            this.BtnRemove.Name = "BtnRemove";
+            this.BtnRemove.Size = new System.Drawing.Size(30, 31);
+            this.BtnRemove.TabIndex = 2;
+            this.BtnRemove.UseVisualStyleBackColor = true;
+            // 
+            // BtnAdd
+            // 
+            this.BtnAdd.Image = global::nppRandomStringGenerator.Properties.Resources.button_green_add;
+            this.BtnAdd.Location = new System.Drawing.Point(3, 3);
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(30, 30);
+            this.BtnAdd.TabIndex = 1;
+            this.BtnAdd.UseVisualStyleBackColor = true;
+            // 
+            // dgvLayout
+            // 
+            this.dgvLayout.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            this.dgvLayout.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvLayout.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLayout.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cFieldname,
+            this.cMaxLength,
+            this.cMask,
+            this.cRequired});
+            this.dgvLayout.Location = new System.Drawing.Point(39, 0);
+            this.dgvLayout.Name = "dgvLayout";
+            this.dgvLayout.RowHeadersVisible = false;
+            this.dgvLayout.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvLayout.Size = new System.Drawing.Size(417, 299);
+            this.dgvLayout.TabIndex = 0;
+            // 
+            // cFieldname
+            // 
+            this.cFieldname.HeaderText = "Name";
+            this.cFieldname.Name = "cFieldname";
+            // 
+            // cMaxLength
+            // 
+            this.cMaxLength.HeaderText = "Max length";
+            this.cMaxLength.Name = "cMaxLength";
+            // 
+            // cMask
+            // 
+            this.cMask.HeaderText = "Mask";
+            this.cMask.Name = "cMask";
+            // 
+            // cRequired
+            // 
+            this.cRequired.HeaderText = "Required?";
+            this.cRequired.Name = "cRequired";
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -701,6 +806,7 @@
             this.TabControl1.Controls.Add(this.TabPageRandom);
             this.TabControl1.Controls.Add(this.TabPageGUID);
             this.TabControl1.Controls.Add(this.tabPageAdvanced);
+            this.TabControl1.Controls.Add(this.tabLayout);
             this.TabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.TabControl1.Location = new System.Drawing.Point(0, 0);
             this.TabControl1.Multiline = true;
@@ -965,6 +1071,8 @@
             this.Text = "Generate Random Strings";
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).EndInit();
+            this.tabLayout.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLayout)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownRandomMin)).EndInit();
@@ -1049,5 +1157,15 @@
         private System.Windows.Forms.TextBox TextBoxReplace;
         private System.Windows.Forms.RadioButton RadioButtonReplace;
         private System.Windows.Forms.Label LabelCount;
+        private System.Windows.Forms.TabPage tabLayout;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cFieldname;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cMaxLength;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cMask;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn cRequired;
+        private System.Windows.Forms.DataGridView dgvLayout;
+        private System.Windows.Forms.Button BtnDown;
+        private System.Windows.Forms.Button BtnUp;
+        private System.Windows.Forms.Button BtnRemove;
+        private System.Windows.Forms.Button BtnAdd;
     }
 }

@@ -19,7 +19,7 @@ namespace nppRandomStringGenerator.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,6 +63,46 @@ namespace nppRandomStringGenerator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap button_green_add {
+            get {
+                object obj = ResourceManager.GetObject("button_green_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap button_green_down {
+            get {
+                object obj = ResourceManager.GetObject("button_green_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap button_green_remove {
+            get {
+                object obj = ResourceManager.GetObject("button_green_remove", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap button_green_up {
+            get {
+                object obj = ResourceManager.GetObject("button_green_up", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cancel {
             get {
                 object obj = ResourceManager.GetObject("cancel", resourceCulture);
@@ -82,7 +122,7 @@ namespace nppRandomStringGenerator.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to appname=nppRandomStringGenerator
-        ///appversion=1.9.0
+        ///appversion=1.9.8
         ///NumericUpDownLength=32
         ///NumericUpDownQuantity=8
         ///CheckboxNumbers=true
@@ -95,13 +135,13 @@ namespace nppRandomStringGenerator.Properties {
         ///CheckboxDuplicate=true
         ///CheckboxSequential=true
         ///TextboxPrefix=my_prefix
+        ///TextboxSuffix=my_suffix
         ///RadioButtonNew=true
         ///RadioButtonCurrent=false
         ///RadioButtonInline=false
         ///TextboxSeperator=;
         ///CheckboxSaveOnClose=true
-        ///CheckboxCloseNoMessage=true
-        /// [rest of string was truncated]&quot;;.
+        ///Chec [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string nppRandomStringGeneratorSettings {
             get {

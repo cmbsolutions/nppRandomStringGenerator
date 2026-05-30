@@ -126,6 +126,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="PluginInfrastructure\UnmanagedExports.cs" />
+    <Compile Include="Storage\layout.cs" />
     <Compile Include="Storage\Settings.cs" />
     <Compile Include="Storage\SettingsModel.cs" />
     <Compile Include="Utils\ArrayExtensions.cs" />
@@ -172,6 +173,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_green_add.png" />
+    <None Include="Resources\button_green_down.png" />
+    <None Include="Resources\button_green_remove.png" />
+    <None Include="Resources\button_green_up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Condition="Exists($(PkgUnmanagedExports_Repack_Upgrade))" Project="$(PkgUnmanagedExports_Repack_Upgrade)\build\UnmanagedExports.Repack.Upgrade.targets" />
