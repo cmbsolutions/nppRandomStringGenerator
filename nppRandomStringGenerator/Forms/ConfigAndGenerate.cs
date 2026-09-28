@@ -20,6 +20,7 @@ namespace Kbg.NppPluginNET
         private INotepadPPGateway Notepad;
 
         private StringGenerator Generator;
+        private ColorGenerator ColorGenerator;
 
         private readonly List<KeyValuePair<string, string>> GuidInfos = new List<KeyValuePair<string, string>>
         {
@@ -44,7 +45,10 @@ namespace Kbg.NppPluginNET
             numericUpDownCores.Maximum = Environment.ProcessorCount;
             numericUpDownCores.Value = (int)(Environment.ProcessorCount / 2);
             CheckboxDarkMode.Visible = false;
-            TabControl1.TabPages.Remove(tabPageAdvanced);
+
+            //TabControl1.TabPages.Remove(tabPageAdvanced);
+            //TabControl1.TabPages.Remove(tabPageLayout);
+            //TabControl1.TabPages.Remove(tabPageColors);
         }
 
         public void LoadSettings()
@@ -430,6 +434,19 @@ namespace Kbg.NppPluginNET
                 int ReplacementCount = this.GetReplacementCount();
                 LabelCount.Text = $"{ReplacementCount} occurrences";
             }
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            this.Notepad.FileNew();
+
+            ColorGenerator = new ColorGenerator
+            {
+                Editor = this.Editor,
+                Notepad = this.Notepad
+            };
+
+            await Task.Run(() => ColorGenerator.GenerateColors());
         }
     }
 }

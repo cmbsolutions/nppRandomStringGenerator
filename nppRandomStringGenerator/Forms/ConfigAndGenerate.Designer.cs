@@ -57,7 +57,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.bReset = new System.Windows.Forms.Button();
-            this.tabLayout = new System.Windows.Forms.TabPage();
+            this.tabPageLayout = new System.Windows.Forms.TabPage();
             this.BtnDown = new System.Windows.Forms.Button();
             this.BtnUp = new System.Windows.Forms.Button();
             this.BtnRemove = new System.Windows.Forms.Button();
@@ -103,10 +103,12 @@
             this.tabPageAdvanced = new System.Windows.Forms.TabPage();
             this.numericUpDownCores = new System.Windows.Forms.NumericUpDown();
             this.label22 = new System.Windows.Forms.Label();
+            this.tabPageColors = new System.Windows.Forms.TabPage();
             this.CheckboxDarkMode = new System.Windows.Forms.CheckBox();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).BeginInit();
-            this.tabLayout.SuspendLayout();
+            this.tabPageLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLayout)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownRandomMin)).BeginInit();
@@ -117,6 +119,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownGUIDQuantity)).BeginInit();
             this.tabPageAdvanced.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCores)).BeginInit();
+            this.tabPageColors.SuspendLayout();
             this.SuspendLayout();
             // 
             // NumericUpDownLength
@@ -443,21 +446,21 @@
             this.bReset.UseVisualStyleBackColor = true;
             this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
-            // tabLayout
+            // tabPageLayout
             // 
-            this.tabLayout.BackColor = System.Drawing.SystemColors.Control;
-            this.tabLayout.Controls.Add(this.BtnDown);
-            this.tabLayout.Controls.Add(this.BtnUp);
-            this.tabLayout.Controls.Add(this.BtnRemove);
-            this.tabLayout.Controls.Add(this.BtnAdd);
-            this.tabLayout.Controls.Add(this.dgvLayout);
-            this.tabLayout.Location = new System.Drawing.Point(4, 22);
-            this.tabLayout.Name = "tabLayout";
-            this.tabLayout.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLayout.Size = new System.Drawing.Size(456, 305);
-            this.tabLayout.TabIndex = 3;
-            this.tabLayout.Text = "Layout";
-            this.toolTip1.SetToolTip(this.tabLayout, "Define a field layout and then generate random data in each field.\r\n");
+            this.tabPageLayout.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageLayout.Controls.Add(this.BtnDown);
+            this.tabPageLayout.Controls.Add(this.BtnUp);
+            this.tabPageLayout.Controls.Add(this.BtnRemove);
+            this.tabPageLayout.Controls.Add(this.BtnAdd);
+            this.tabPageLayout.Controls.Add(this.dgvLayout);
+            this.tabPageLayout.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLayout.Name = "tabPageLayout";
+            this.tabPageLayout.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLayout.Size = new System.Drawing.Size(456, 305);
+            this.tabPageLayout.TabIndex = 3;
+            this.tabPageLayout.Text = "Layout";
+            this.toolTip1.SetToolTip(this.tabPageLayout, "Define a field layout and then generate random data in each field.\r\n");
             // 
             // BtnDown
             // 
@@ -806,7 +809,8 @@
             this.TabControl1.Controls.Add(this.TabPageRandom);
             this.TabControl1.Controls.Add(this.TabPageGUID);
             this.TabControl1.Controls.Add(this.tabPageAdvanced);
-            this.TabControl1.Controls.Add(this.tabLayout);
+            this.TabControl1.Controls.Add(this.tabPageLayout);
+            this.TabControl1.Controls.Add(this.tabPageColors);
             this.TabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.TabControl1.Location = new System.Drawing.Point(0, 0);
             this.TabControl1.Multiline = true;
@@ -1027,6 +1031,15 @@
             this.label22.TabIndex = 0;
             this.label22.Text = "Use cores:";
             // 
+            // tabPageColors
+            // 
+            this.tabPageColors.Controls.Add(this.button2);
+            this.tabPageColors.Location = new System.Drawing.Point(4, 22);
+            this.tabPageColors.Name = "tabPageColors";
+            this.tabPageColors.Size = new System.Drawing.Size(456, 305);
+            this.tabPageColors.TabIndex = 4;
+            this.tabPageColors.Text = "Colors";
+            // 
             // CheckboxDarkMode
             // 
             this.CheckboxDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1041,6 +1054,16 @@
             this.CheckboxDarkMode.Text = "Dark Mode";
             this.CheckboxDarkMode.UseVisualStyleBackColor = true;
             this.CheckboxDarkMode.Visible = false;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(97, 137);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // ConfigAndGenerate
             // 
@@ -1071,7 +1094,7 @@
             this.Text = "Generate Random Strings";
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownQuantity)).EndInit();
-            this.tabLayout.ResumeLayout(false);
+            this.tabPageLayout.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLayout)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1086,6 +1109,7 @@
             this.tabPageAdvanced.ResumeLayout(false);
             this.tabPageAdvanced.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCores)).EndInit();
+            this.tabPageColors.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1157,7 +1181,7 @@
         private System.Windows.Forms.TextBox TextBoxReplace;
         private System.Windows.Forms.RadioButton RadioButtonReplace;
         private System.Windows.Forms.Label LabelCount;
-        private System.Windows.Forms.TabPage tabLayout;
+        private System.Windows.Forms.TabPage tabPageLayout;
         private System.Windows.Forms.DataGridViewTextBoxColumn cFieldname;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMaxLength;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMask;
@@ -1167,5 +1191,7 @@
         private System.Windows.Forms.Button BtnUp;
         private System.Windows.Forms.Button BtnRemove;
         private System.Windows.Forms.Button BtnAdd;
+        private System.Windows.Forms.TabPage tabPageColors;
+        private System.Windows.Forms.Button button2;
     }
 }

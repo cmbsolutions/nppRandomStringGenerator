@@ -388,3 +388,5 @@ FodyWeavers.xsd
 *.sln.iml
 Tools/
 Release/
+
+MOCK_DATA.csv

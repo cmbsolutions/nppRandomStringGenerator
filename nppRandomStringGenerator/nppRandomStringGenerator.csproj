@@ -96,6 +96,7 @@
     </Compile>
     <Compile Include="JSON_Tools\JNode.cs" />
     <Compile Include="JSON_Tools\JsonParser.cs" />
+    <Compile Include="Modules\ColorGenerator.cs" />
     <Compile Include="Modules\StringGenerator.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />

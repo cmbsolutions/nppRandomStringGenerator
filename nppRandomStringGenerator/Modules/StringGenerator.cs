@@ -71,7 +71,7 @@ namespace nppRandomStringGenerator.Modules
 
             if (this.IsInline || this.IsReplace)
             {
-                AllLines = this.Editor.GetText().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                AllLines = this.Editor.GetText().Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
             }
 
             Stopwatch sw = Stopwatch.StartNew();
