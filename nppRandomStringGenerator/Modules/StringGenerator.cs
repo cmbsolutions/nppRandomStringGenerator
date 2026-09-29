@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Linq;
 
 namespace nppRandomStringGenerator.Modules
 {
@@ -71,7 +72,7 @@ namespace nppRandomStringGenerator.Modules
 
             if (this.IsInline || this.IsReplace)
             {
-                AllLines = this.Editor.GetText().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                AllLines = this.Editor.GetText().Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
             }
 
             Stopwatch sw = Stopwatch.StartNew();
@@ -254,16 +255,11 @@ namespace nppRandomStringGenerator.Modules
 
             if (this.IsInline || this.IsReplace)
             {
-                int totalLength = 0;
-                for (int i = 0; i < this.AllLines.Length; i++)
-                {
-                    totalLength += this.AllLines[i].Length;
-                }
-
-                totalLength += (this.AllLines.Length * Environment.NewLine.Length) - Environment.NewLine.Length;
+                string text = string.Join(Environment.NewLine, this.AllLines);
+                int byteLength = Encoding.UTF8.GetByteCount(text);
 
                 this.Editor.ClearAll();
-                this.Editor.AddText(totalLength, string.Join(Environment.NewLine, this.AllLines));
+                this.Editor.AddText(byteLength, text);
             }
 
             sw.Stop();
